@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */; };
-		DEF7EC512C513E3E0036BBD8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* ContentView.swift */; };
+		DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* MainView.swift */; };
 		DEF7EC532C513E400036BBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC522C513E400036BBD8 /* Assets.xcassets */; };
 		DEF7EC562C513E400036BBD8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC552C513E400036BBD8 /* Preview Assets.xcassets */; };
 		DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC572C513E400036BBD8 /* Persistence.swift */; };
@@ -69,7 +69,7 @@
 /* Begin PBXFileReference section */
 		DEF7EC4B2C513E3E0036BBD8 /* RetroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAppApp.swift; sourceTree = "<group>"; };
-		DEF7EC502C513E3E0036BBD8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DEF7EC502C513E3E0036BBD8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		DEF7EC522C513E400036BBD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DEF7EC552C513E400036BBD8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DEF7EC572C513E400036BBD8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -164,7 +164,6 @@
 				DEF7EC7F2C51407F0036BBD8 /* ViewModel */,
 				DEF7EC7E2C51407B0036BBD8 /* View */,
 				DEF7EC7D2C5140720036BBD8 /* Model */,
-				DEF7EC502C513E3E0036BBD8 /* ContentView.swift */,
 				DEF7EC522C513E400036BBD8 /* Assets.xcassets */,
 				DEF7EC572C513E400036BBD8 /* Persistence.swift */,
 				DEF7EC592C513E400036BBD8 /* RetroApp.xcdatamodeld */,
@@ -209,6 +208,7 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DEF7EC502C513E3E0036BBD8 /* MainView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -397,7 +397,7 @@
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
-				DEF7EC512C513E3E0036BBD8 /* ContentView.swift in Sources */,
+				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,
 			);
