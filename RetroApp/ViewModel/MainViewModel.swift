@@ -13,17 +13,21 @@ class MainViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
     
     func fetchItems() {
-        firebaseManager.fetchItems { [weak self] items in
-            self?.items = items
-            print("self items \(items)")
+        firebaseManager.fetchItems { [weak self] result in
+            switch result {
+            case .success(let items):
+                self?.items = items
+            case .failure(let error):
+                print("Error adding item: \(error)")
+            }
         }
     }
     
     func addItem(_ item: RetroItem) {
-        firebaseManager.addItem(item) { result in
+        firebaseManager.addItem(item) { [weak self] result in
             switch result {
             case .success:
-                self.fetchItems()
+                self?.fetchItems()
             case .failure(let error):
                 print("Error adding item: \(error)")
             }
@@ -31,10 +35,10 @@ class MainViewModel: ObservableObject {
     }
     
     func deleteItem(_ item: RetroItem) {
-        firebaseManager.deleteItem(item) { result in
+        firebaseManager.deleteItem(item) { [weak self] result in
             switch result {
             case .success:
-                self.fetchItems()
+                self?.fetchItems()
             case .failure(let error):
                 print("Error deleting item: \(error)")
             }
