@@ -47,6 +47,9 @@
 		DEF7ECBB2C5141B00036BBD8 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = DEF7ECBA2C5141B00036BBD8 /* FirebaseVertexAI-Preview */; };
 		DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECBC2C51422A0036BBD8 /* MainViewModel.swift */; };
 		DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECBE2C5142AD0036BBD8 /* RetroModel.swift */; };
+		DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECCA2C5226850036BBD8 /* BoardView.swift */; };
+		DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */; };
+		DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +85,9 @@
 		DEF7EC812C51413B0036BBD8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DEF7ECBC2C51422A0036BBD8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		DEF7ECBE2C5142AD0036BBD8 /* RetroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroModel.swift; sourceTree = "<group>"; };
+		DEF7ECCA2C5226850036BBD8 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableList.swift; sourceTree = "<group>"; };
+		DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +214,7 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DEF7ECC92C5226790036BBD8 /* BoardView */,
 				DEF7EC502C513E3E0036BBD8 /* MainView.swift */,
 			);
 			path = View;
@@ -228,6 +235,16 @@
 				DEF7EC812C51413B0036BBD8 /* GoogleService-Info.plist */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		DEF7ECC92C5226790036BBD8 /* BoardView */ = {
+			isa = PBXGroup;
+			children = (
+				DEF7ECCA2C5226850036BBD8 /* BoardView.swift */,
+				DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */,
+				DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */,
+			);
+			path = BoardView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -394,8 +411,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */,
+				DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */,
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
+				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,

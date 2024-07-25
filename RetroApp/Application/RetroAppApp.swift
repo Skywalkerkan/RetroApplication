@@ -16,7 +16,7 @@ struct RetroAppApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            MainView()
+            BoardView()
         }
     }
 }
