@@ -38,9 +38,7 @@ struct MainView: View {
                     }
                 )
                 
-                Button(action: {
-                    print("Button Clicked")
-                }) {
+                NavigationLink(destination: CreateBoardView()) {
                     Image(systemName: "plus")
                         .foregroundColor(.white)
                         .frame(width: 50, height: 50)
@@ -52,7 +50,6 @@ struct MainView: View {
         }
     }
 }
-
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()

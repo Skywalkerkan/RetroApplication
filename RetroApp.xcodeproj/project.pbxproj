@@ -51,6 +51,7 @@
 		DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */; };
 		DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */; };
 		DEF7ECD22C524B060036BBD8 /* PanelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECD12C524B060036BBD8 /* PanelCell.swift */; };
+		DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7ECD42C525A370036BBD8 /* CreateBoardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableList.swift; sourceTree = "<group>"; };
 		DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableCell.swift; sourceTree = "<group>"; };
 		DEF7ECD12C524B060036BBD8 /* PanelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelCell.swift; sourceTree = "<group>"; };
+		DEF7ECD42C525A370036BBD8 /* CreateBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DEF7ECD32C525A240036BBD8 /* CreateBoardView */,
 				DEF7ECD02C524AD50036BBD8 /* MainView */,
 				DEF7ECC92C5226790036BBD8 /* BoardView */,
 			);
@@ -256,6 +259,14 @@
 				DEF7ECD12C524B060036BBD8 /* PanelCell.swift */,
 			);
 			path = MainView;
+			sourceTree = "<group>";
+		};
+		DEF7ECD32C525A240036BBD8 /* CreateBoardView */ = {
+			isa = PBXGroup;
+			children = (
+				DEF7ECD42C525A370036BBD8 /* CreateBoardView.swift */,
+			);
+			path = CreateBoardView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +437,7 @@
 				DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */,
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
+				DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */,
 				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
