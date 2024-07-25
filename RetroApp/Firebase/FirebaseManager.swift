@@ -12,19 +12,32 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func fetchItems(completion: @escaping ([RetroItem]) -> Void) {
-        db.collection("retroItems").order(by: "timestamp", descending: false).addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                completion([])
-                return
+    func fetchItems(completion: @escaping (Result<[RetroItem], Error>) -> Void) {
+        db.collection("retroItems")
+            .order(by: "timestamp", descending: false)
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents")
+                    completion(.success([]))
+                    return
+                }
+                
+                do {
+                    let items = try documents.compactMap { queryDocumentSnapshot -> RetroItem? in
+                        return try queryDocumentSnapshot.data(as: RetroItem.self)
+                    }
+                    completion(.success(items))
+                } catch {
+                    print("Error decoding documents: \(error)")
+                    completion(.failure(error))
+                }
             }
-            
-            let items = documents.compactMap { queryDocumentSnapshot -> RetroItem? in
-                return try? queryDocumentSnapshot.data(as: RetroItem.self)
-            }
-            completion(items)
-        }
     }
     
     func addItem(_ item: RetroItem, completion: @escaping (Result<Void, Error>) -> Void) {
