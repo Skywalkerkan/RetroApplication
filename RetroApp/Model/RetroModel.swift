@@ -16,6 +16,11 @@ struct RetroItem: Identifiable, Codable {
     var category: RetroCategory
 }
 
+struct BoardItem: Identifiable,Codable {
+    @DocumentID var id: String? = UUID().uuidString
+    var cardTitle: String
+}
+
 enum RetroCategory: String, Codable, CaseIterable {
     case toDo = "ToDo"
     case beingDone = "Being Done"
