@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */; };
 		DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* MainView.swift */; };
 		DEF7EC532C513E400036BBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC522C513E400036BBD8 /* Assets.xcassets */; };
@@ -72,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEF7EC4B2C513E3E0036BBD8 /* RetroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAppApp.swift; sourceTree = "<group>"; };
 		DEF7EC502C513E3E0036BBD8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -147,6 +149,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DEB257E52C52668200CC3B51 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		DEF7EC422C513E3E0036BBD8 = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +180,7 @@
 		DEF7EC4D2C513E3E0036BBD8 /* RetroApp */ = {
 			isa = PBXGroup;
 			children = (
+				DEB257E52C52668200CC3B51 /* Firebase */,
 				DEF7EC802C5140850036BBD8 /* Application */,
 				DEF7EC7F2C51407F0036BBD8 /* ViewModel */,
 				DEF7EC7E2C51407B0036BBD8 /* View */,
@@ -433,6 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */,
 				DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */,
 				DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */,
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
