@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
+		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
 		DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */; };
 		DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* MainView.swift */; };
 		DEF7EC532C513E400036BBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC522C513E400036BBD8 /* Assets.xcassets */; };
@@ -76,6 +77,7 @@
 /* Begin PBXFileReference section */
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
+		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		DEF7EC4B2C513E3E0036BBD8 /* RetroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAppApp.swift; sourceTree = "<group>"; };
 		DEF7EC502C513E3E0036BBD8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -231,8 +233,8 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DEF7ECD32C525A240036BBD8 /* CreateBoardView */,
 				DEF7ECD02C524AD50036BBD8 /* MainView */,
+				DEF7ECD32C525A240036BBD8 /* CreateBoardView */,
 				DEF7ECC92C5226790036BBD8 /* BoardView */,
 			);
 			path = View;
@@ -243,6 +245,7 @@
 			children = (
 				DEF7ECBC2C51422A0036BBD8 /* MainViewModel.swift */,
 				DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */,
+				DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,
 				DEF7ECD22C524B060036BBD8 /* PanelCell.swift in Sources */,
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,
+				DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

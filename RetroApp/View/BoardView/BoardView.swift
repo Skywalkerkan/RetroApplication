@@ -16,7 +16,7 @@ struct BoardView: View {
 
     var body: some View {
         VStack {
-            HStack {
+    /*        HStack {
                 Spacer()
                 Text("Users")
                     .font(.headline)
@@ -24,7 +24,7 @@ struct BoardView: View {
                 EditButton()
                 Spacer()
                     .frame(width: 10)
-            }
+            }*/
             
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
@@ -81,8 +81,10 @@ struct BoardView: View {
                         })
                     }
                 }
-            }.background(Color.red)
+            }.background(.white)
         }
+        .navigationTitle("Board View Title")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     func handleScrollIfNeeded(yPosition: CGFloat, in geometry: GeometryProxy) {
