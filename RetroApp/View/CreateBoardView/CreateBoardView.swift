@@ -39,12 +39,16 @@ struct CreateBoardView: View {
                 }
                 .padding(.horizontal, 16)
                 
+                List(viewModel.listItems) { item in
+                    PanelCell(panelName: item.name)
+                }
                 Spacer()
                 
                 Button(action: {
                     let item = RetroItem(title: textFieldText, description: "description", category: .done)
-                    viewModel.addItem(item)
-                    
+                    //viewModel.addItem(item)
+                //   viewModel.addPanel()
+                    viewModel.fetchPanel()
                     if let errorMessage = viewModel.errorMessage {
                         alertMessage = errorMessage
                         showAlert = true
