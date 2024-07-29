@@ -13,7 +13,7 @@ struct Session: Identifiable, Codable {
     @DocumentID var id: String? = UUID().uuidString
     var createdBy: String
     var createdAt: Timestamp
-    var expiresAt: Timestamp
+    var expiresAt: Timestamp?
     var boards: [Board]
 }
 

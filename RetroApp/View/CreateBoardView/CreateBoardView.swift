@@ -40,22 +40,15 @@ struct CreateBoardView: View {
             }
             .padding(.horizontal, 16)
             
-            List(viewModel.listItems) { item in
+           /* List(viewModel.listItems) { item in
                 PanelCell(panelName: item.name)
-            }
+            }*/
             Spacer()
             
             Button(action: {
-                let item = RetroItem(title: textFieldText, description: "description", category: .done)
-                //viewModel.addItem(item)
-                //viewModel.addPanel()
-               // viewModel.fetchPanel()
-                if let errorMessage = viewModel.errorMessage {
-                    alertMessage = errorMessage
-                    showAlert = true
-                } else {
-                    navigateToBoardView = true
-                }
+                let sessionId = "123456"
+                viewModel.createSession(createdBy: "Skaywalker", sessionId: sessionId)
+                navigateToBoardView = true
             }) {
                 Text("Kaydet")
                     .frame(width: 150, height: 40)

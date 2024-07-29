@@ -13,7 +13,7 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if viewModel.items.isEmpty {
+               /* if viewModel.items.isEmpty {
                     VStack {
                         Spacer()
                         Text("No Items")
@@ -25,7 +25,7 @@ struct MainView: View {
                     List(viewModel.items) { item in
                         PanelCell(panelName: item.title)
                     }
-                }
+                }*/
                 
                 VStack {
                     Spacer()
@@ -63,7 +63,8 @@ struct MainView: View {
                 }
             )
             .onAppear {
-                viewModel.fetchItems()
+                print("girdim")
+               // viewModel.fetchItems()
                // viewModel.addItem(RetroItem(title: "Sprint1", description: "Description", category: .toDo))
             }
         }
