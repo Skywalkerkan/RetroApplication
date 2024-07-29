@@ -9,72 +9,28 @@ import SwiftUI
 
 class CreateBoardViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
-    @Published var panels: [Panel] = []
-    @Published var boards: [Board] = []
-    @Published var boardList: [BoardList] = []
-    @Published var listItems: [ListItem] = []
-    @Published var actualListItems: [[ListItem]] = []
+    @Published var sessionStatus: String = ""
 
-
-
-    @Published var errorMessage: String?
-
-    func addItem(_ item: RetroItem) {
-        firebaseManager.addItem(item) { result in
-            switch result {
-            case .success:
-                print("Kaydedildi")
-                self.errorMessage = nil
-            case .failure(let error):
-                print("Error adding item: \(error)")
-            }
-        }
-    }
-    
-    func addPanel() {
-        firebaseManager.addPanelWithBoardsAndItems("panelDeneme") { result in
-            switch result {
-            case .success(_):
-                print("Başarılı bir şekilde kaydedildi")
-            case .failure(let error):
-                print("Error")
-            }
-        }
-    }
-    
-    func fetchPanel() {
-        firebaseManager.fetchPanels { result in
-            switch result {
-            case .success(let panels):
-                self.panels = panels
-                if let firstPanel = panels.first, let panelID = firstPanel.id {
-                    self.firebaseManager.fetchBoards(for: panelID) { result in
-                        switch result {
-                        case .success(let boards):
-                            self.boardList.removeAll()
-                            self.listItems.removeAll()
-                            
-                            for board in boards {
-                                self.boardList.append(board.list)
-                            }
-                            
-                            for list in self.boardList {
-                                self.listItems.append(contentsOf: list.items)
-                            }
-                            
-                            for list in self.boardList {
-                                self.actualListItems.append(list.items)
-                            }
-                            
-                            print("List Items: \(self.actualListItems)")
-                            
-                        case .failure(let error):
-                            print("Error fetching boards: \(error)")
-                        }
-                    }
+    func createSession(createdBy: String?, sessionId: String) {
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous") { success in
+            DispatchQueue.main.async {
+                if success {
+                    self.sessionStatus = "Session created with ID: \(sessionId)"
+                } else {
+                    self.sessionStatus = "Failed to create session"
                 }
-            case .failure(let error):
-                print("Error fetching panels: \(error)")
+            }
+        }
+    }
+    
+    func joinSession(sessionId: String) {
+        firebaseManager.joinSession(sessionId: sessionId) { canJoin in
+            DispatchQueue.main.async {
+                if canJoin {
+                    self.sessionStatus = "Successfully joined session"
+                } else {
+                    self.sessionStatus = "Session expired or does not exist"
+                }
             }
         }
     }
