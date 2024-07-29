@@ -76,9 +76,11 @@ struct BoardList: Identifiable, Codable {
     var items: [ListItem]
 }
 
-struct ListItem: Identifiable, Codable {
+struct ListItem: Identifiable, Codable, Hashable {
     var id: String = UUID().uuidString
     var name: String
     var description: String?
     var dueDate: Date?
 }
+
+

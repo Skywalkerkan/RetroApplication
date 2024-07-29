@@ -13,6 +13,7 @@ struct BoardView: View {
     @State var users3 = ["Erkan", "Oke", "Dama"]
     
     @State private var scrollViewProxy: ScrollViewProxy? = nil
+    @ObservedObject var viewModel = BoardViewModel()
 
     var body: some View {
         VStack {
