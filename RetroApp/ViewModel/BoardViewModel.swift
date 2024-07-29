@@ -35,12 +35,13 @@ class BoardViewModel: ObservableObject {
                             for list in self.boardList {
                                 self.listItems.append(contentsOf: list.items)
                             }
-                            
+                            print("List Items1: \(self.listItems.count)")
+
                             for list in self.boardList {
                                 self.actualListItems.append(list.items)
                             }
                             
-                            print("List Items: \(self.actualListItems)")
+                            print("List Items: \(self.actualListItems.count)")
                             
                         case .failure(let error):
                             print("Error fetching boards: \(error)")

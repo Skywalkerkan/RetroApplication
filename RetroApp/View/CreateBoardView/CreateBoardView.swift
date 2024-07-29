@@ -49,7 +49,7 @@ struct CreateBoardView: View {
                 let item = RetroItem(title: textFieldText, description: "description", category: .done)
                 //viewModel.addItem(item)
                 //viewModel.addPanel()
-                viewModel.fetchPanel()
+               // viewModel.fetchPanel()
                 if let errorMessage = viewModel.errorMessage {
                     alertMessage = errorMessage
                     showAlert = true
