@@ -27,7 +27,6 @@ struct DraggableCellView: View {
                     Color.clear
                         .onChange(of: geometry.frame(in: .global).origin) { newPosition in
                             cellPosition = newPosition
-                            print("Cell position: \(cellPosition)")
                         }
                 })
 

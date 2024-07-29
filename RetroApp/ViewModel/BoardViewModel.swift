@@ -17,16 +17,17 @@ class BoardViewModel: ObservableObject {
     @Published var actualListItems: [[ListItem]] = []
     
     func fetchPanel() {
-        firebaseManager.fetchPanels { result in
+        firebaseManager.observePanels { result in
             switch result {
             case .success(let panels):
                 self.panels = panels
                 if let firstPanel = panels.first, let panelID = firstPanel.id {
-                    self.firebaseManager.fetchBoards(for: panelID) { result in
+                    self.firebaseManager.observeBoards(for: panelID) { result in
                         switch result {
                         case .success(let boards):
                             self.boardList.removeAll()
                             self.listItems.removeAll()
+                            self.actualListItems.removeAll()
                             
                             for board in boards {
                                 self.boardList.append(board.list)
@@ -44,13 +45,14 @@ class BoardViewModel: ObservableObject {
                             print("List Items: \(self.actualListItems.count)")
                             
                         case .failure(let error):
-                            print("Error fetching boards: \(error)")
+                            print("Error observing boards: \(error)")
                         }
                     }
                 }
             case .failure(let error):
-                print("Error fetching panels: \(error)")
+                print("Error observing panels: \(error)")
             }
         }
     }
+
 }
