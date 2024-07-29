@@ -169,4 +169,77 @@ class FirebaseManager {
             }
         }
     }
+    
+    func observePanels(completion: @escaping (Result<[Panel], Error>) -> Void) {
+        db.collection("panels")
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = querySnapshot?.documents else {
+                    completion(.success([]))
+                    return
+                }
+                
+                do {
+                    let panels = try documents.compactMap { document -> Panel? in
+                        return try document.data(as: Panel.self)
+                    }
+                    completion(.success(panels))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+    }
+
+    func observeBoards(for panelID: String, completion: @escaping (Result<[Board], Error>) -> Void) {
+        db.collection("panels").document(panelID).collection("boards")
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = querySnapshot?.documents else {
+                    completion(.success([]))
+                    return
+                }
+                
+                do {
+                    let boards = try documents.compactMap { document -> Board? in
+                        return try document.data(as: Board.self)
+                    }
+                    completion(.success(boards))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+    }
+
+    
+    func observeLists(for boardID: String, completion: @escaping (Result<BoardList, Error>) -> Void) {
+        db.collection("boards").document(boardID)
+            .addSnapshotListener { (documentSnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let document = documentSnapshot, document.exists else {
+                    completion(.failure(NSError(domain: "DocumentError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist."])))
+                    return
+                }
+                
+                do {
+                    let board = try document.data(as: Board.self)
+                    completion(.success(board.list))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+    }
+
+    
 }

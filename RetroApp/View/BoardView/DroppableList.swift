@@ -83,6 +83,11 @@ struct DroppableList: View {
 
 
     func moveUser(from source: IndexSet, to destination: Int) {
+        
+        for index in source {
+            print("Moving item from index \(index) to \(destination)")
+        }
+        
         users.move(fromOffsets: source, toOffset: destination)
     }
 
@@ -92,6 +97,7 @@ struct DroppableList: View {
                 if let ss = droppedString {
                     DispatchQueue.main.async {
                         if let dropAction = action {
+                            print("Dropped item '\(ss)' at index \(index)")
                             dropAction(ss, index)
                         }
                     }
