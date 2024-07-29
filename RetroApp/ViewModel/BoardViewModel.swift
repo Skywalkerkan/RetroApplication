@@ -10,7 +10,7 @@ import Foundation
 class BoardViewModel: ObservableObject {
     
     private var firebaseManager = FirebaseManager()
-    @Published var panels: [Panel] = []
+   /* @Published var panels: [Panel] = []
     @Published var boards: [Board] = []
     @Published var boardList: [BoardList] = []
     @Published var listItems: [ListItem] = []
@@ -54,5 +54,5 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
-
+*/
 }

@@ -5,241 +5,76 @@
 //  Created by Erkan on 25.07.2024.
 //
 
-import Foundation
-import FirebaseFirestore
+import Firebase
 import FirebaseFirestoreSwift
 
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func fetchItems(completion: @escaping (Result<[RetroItem], Error>) -> Void) {
-        db.collection("retroItems")
-            .order(by: "timestamp", descending: false)
-            .addSnapshotListener { (querySnapshot, error) in
-                if let error = error {
-                    print("Error fetching documents: \(error)")
-                    completion(.failure(error))
-                    return
-                }
-                
-                guard let documents = querySnapshot?.documents else {
-                    print("No documents")
-                    completion(.success([]))
-                    return
-                }
-                
-                do {
-                    let items = try documents.compactMap { queryDocumentSnapshot -> RetroItem? in
-                        return try queryDocumentSnapshot.data(as: RetroItem.self)
-                    }
-                    completion(.success(items))
-                } catch {
-                    print("Error decoding documents: \(error)")
-                    completion(.failure(error))
-                }
-            }
-    }
-    
-    func addItem(_ item: RetroItem, completion: @escaping (Result<Void, Error>) -> Void) {
+    func createSession(sessionId: String, createdBy: String, completion: @escaping (Bool) -> Void) {
+        let createdAt = Timestamp(date: Date())
+        let expiresAt = Timestamp(date: Date().addingTimeInterval(300))
+        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, boards: [])
+
         do {
-            _ = try db.collection("retroItems").addDocument(from: item)
-            completion(.success(()))
-        } catch let error {
-            print("Error adding document: \(error)")
-            completion(.failure(error))
-        }
-    }
-    
-    func addPanelWithBoardsAndItems(_ panelName: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let newPanel = Panel(id: nil, name: panelName, boards: [])
-        
-        do {
-            let panelRef = try db.collection("panels").addDocument(from: newPanel)
-            
-            let boardLists = [
-                BoardList(id: UUID().uuidString, name: "List 1", items: [
-                    ListItem(name: "Item 1", description: "Description for Item 1", dueDate: Date()),
-                    ListItem(name: "Item 2", description: "Description for Item 2", dueDate: Date()),
-                    ListItem(name: "Item 3", description: "Description for Item 3", dueDate: Date())
-                ]),
-                BoardList(id: UUID().uuidString, name: "List 2", items: [
-                    ListItem(name: "Item 4", description: "Description for Item 4", dueDate: Date()),
-                    ListItem(name: "Item 5", description: "Description for Item 5", dueDate: Date()),
-                    ListItem(name: "Item 6", description: "Description for Item 6", dueDate: Date())
-                ]),
-                BoardList(id: UUID().uuidString, name: "List 3", items: [
-                    ListItem(name: "Item 7", description: "Description for Item 7", dueDate: Date()),
-                    ListItem(name: "Item 8", description: "Description for Item 8", dueDate: Date()),
-                    ListItem(name: "Item 9", description: "Description for Item 9", dueDate: Date())
-                ])
-            ]
-            
-            let boards = [
-                Board(id: UUID().uuidString, name: "Board 1", list: boardLists[0]),
-                Board(id: UUID().uuidString, name: "Board 2", list: boardLists[1]),
-                Board(id: UUID().uuidString, name: "Board 3", list: boardLists[2])
-            ]
-            
-            let group = DispatchGroup()
-            var boardAdditionError: Error?
-            
-            for board in boards {
-                group.enter()
-                var newBoard = board
-                newBoard.id = db.collection("panels").document(panelRef.documentID).collection("boards").document().documentID
-                do {
-                    try panelRef.collection("boards").document(newBoard.id!).setData(from: newBoard) { error in
-                        if let error = error {
-                            boardAdditionError = error
-                        }
-                        group.leave()
-                    }
-                } catch let error {
-                    boardAdditionError = error
-                    group.leave()
-                }
-            }
-            
-            group.notify(queue: .main) {
-                if let error = boardAdditionError {
-                    completion(.failure(error))
+            try db.collection("sessions").document(sessionId).setData(from: newSession) { error in
+                if let error = error {
+                    print("Error creating session: \(error)")
+                    completion(false)
                 } else {
-                    completion(.success(()))
+                    completion(true)
                 }
             }
-            
-        } catch let error {
-            completion(.failure(error))
+        } catch {
+            print("Error creating session: \(error)")
+            completion(false)
         }
     }
-
     
-    func fetchPanels(completion: @escaping (Result<[Panel], Error>) -> Void) {
-        db.collection("panels").getDocuments { (querySnapshot, error) in
-            if let error = error {
-                completion(.failure(error))
+    func joinSession(sessionId: String, completion: @escaping (Bool) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        sessionRef.getDocument { (document, error) in
+            guard let document = document, document.exists,
+                  let session = try? document.data(as: Session.self) else {
+                completion(false)
+                return
+            }
+
+            let currentTime = Timestamp(date: Date())
+            if currentTime.compare(session.expiresAt) == .orderedAscending {
+                //Session valid hala
+                completion(true)
             } else {
-                let panels = querySnapshot?.documents.compactMap { document -> Panel? in
-                    return try? document.data(as: Panel.self)
-                }
-                completion(.success(panels ?? []))
+                //Session expire olması
+                completion(false)
             }
         }
     }
-    
-    func fetchBoards(for panelID: String, completion: @escaping (Result<[Board], Error>) -> Void) {
-        db.collection("panels").document(panelID).collection("boards").getDocuments { (querySnapshot, error) in
+
+    func fetchBoards(for sessionId: String, completion: @escaping ([Board]) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        sessionRef.getDocument { (document, error) in
+            guard let document = document, document.exists,
+                  let session = try? document.data(as: Session.self) else {
+                completion([])
+                return
+            }
+
+            completion(session.boards)
+        }
+    }
+
+    func addBoard(to sessionId: String, board: Board, completion: @escaping (Bool) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        sessionRef.updateData([
+            "boards": FieldValue.arrayUnion([try! Firestore.Encoder().encode(board)])
+        ]) { error in
             if let error = error {
-                completion(.failure(error))
+                print("Error adding board: \(error)")
+                completion(false)
             } else {
-                let boards = querySnapshot?.documents.compactMap { document -> Board? in
-                    return try? document.data(as: Board.self)
-                }
-                completion(.success(boards ?? []))
+                completion(true)
             }
         }
     }
-    
-    func fetchLists(for boardID: String, completion: @escaping (Result<BoardList, Error>) -> Void) {
-         db.collection("boards").document(boardID).getDocument { (document, error) in
-             if let error = error {
-                 completion(.failure(error))
-             } else if let document = document, document.exists {
-                 do {
-                     let board = try document.data(as: Board.self)
-                     completion(.success(board.list))
-                 } catch let error {
-                     completion(.failure(error))
-                 }
-             } else {
-                 completion(.failure(NSError(domain: "DocumentError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist."])))
-             }
-         }
-     }
-    
-    func deleteItem(_ item: RetroItem, completion: @escaping (Result<Void, Error>) -> Void) {
-        if let itemID = item.id {
-            db.collection("retroItems").document(itemID).delete { error in
-                if let error = error {
-                    print("Error removing document: \(error)")
-                    completion(.failure(error))
-                } else {
-                    completion(.success(()))
-                }
-            }
-        }
-    }
-    
-    func observePanels(completion: @escaping (Result<[Panel], Error>) -> Void) {
-        db.collection("panels")
-            .addSnapshotListener { (querySnapshot, error) in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                guard let documents = querySnapshot?.documents else {
-                    completion(.success([]))
-                    return
-                }
-                
-                do {
-                    let panels = try documents.compactMap { document -> Panel? in
-                        return try document.data(as: Panel.self)
-                    }
-                    completion(.success(panels))
-                } catch {
-                    completion(.failure(error))
-                }
-            }
-    }
-
-    func observeBoards(for panelID: String, completion: @escaping (Result<[Board], Error>) -> Void) {
-        db.collection("panels").document(panelID).collection("boards")
-            .addSnapshotListener { (querySnapshot, error) in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                guard let documents = querySnapshot?.documents else {
-                    completion(.success([]))
-                    return
-                }
-                
-                do {
-                    let boards = try documents.compactMap { document -> Board? in
-                        return try document.data(as: Board.self)
-                    }
-                    completion(.success(boards))
-                } catch {
-                    completion(.failure(error))
-                }
-            }
-    }
-
-    
-    func observeLists(for boardID: String, completion: @escaping (Result<BoardList, Error>) -> Void) {
-        db.collection("boards").document(boardID)
-            .addSnapshotListener { (documentSnapshot, error) in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                guard let document = documentSnapshot, document.exists else {
-                    completion(.failure(NSError(domain: "DocumentError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist."])))
-                    return
-                }
-                
-                do {
-                    let board = try document.data(as: Board.self)
-                    completion(.success(board.list))
-                } catch {
-                    completion(.failure(error))
-                }
-            }
-    }
-
-    
 }
