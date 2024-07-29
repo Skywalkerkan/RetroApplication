@@ -11,9 +11,17 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, completion: @escaping (Bool) -> Void) {
         let createdAt = Timestamp(date: Date())
-        let expiresAt = Timestamp(date: Date().addingTimeInterval(300))
+        let expiresAt: Timestamp?
+
+        if let timeRemains = timeRemains, timeRemains > 0 {
+            let expirationDate = Date().addingTimeInterval(TimeInterval(timeRemains))
+            expiresAt = Timestamp(date: expirationDate)
+        } else {
+            expiresAt = nil
+        }
+
         let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, boards: [])
 
         do {
@@ -30,6 +38,23 @@ class FirebaseManager {
             completion(false)
         }
     }
+
+    
+    func getSessionExpiration(sessionId: String, completion: @escaping (Result<Date, Error>) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        
+        sessionRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let expiresAt = document.get("expiresAt") as? Timestamp {
+                    completion(.success(expiresAt.dateValue()))
+                } else {
+                    completion(.failure(NSError(domain: "ExpirationNotFound", code: 0, userInfo: nil)))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "SessionNotFound", code: 0, userInfo: nil)))
+            }
+        }
+    }
     
     func joinSession(sessionId: String, completion: @escaping (Bool) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
@@ -41,15 +66,19 @@ class FirebaseManager {
             }
 
             let currentTime = Timestamp(date: Date())
-            if currentTime.compare(session.expiresAt) == .orderedAscending {
-                //Session valid hala
-                completion(true)
+            
+            if let expiresAt = session.expiresAt {
+                if currentTime.compare(expiresAt) == .orderedAscending {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
             } else {
-                //Session expire olması
-                completion(false)
+                completion(true)
             }
         }
     }
+
 
     func fetchBoards(for sessionId: String, completion: @escaping ([Board]) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)

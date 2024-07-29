@@ -11,26 +11,17 @@ struct BoardView: View {
     @State var users1 = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]
     @State var users2 = ["Pauline", "Bugünkü yapılan şeyleri tasvip etmiyorum kötüydük.", "Adam"]
     @State var users3 = ["Erkan", "Oke", "Dama"]
-    
+    @State private var showSessionExpiredAlert = false
+
     @State private var scrollViewProxy: ScrollViewProxy? = nil
-    @ObservedObject var viewModel = BoardViewModel()
+    @StateObject var viewModel = BoardViewModel()
 
     var body: some View {
         VStack {
-    /*        HStack {
-                Spacer()
-                Text("Users")
-                    .font(.headline)
-                Spacer()
-                EditButton()
-                Spacer()
-                    .frame(width: 10)
-            }*/
-            
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 0) {
-                        DroppableList("Users 1", users: $users1, backgroundColor: .green) { dropped, index in
+                        DroppableList("List 1", users: $users1, backgroundColor: .green) { dropped, index in
                             if !users1.contains(dropped) {
                                 users1.insert(dropped, at: index)
                                 users2.removeAll { $0 == dropped }
@@ -83,6 +74,21 @@ struct BoardView: View {
                     }
                 }
             }.background(.white)
+        }
+        .onAppear {
+            viewModel.startSessionExpirationTimer(for: "123456")
+            print("Started session expiration timer.")
+        }
+        .alert(isPresented: $showSessionExpiredAlert) {
+            return Alert(
+                title: Text("Oturum Süresi Doldu"),
+                message: Text("Bu oturumun süresi doldu. Lütfen yeni bir oturum oluşturun."),
+                dismissButton: .default(Text("Tamam"))
+            )
+        }
+        .onReceive(viewModel.$showSessionExpiredAlert) { showAlert in
+            print("Received alert: \(showAlert)")
+            showSessionExpiredAlert = showAlert
         }
         .navigationTitle("Board View Title")
         .navigationBarTitleDisplayMode(.inline)
