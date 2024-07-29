@@ -9,7 +9,12 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
-    
+    @State private var showRectangle = false
+    @State private var sessionId: String = ""
+    @State private var isSecure = true
+    @State private var isLoading = false
+
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -41,6 +46,83 @@ struct MainView: View {
                         .padding(16)
                     }
                 }
+                
+                if showRectangle {
+                    ZStack {
+                        Color.black
+                            .opacity(0.6)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    showRectangle = false
+                                }
+                            }
+
+                        Rectangle()
+                            .frame(width: UIScreen.main.bounds.width*0.8, height: UIScreen.main.bounds.width*0.8, alignment: .center)
+                            .edgesIgnoringSafeArea(.top)
+                            .cornerRadius(10)
+                            .scaleEffect(showRectangle ? 1 : 0.5)
+                            .animation(.easeInOut(duration: 0.3), value: showRectangle)
+                            .foregroundColor(Color.white)
+                            .overlay(
+                                
+                                VStack(alignment: .center) {
+                                    Spacer()
+                                    Text("Please Enter A Session Id")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                        .multilineTextAlignment(.center)
+                                        .padding()
+                                    HStack {
+                                         if isSecure {
+                                             SecureField("Session Id", text: $sessionId)
+                                                 .padding()
+                                                 .background(Color.gray.opacity(0.2))
+                                                 .cornerRadius(8)
+                                         } else {
+                                             TextField("Session Id", text: $sessionId)
+                                                 .padding()
+                                                 .background(Color.gray.opacity(0.2))
+                                                 .cornerRadius(8)
+                                         }
+                                         
+                                         Button(action: {
+                                             isSecure.toggle()
+                                         }) {
+                                             Image(systemName: isSecure ? "eye.slash" : "eye")
+                                                 .foregroundColor(.gray)
+                                         }
+                                         .padding(.trailing, 10)
+                                     }
+                                    .padding(.leading, 24)
+                                    .padding(.trailing, 8)
+                                    Spacer()
+                                    Button {
+                                        isLoading = true//Boş hatayı düzelt
+                                        viewModel.joinSession(sessionId)
+                                        if viewModel.isItValidId {
+                                            print("ok")
+                                            isLoading = false
+                                        } else {
+                                            print("ononk")
+                                            isLoading = false
+                                        }
+                                    } label: {
+                                        Text("Devam Et")
+                                            .foregroundStyle(.white)
+                                    }
+                                    .frame(width: 120, height: 45, alignment: .center)
+                                    .background(Color.cyan)
+                                    .cornerRadius(4)
+                                    Spacer()
+
+                                }
+                            )
+                    }
+                    .zIndex(1)
+                }
+                
             }
             .navigationTitle("My List")
             .navigationBarItems(
@@ -57,15 +139,18 @@ struct MainView: View {
                     }
                     Button(action: {
                         print("Settings")
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showRectangle = true
+                        }
                     }) {
-                        Image(systemName: "gear")
+                        Image(systemName: "plus")
                     }
                 }
             )
             .onAppear {
                 print("girdim")
-               // viewModel.fetchItems()
-               // viewModel.addItem(RetroItem(title: "Sprint1", description: "Description", category: .toDo))
+                // viewModel.fetchItems()
+                // viewModel.addItem(RetroItem(title: "Sprint1", description: "Description", category: .toDo))
             }
         }
     }
