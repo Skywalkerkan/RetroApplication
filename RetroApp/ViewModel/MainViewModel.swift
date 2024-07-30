@@ -12,17 +12,19 @@ class MainViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false
-
     
-    
-    func joinSession(_ sessionId: String) {
+    func joinSession(_ sessionId: String, completion: @escaping (Bool) -> Void) {
         firebaseManager.joinSession(sessionId: sessionId) { isValidId in
-            if isValidId {
-                self.isItValidId = true
-                print("Successfully joined session")
-            } else {
-                self.isItValidId = false
-                print("Session expired or does not exist")
+            DispatchQueue.main.async {
+                if isValidId {
+                    self.isItValidId = true
+                    print("Successfully joined session")
+                    completion(true)
+                } else {
+                    self.isItValidId = false
+                    print("Session expired or does not exist")
+                    completion(false)
+                }
             }
         }
     }
