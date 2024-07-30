@@ -79,19 +79,25 @@ class FirebaseManager {
         }
     }
 
-
-    func fetchBoards(for sessionId: String, completion: @escaping ([Board]) -> Void) {
+    func fetchBoards(for sessionId: String, completion: @escaping (Result<[Board], Error>) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
         sessionRef.getDocument { (document, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
             guard let document = document, document.exists,
                   let session = try? document.data(as: Session.self) else {
-                completion([])
+                let error = NSError(domain: "SessionNotFound", code: 0, userInfo: [NSLocalizedDescriptionKey: "Session not found or failed to decode session data."])
+                completion(.failure(error))
                 return
             }
 
-            completion(session.boards)
+            completion(.success(session.boards))
         }
     }
+
 
     func addBoard(to sessionId: String, board: Board, completion: @escaping (Bool) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)

@@ -26,13 +26,12 @@ struct Board: Identifiable, Codable {
 struct Card: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String
-    var items: [ListItem]
 }
-
+/*
 struct ListItem: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String
     var description: String?
     var dueDate: Date?
     var likes: Int
-}
+}*/
