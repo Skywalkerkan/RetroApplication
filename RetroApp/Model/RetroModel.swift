@@ -10,22 +10,27 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 struct Session: Identifiable, Codable {
-    @DocumentID var id: String? = UUID().uuidString
+    @DocumentID var id: String?
     var createdBy: String
     var createdAt: Timestamp
     var expiresAt: Timestamp?
     var boards: [Board]
 }
 
-struct Board: Identifiable, Codable {
+struct Board: Identifiable, Codable, Equatable {
     @DocumentID var id: String?
     var name: String
     var cards: [Card]
 }
 
-struct Card: Identifiable, Codable {
-    @DocumentID var id: String?
+struct Card: Identifiable, Hashable, Codable {
+    var id: String
     var name: String
+
+    init(id: String = UUID().uuidString, name: String) {
+        self.id = id
+        self.name = name
+    }
 }
 /*
 struct ListItem: Identifiable, Codable {

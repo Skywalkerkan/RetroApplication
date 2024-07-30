@@ -9,61 +9,47 @@ import SwiftUI
 
 struct DroppableList: View {
     let title: String
-    @Binding var users: [String]
-    @State private var selectedUser: String? = nil// Kullancıı
-    let userComments: [String: [String]] = [
-        "User1": ["Yorum 1", "Yorum 2", "Yorum 3"],
-        "User2": ["Yorum A", "Yorum B", "Yorum C"],
-        "User3": ["Yorum X", "Yorum Y", "Yorum Z"]
-    ]
-    @State private var expandedUser: String? = nil // Yorum genişletmesi
+    let boardIndex: Int
+    @Binding var cards: [Card]
+    @State private var selectedUser: String? = nil
+    @State private var expandedUser: String? = nil
     
     let backgroundColor: Color
-    let action: ((String, Int) -> Void)?
+    let action: ((Card, Int, Int) -> Void)?
     
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
     
-    init(_ title: String, users: Binding<[String]>, backgroundColor: Color, action: ((String, Int) -> Void)? = nil) {
+    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, backgroundColor: Color, action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
-        self._users = users
+        self.boardIndex = boardIndex
+        self._cards = cards
         self.backgroundColor = backgroundColor
         self.action = action
     }
-    
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Yapılacaklar")
+                    Text(title)
                         .multilineTextAlignment(.leading)
                     Spacer()
                 }
                 List {
-                    /* Section(header: Text(title)
-                     .font(.callout)
-                     .fontWeight(.bold)
-                     .onDrop(of: [.plainText], isTargeted: nil, perform: dropOnEmptyList)
-                     .foregroundColor(backgroundColor)
-                     .onAppear {
-                     print("Title view appeared with empty users")
-                     })*/
-                    if users.isEmpty {
+                    if cards.isEmpty {
                         EmptyPlaceholder()
                             .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
                             .listRowBackground(Color.cyan)
                             .frame(height: 300)
                     } else {
-                        ForEach(users, id: \.self) { user in
-                            DraggableCellView(user: user, selectedUser: $selectedUser, expandedUser: $expandedUser)
-                            
+                        ForEach(cards, id: \.self) { card in
+                            DraggableCellView(card: card, selectedUser: $selectedUser, expandedUser: $expandedUser)
                         }
-                        .onMove(perform: moveUser)
-                        .onInsert(of: ["public.text"], perform: dropUser)
+                        .onMove(perform: moveCard)
+                        .onInsert(of: ["public.text"], perform: dropCard)
                     }
                 }
-                
                 
                 HStack {
                     Button {
@@ -75,70 +61,44 @@ struct DroppableList: View {
             }
             .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)
-            
         }
         .padding(.horizontal, 20)
         .background(Color(red: 0.93, green: 0.93, blue: 0.93))
         .cornerRadius(8)
-        
     }
     
-    
-    
-    
-    // Boş durumda görünen View
     struct EmptyPlaceholder: View {
         var body: some View {
             RoundedRectangle(cornerRadius: 0)
                 .foregroundColor(.cyan)
                 .frame(maxWidth: .infinity, maxHeight: 200)
-            //.foregroundColor(.red)
-            /* .overlay(
-             Text("No users available")
-             .foregroundColor(.white)
-             .font(.headline)
-             .background(Color.red)
-             )
-             .padding()*/
-            
         }
-        
     }
     
-    
-    
-    
-    func moveUser(from source: IndexSet, to destination: Int) {
-        
-        for index in source {
-            print("Moving item from index \(index) to \(destination)")
-        }
-        
-        users.move(fromOffsets: source, toOffset: destination)
+    func moveCard(from source: IndexSet, to destination: Int) {
+        cards.move(fromOffsets: source, toOffset: destination)
+        print("moving car\(cards)")
     }
     
-    func dropUser(at index: Int, _ items: [NSItemProvider]) {
+    func dropCard(at index: Int, _ items: [NSItemProvider]) {
         for item in items {
             item.loadObject(ofClass: String.self) { droppedString, _ in
                 if let ss = droppedString {
                     DispatchQueue.main.async {
                         if let dropAction = action {
-                            print("Dropped item '\(ss)' at index \(index)")
-                            dropAction(ss, index)
+                            let droppedCard = Card(id: ss, name: ss)
+                            print("Dropped card '\(ss)' at index \(index) from board \(boardIndex)")
+                            dropAction(droppedCard, index, boardIndex)
                         }
                     }
                 }
             }
         }
     }
+
     
     func dropOnEmptyList(items: [NSItemProvider]) -> Bool {
-        dropUser(at: users.endIndex, items)
+        dropCard(at: cards.endIndex, items)
         return true
     }
 }
-
-/*
- #Preview {
- DroppableList()
- }*/

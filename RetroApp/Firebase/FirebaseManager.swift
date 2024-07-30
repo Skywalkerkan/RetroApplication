@@ -81,13 +81,14 @@ class FirebaseManager {
 
     func fetchBoards(for sessionId: String, completion: @escaping (Result<[Board], Error>) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
-        sessionRef.getDocument { (document, error) in
+        
+        sessionRef.addSnapshotListener { documentSnapshot, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let document = document, document.exists,
+            guard let document = documentSnapshot, document.exists,
                   let session = try? document.data(as: Session.self) else {
                 let error = NSError(domain: "SessionNotFound", code: 0, userInfo: [NSLocalizedDescriptionKey: "Session not found or failed to decode session data."])
                 completion(.failure(error))
@@ -97,6 +98,26 @@ class FirebaseManager {
             completion(.success(session.boards))
         }
     }
+
+
+    func updateBoardInFirestore(sessionId: String, updatedBoards: [Board], completion: @escaping (Bool) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        
+        let updatedBoardsData = updatedBoards.map { try! Firestore.Encoder().encode($0) }
+        
+        sessionRef.updateData([
+            "boards": updatedBoardsData
+        ]) { error in
+            if let error = error {
+                print("Error updating boards: \(error)")
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
+
+
 
 
     func addBoard(to sessionId: String, board: Board, completion: @escaping (Bool) -> Void) {

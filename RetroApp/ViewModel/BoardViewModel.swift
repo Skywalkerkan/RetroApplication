@@ -65,4 +65,14 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func updateBoards(sessionId: String ,boards: [Board]) {
+        firebaseManager.updateBoardInFirestore(sessionId: sessionId, updatedBoards: boards) { result in
+            if result {
+                print("ok")
+            } else {
+                print("no ok")
+            }
+        }
+    }
 }

@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct BoardView: View {
-    @State var users1 = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]
-    @State var users2 = ["Pauline", "Bugünkü yapılan şeyleri tasvip etmiyorum kötüydük.", "Adam"]
-    @State var users3 = ["Erkan", "Oke", "Dama"]
+
     @State private var showSessionExpiredAlert = false
 
     @State private var scrollViewProxy: ScrollViewProxy? = nil
@@ -38,19 +36,63 @@ struct BoardView: View {
                             }
                         })*/
                         
-                     /*   ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList("Board \(index + 1)", users: $viewModel.boards[index], backgroundColor: .green) { dropped, index in
-                                viewModel.handleDrop(dropped: dropped, into: index)
+                        
+                        ForEach(viewModel.boards.indices, id: \.self) { index in
+                            DroppableList("Board \(index+1)", boardIndex: index, cards: $viewModel.boards[index].cards, backgroundColor: .green) { dropped, index, boardActualIndex in
+                                print(dropped.id ,index, boardActualIndex)
+                                
+                                
+                                var boardIndex = 0
+                                var cardIndex = 0
+                                var cardIndex2 = 0
+                                var boardIndex2 = 0
+                                var found = false
+
+                                var cardActual: Card?
+                                for board in viewModel.boards {
+                                    for card in board.cards {
+                                        if card.id == dropped.id {
+                                            cardActual = Card(id: card.id, name: card.name)
+                                            found = true
+                                            break
+                                        }
+                                        cardIndex += 1
+                                    }
+                                    if found { break }
+                                    cardIndex = 0
+                                    boardIndex += 1
+                                }
+                                
+                                for board in viewModel.boards {
+                                    for card in board.cards {
+                                        if card.id == dropped.id {
+                                            print("cardid \(card.id)")
+                                            break
+                                        }
+                                        print(card.id)
+                                    }
+                                    boardIndex2 += 1
+                                }
+                                
+                                
+                                viewModel.boards = viewModel.boards.map { board in
+                                    var updatedBoard = board
+                                    print()
+                                    updatedBoard.cards.removeAll { $0.id == dropped.id }
+                                    return updatedBoard
+                                }
+                                
+                                viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "1234", name: dropped.id ?? "213"), at: index)
+                                
+                                viewModel.updateBoards(sessionId: "123456", boards: viewModel.boards)
+/*
+                                for board in viewModel.boards {
+                                }*/
+                                                  
                             }
-                            .frame(width: 300)
-                            .background(GeometryReader { geometry in
-                                Color.clear.onAppear {
-                                    scrollViewProxy = proxy
-                                }
-                                .onChange(of: geometry.frame(in: .global).minX) { value in
-                                    handleScrollIfNeeded(xPosition: value, in: geometry)
-                                }
-                            })*/
+                            .frame(width: 200)
+                        }
+
 
                     }
                 }
