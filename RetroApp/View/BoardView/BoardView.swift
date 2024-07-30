@@ -90,7 +90,7 @@ struct BoardView: View {
                                 }*/
                                                   
                             }
-                            .frame(width: 200)
+                            .frame(width: 300)
                         }
 
 

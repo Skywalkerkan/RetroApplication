@@ -59,10 +59,10 @@ struct DroppableList: View {
                     }
                 }
             }
-            .listStyle(PlainListStyle())
+           // .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 0)
         .background(Color(red: 0.93, green: 0.93, blue: 0.93))
         .cornerRadius(8)
     }
