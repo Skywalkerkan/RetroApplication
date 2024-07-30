@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct DraggableCellView: View {
-    let user: String
+    let card: Card
     @Binding var selectedUser: String?
     @Binding var expandedUser: String?
     @State private var dragOffset = CGSize.zero
@@ -17,9 +17,9 @@ struct DraggableCellView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(user)
+            Text(card.name)
                 .multilineTextAlignment(.leading)
-                .onDrag { NSItemProvider(object: user as NSString) }
+                .onDrag { NSItemProvider(object: card.id as! NSString) }
                 .padding(.top, 0)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -34,10 +34,10 @@ struct DraggableCellView: View {
                 Spacer()
                 
                 Button(action: {
-                    selectedUser = selectedUser == user ? nil : user
-                    expandedUser = expandedUser == user ? nil : user
+                    selectedUser = selectedUser == card.name ? nil : card.name
+                    expandedUser = expandedUser == card.name ? nil : card.name
                 }) {
-                    Image(systemName: expandedUser == user ? "bubble.fill" : "bubble")
+                    Image(systemName: expandedUser == card.name ? "bubble.fill" : "bubble")
                         .resizable()
                         .frame(width: 16, height: 16)
                         .foregroundColor(.black)
@@ -52,7 +52,7 @@ struct DraggableCellView: View {
             .padding(.trailing, -8)
             .padding(.top, 4)
 
-            if expandedUser == user {
+            if expandedUser == card.name {
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(0..<5) { _ in
                         VStack(alignment: .leading, spacing: 8) {

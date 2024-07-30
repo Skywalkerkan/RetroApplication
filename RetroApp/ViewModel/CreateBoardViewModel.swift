@@ -12,7 +12,7 @@ class CreateBoardViewModel: ObservableObject {
     @Published var sessionStatus: String = ""
 
     func createSession(createdBy: String?, sessionId: String) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: 100) { success in
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: 350) { success in
             DispatchQueue.main.async {
                 if success {
                     self.sessionStatus = "Session created with ID: \(sessionId)"
