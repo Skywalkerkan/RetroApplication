@@ -48,6 +48,8 @@ struct CreateBoardView: View {
             Button(action: {
                 let sessionId = "123456"
                 viewModel.createSession(createdBy: "Skaywalker", sessionId: sessionId)
+                let board = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, name: "card", items: [ListItem(name: "sdfsasd", likes: 5)])])
+                viewModel.createBoard(sessionId: sessionId, board: board)
                 navigateToBoardView = true
             }) {
                 Text("Kaydet")
