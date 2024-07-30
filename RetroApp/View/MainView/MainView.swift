@@ -14,135 +14,147 @@ struct MainView: View {
     @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
-
+    
     var body: some View {
         NavigationView {
-            ZStack {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        NavigationLink(destination: CreateBoardView()) {
-                            Image(systemName: "plus")
-                                .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.cyan)
-                                .clipShape(Circle())
-                        }
-                        .padding(16)
-                    }
-                }
-                
-                if showRectangle {
-                    ZStack {
-                        Color.black
-                            .opacity(0.6)
-                            .edgesIgnoringSafeArea(.all)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    showRectangle = false
-                                }
-                            }
+             ZStack {
+                 VStack {
+                     Spacer()
+                     HStack {
+                         Spacer()
+                         NavigationLink(destination: CreateBoardView()) {
+                             Image(systemName: "plus")
+                                 .foregroundColor(.white)
+                                 .frame(width: 50, height: 50)
+                                 .background(Color.cyan)
+                                 .clipShape(Circle())
+                         }
+                         .padding(16)
+                     }
+                 }
+                 
+                 
+                 if showRectangle {
+                     Color.black
+                         .opacity(0.5)
+                         .ignoresSafeArea()
+                         .onTapGesture {
+                             withAnimation {
+                                 showRectangle = false
+                             }
+                         }
+                     
+                     GeometryReader { geometry in
+                         VStack {
+                             Text("Session Id")
+                                 .font(.headline)
+                                 .foregroundColor(.black)
+                                 .multilineTextAlignment(.center)
+                                 .padding()
 
-                        Rectangle()
-                            .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
-                            .edgesIgnoringSafeArea(.top)
-                            .cornerRadius(10)
-                            .scaleEffect(showRectangle ? 1 : 0.5)
-                            .animation(.easeInOut(duration: 0.3), value: showRectangle)
-                            .foregroundColor(Color.white)
-                            .overlay(
-                                VStack(alignment: .center) {
-                                    Spacer()
-                                    Text("Please Enter A Session Id")
-                                        .font(.title)
-                                        .foregroundColor(.black)
-                                        .multilineTextAlignment(.center)
-                                        .padding()
-                                    HStack {
-                                        if isSecure {
-                                            SecureField("Session Id", text: $sessionId)
-                                                .padding()
-                                                .background(Color.gray.opacity(0.2))
-                                                .cornerRadius(8)
-                                        } else {
-                                            TextField("Session Id", text: $sessionId)
-                                                .padding()
-                                                .background(Color.gray.opacity(0.2))
-                                                .cornerRadius(8)
-                                        }
-                                        
-                                        Button(action: {
-                                            isSecure.toggle()
-                                        }) {
-                                            Image(systemName: isSecure ? "eye.slash" : "eye")
-                                                .foregroundColor(.gray)
-                                        }
-                                        .padding(.trailing, 10)
-                                    }
-                                    .padding(.leading, 24)
-                                    .padding(.trailing, 8)
-                                    Spacer()
-                                    NavigationLink(destination: BoardView(), isActive: $isValidId) {
-                                        Button(action: {
-                                            isLoading = true
-                                            viewModel.joinSession(sessionId) { isValid in
-                                                isLoading = false
-                                                isValidId = isValid
-                                                if isValid {
-                                                    print("Valid session ID")
-                                                } else {
-                                                    print("Invalid session ID")
-                                                }
-                                            }
-                                        }) {
-                                            if isLoading {
-                                                ProgressView()
-                                                    .progressViewStyle(CircularProgressViewStyle())
-                                                    .frame(width: 120, height: 45)
-                                            } else {
-                                                Text("Devam Et")
-                                                    .foregroundColor(.white)
-                                                    .frame(width: 120, height: 45)
-                                                    .background(Color.cyan)
-                                                    .cornerRadius(4)
-                                            }
-                                        }
-                                    }
-                                    Spacer()
-                                }
-                            )
-                    }
-                    .zIndex(1)
-                }
-            }
-            .navigationTitle("My List")
-            .navigationBarItems(
-                leading: Button(action: {
-                    print("line")
-                }) {
-                    Image(systemName: "line.3.horizontal")
-                },
-                trailing: HStack {
-                    Button(action: {
-                        print("Bildiri")
-                    }) {
-                        Image(systemName: "bell")
-                    }
-                    Button(action: {
-                        print("Settings")
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            showRectangle = true
-                        }
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                }
-            )
-            .onAppear {
+                             HStack {
+                                 if isSecure {
+                                     SecureField("Session Id", text: $sessionId)
+                                         .padding()
+                                         .background(Color(red: 0.93, green: 0.93, blue: 0.93))
+                                         .cornerRadius(8)
+                                 } else {
+                                     TextField("Session Id", text: $sessionId)
+                                         .padding()
+                                         .background(Color.white)
+                                         .cornerRadius(8)
+                                 }
+                                 
+                                 Button(action: {
+                                     isSecure.toggle()
+                                 }) {
+                                     Image(systemName: isSecure ? "eye.slash" : "eye")
+                                         .foregroundColor(.gray)
+                                 }
+                                 .padding(.leading, 8)
+                             }
+                             .padding([.leading, .trailing], 24)
+                             
+                             Text("NickName")
+                                 .font(.headline)
+                                 .foregroundColor(.black)
+                                 .multilineTextAlignment(.center)
+                                 .padding()
+                             
+                             HStack {
+                                 if isSecure {
+                                     SecureField("NickName", text: $sessionId)
+                                         .padding()
+                                         .background(Color(red: 0.93, green: 0.93, blue: 0.93))
+                                         .cornerRadius(8)
+                                 } else {
+                                     TextField("Nickname", text: $sessionId)
+                                         .padding()
+                                         .background(Color.white)
+                                         .cornerRadius(8)
+                                 }
+                                 
+                                 Button(action: {
+                                     isSecure.toggle()
+                                 }) {
+                                     Image(systemName: isSecure ? "eye.slash" : "eye")
+                                         .foregroundColor(.gray)
+                                 }
+                                 .padding(.leading, 8)
+                             }
+                             .padding([.leading, .trailing], 24)
+                             
+                             
+                             NavigationLink(destination: BoardView(), isActive: $isValidId) {
+                                 Button(action: {
+                                     isLoading = true
+                                     viewModel.joinSession(sessionId) { isValid in
+                                         isLoading = false
+                                         isValidId = isValid
+                                         if isValid {
+                                             print("Valid session ID")
+                                         } else {
+                                             print("Invalid session ID")
+                                         }
+                                     }
+                                 }) {
+                                     if isLoading {
+                                         ProgressView()
+                                             .progressViewStyle(CircularProgressViewStyle())
+                                             .frame(width: 120, height: 45)
+                                     } else {
+                                         Text("Oturum Ara")
+                                             .foregroundColor(.white)
+                                             .frame(width: 120, height: 45)
+                                             .background(Color.cyan)
+                                             .cornerRadius(4)
+                                     }
+                                 }
+                             }
+                             .padding(.top, 16)
+                             
+                             //Spacer()
+                         }
+                         .frame(width: 300, height: 300)
+                         .background(.white)
+                         .cornerRadius(10)
+                         .position(x: geometry.size.width / 2, y: (geometry.size.height - geometry.safeAreaInsets.top) / 2)
+                         .transition(.scale)
+                     }
+                 }
 
-            }
-        }
+             }
+             .navigationBarTitle("My List", displayMode: .inline)
+             .navigationBarItems(
+                 trailing: Button(action: {
+                     withAnimation {
+                         showRectangle.toggle()
+                     }
+                 }) {
+                     Image(systemName: "plus")
+                 }
+             )
+         }
     }
 }
 
