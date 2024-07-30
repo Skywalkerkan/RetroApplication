@@ -35,5 +35,15 @@ class CreateBoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func createBoard(sessionId: String, board: Board) {
+        firebaseManager.addBoard(to: sessionId, board: board) { result in
+            if result {
+                print("ok")
+            } else {
+                print("no")
+            }
+        }
+    }
 
 }
