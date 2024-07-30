@@ -36,7 +36,7 @@ class BoardViewModel: ObservableObject {
                     self.timePrintTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                         let remainingTime = expirationDate.timeIntervalSinceNow
                         if remainingTime > 0 {
-                            print("Remaining time: \(Int(remainingTime)) seconds")
+                           // print("Remaining time: \(Int(remainingTime)) seconds")
                         } else {
                             DispatchQueue.main.async {
                                 self.showSessionExpiredAlert = true

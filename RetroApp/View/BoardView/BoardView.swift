@@ -20,7 +20,7 @@ struct BoardView: View {
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
-                    HStack(spacing: 0) {
+                    HStack(spacing: 16) {
                         DroppableList("List 1", users: $users1, backgroundColor: .green) { dropped, index in
                             if !users1.contains(dropped) {
                                 users1.insert(dropped, at: index)
@@ -38,7 +38,7 @@ struct BoardView: View {
                             }
                         })
 
-                        DroppableList("Users 2", users: $users2, backgroundColor: .red) { dropped, index in
+                        DroppableList("List 2", users: $users2, backgroundColor: .red) { dropped, index in
                             if !users2.contains(dropped) {
                                 users2.insert(dropped, at: index)
                                 users1.removeAll { $0 == dropped }
@@ -55,7 +55,7 @@ struct BoardView: View {
                             }
                         })
 
-                        DroppableList("Users 3", users: $users3, backgroundColor: .cyan) { dropped, index in
+                        DroppableList("List 3", users: $users3, backgroundColor: .cyan) { dropped, index in
                             if !users3.contains(dropped) {
                                 users3.insert(dropped, at: index)
                                 users1.removeAll { $0 == dropped }
@@ -74,6 +74,7 @@ struct BoardView: View {
                     }
                 }
             }.background(.white)
+                .padding(.leading, 8)
         }
         .onAppear {
             viewModel.startSessionExpirationTimer(for: "123456")

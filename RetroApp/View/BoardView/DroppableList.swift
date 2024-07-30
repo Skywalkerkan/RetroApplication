@@ -17,30 +17,38 @@ struct DroppableList: View {
         "User3": ["Yorum X", "Yorum Y", "Yorum Z"]
     ]
     @State private var expandedUser: String? = nil // Yorum genişletmesi
-
+    
     let backgroundColor: Color
     let action: ((String, Int) -> Void)?
     
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
-
+    
     init(_ title: String, users: Binding<[String]>, backgroundColor: Color, action: ((String, Int) -> Void)? = nil) {
         self.title = title
         self._users = users
         self.backgroundColor = backgroundColor
         self.action = action
     }
+    
+    
     var body: some View {
         ZStack {
-            List {
-                Section(header: Text(title)
-                            .font(.callout)
-                            .fontWeight(.bold)
-                            .onDrop(of: [.plainText], isTargeted: nil, perform: dropOnEmptyList)
-                            .foregroundColor(backgroundColor)
-                            .onAppear {
-                                print("Title view appeared with empty users")
-                            }) {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Yapılacaklar")
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                }
+                List {
+                    /* Section(header: Text(title)
+                     .font(.callout)
+                     .fontWeight(.bold)
+                     .onDrop(of: [.plainText], isTargeted: nil, perform: dropOnEmptyList)
+                     .foregroundColor(backgroundColor)
+                     .onAppear {
+                     print("Title view appeared with empty users")
+                     })*/
                     if users.isEmpty {
                         EmptyPlaceholder()
                             .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
@@ -49,39 +57,57 @@ struct DroppableList: View {
                     } else {
                         ForEach(users, id: \.self) { user in
                             DraggableCellView(user: user, selectedUser: $selectedUser, expandedUser: $expandedUser)
+                            
                         }
                         .onMove(perform: moveUser)
                         .onInsert(of: ["public.text"], perform: dropUser)
                     }
                 }
+                
+                
+                HStack {
+                    Button {
+                        print("Basıldı")
+                    } label: {
+                        Text("+ Kart Ekle")
+                    }
+                }
             }
+            .listStyle(PlainListStyle())
+            .scrollContentBackground(.hidden)
+            
         }
+        .padding(.horizontal, 20)
+        .background(Color(red: 0.93, green: 0.93, blue: 0.93))
+        .cornerRadius(8)
+        
     }
-
-
-
+    
+    
+    
+    
     // Boş durumda görünen View
     struct EmptyPlaceholder: View {
         var body: some View {
             RoundedRectangle(cornerRadius: 0)
                 .foregroundColor(.cyan)
                 .frame(maxWidth: .infinity, maxHeight: 200)
-                //.foregroundColor(.red)
-               /* .overlay(
-                    Text("No users available")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .background(Color.red)
-                )
-                .padding()*/
-                
+            //.foregroundColor(.red)
+            /* .overlay(
+             Text("No users available")
+             .foregroundColor(.white)
+             .font(.headline)
+             .background(Color.red)
+             )
+             .padding()*/
+            
         }
         
     }
-
-
-
-
+    
+    
+    
+    
     func moveUser(from source: IndexSet, to destination: Int) {
         
         for index in source {
@@ -90,7 +116,7 @@ struct DroppableList: View {
         
         users.move(fromOffsets: source, toOffset: destination)
     }
-
+    
     func dropUser(at index: Int, _ items: [NSItemProvider]) {
         for item in items {
             item.loadObject(ofClass: String.self) { droppedString, _ in
@@ -113,6 +139,6 @@ struct DroppableList: View {
 }
 
 /*
-#Preview {
-    DroppableList()
-}*/
+ #Preview {
+ DroppableList()
+ }*/
