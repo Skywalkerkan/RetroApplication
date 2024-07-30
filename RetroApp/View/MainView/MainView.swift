@@ -13,25 +13,11 @@ struct MainView: View {
     @State private var sessionId: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
-
+    @State private var isValidId = false
 
     var body: some View {
         NavigationView {
             ZStack {
-               /* if viewModel.items.isEmpty {
-                    VStack {
-                        Spacer()
-                        Text("No Items")
-                            .font(.title)
-                            .foregroundColor(.gray)
-                        Spacer()
-                    }
-                } else {
-                    List(viewModel.items) { item in
-                        PanelCell(panelName: item.title)
-                    }
-                }*/
-                
                 VStack {
                     Spacer()
                     HStack {
@@ -59,14 +45,13 @@ struct MainView: View {
                             }
 
                         Rectangle()
-                            .frame(width: UIScreen.main.bounds.width*0.8, height: UIScreen.main.bounds.width*0.8, alignment: .center)
+                            .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.width * 0.8, alignment: .center)
                             .edgesIgnoringSafeArea(.top)
                             .cornerRadius(10)
                             .scaleEffect(showRectangle ? 1 : 0.5)
                             .animation(.easeInOut(duration: 0.3), value: showRectangle)
                             .foregroundColor(Color.white)
                             .overlay(
-                                
                                 VStack(alignment: .center) {
                                     Spacer()
                                     Text("Please Enter A Session Id")
@@ -75,54 +60,61 @@ struct MainView: View {
                                         .multilineTextAlignment(.center)
                                         .padding()
                                     HStack {
-                                         if isSecure {
-                                             SecureField("Session Id", text: $sessionId)
-                                                 .padding()
-                                                 .background(Color.gray.opacity(0.2))
-                                                 .cornerRadius(8)
-                                         } else {
-                                             TextField("Session Id", text: $sessionId)
-                                                 .padding()
-                                                 .background(Color.gray.opacity(0.2))
-                                                 .cornerRadius(8)
-                                         }
-                                         
-                                         Button(action: {
-                                             isSecure.toggle()
-                                         }) {
-                                             Image(systemName: isSecure ? "eye.slash" : "eye")
-                                                 .foregroundColor(.gray)
-                                         }
-                                         .padding(.trailing, 10)
-                                     }
+                                        if isSecure {
+                                            SecureField("Session Id", text: $sessionId)
+                                                .padding()
+                                                .background(Color.gray.opacity(0.2))
+                                                .cornerRadius(8)
+                                        } else {
+                                            TextField("Session Id", text: $sessionId)
+                                                .padding()
+                                                .background(Color.gray.opacity(0.2))
+                                                .cornerRadius(8)
+                                        }
+                                        
+                                        Button(action: {
+                                            isSecure.toggle()
+                                        }) {
+                                            Image(systemName: isSecure ? "eye.slash" : "eye")
+                                                .foregroundColor(.gray)
+                                        }
+                                        .padding(.trailing, 10)
+                                    }
                                     .padding(.leading, 24)
                                     .padding(.trailing, 8)
                                     Spacer()
-                                    Button {
-                                        isLoading = true//Boş hatayı düzelt
-                                        viewModel.joinSession(sessionId)
-                                        if viewModel.isItValidId {
-                                            print("ok")
-                                            isLoading = false
-                                        } else {
-                                            print("ononk")
-                                            isLoading = false
+                                    NavigationLink(destination: BoardView(), isActive: $isValidId) {
+                                        Button(action: {
+                                            isLoading = true
+                                            viewModel.joinSession(sessionId) { isValid in
+                                                isLoading = false
+                                                isValidId = isValid
+                                                if isValid {
+                                                    print("Valid session ID")
+                                                } else {
+                                                    print("Invalid session ID")
+                                                }
+                                            }
+                                        }) {
+                                            if isLoading {
+                                                ProgressView()
+                                                    .progressViewStyle(CircularProgressViewStyle())
+                                                    .frame(width: 120, height: 45)
+                                            } else {
+                                                Text("Devam Et")
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 120, height: 45)
+                                                    .background(Color.cyan)
+                                                    .cornerRadius(4)
+                                            }
                                         }
-                                    } label: {
-                                        Text("Devam Et")
-                                            .foregroundStyle(.white)
                                     }
-                                    .frame(width: 120, height: 45, alignment: .center)
-                                    .background(Color.cyan)
-                                    .cornerRadius(4)
                                     Spacer()
-
                                 }
                             )
                     }
                     .zIndex(1)
                 }
-                
             }
             .navigationTitle("My List")
             .navigationBarItems(
@@ -148,9 +140,7 @@ struct MainView: View {
                 }
             )
             .onAppear {
-                print("girdim")
-                // viewModel.fetchItems()
-                // viewModel.addItem(RetroItem(title: "Sprint1", description: "Description", category: .toDo))
+
             }
         }
     }
