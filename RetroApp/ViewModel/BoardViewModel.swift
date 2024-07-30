@@ -11,6 +11,7 @@ import Combine
 
 class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false
+    @Published var boards: [Board] = []
     private var sessionExpirationTimer: Timer?
     private var timePrintTimer: Timer?
 
@@ -49,6 +50,18 @@ class BoardViewModel: ObservableObject {
                 }
             case .failure(let error):
                 print("Failed to get session expiration: \(error)")
+            }
+        }
+    }
+    
+    func fetchBoards(sessionId: String) {
+        firebaseManager.fetchBoards(for: sessionId) { result in
+            switch result {
+            case.success(let boards):
+                self.boards = boards
+                print(self.boards)
+            case .failure(let error):
+                print("error")
             }
         }
     }

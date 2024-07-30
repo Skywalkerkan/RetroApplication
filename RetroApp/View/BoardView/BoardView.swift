@@ -21,7 +21,7 @@ struct BoardView: View {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 16) {
-                        DroppableList("List 1", users: $users1, backgroundColor: .green) { dropped, index in
+                      /*  DroppableList("List 1", users: $users1, backgroundColor: .green) { dropped, index in
                             if !users1.contains(dropped) {
                                 users1.insert(dropped, at: index)
                                 users2.removeAll { $0 == dropped }
@@ -36,41 +36,22 @@ struct BoardView: View {
                             .onChange(of: geometry.frame(in: .global).minX) { value in
                                 handleScrollIfNeeded(xPosition: value, in: geometry)
                             }
-                        })
+                        })*/
+                        
+                     /*   ForEach(viewModel.boards.indices, id: \.self) { index in
+                            DroppableList("Board \(index + 1)", users: $viewModel.boards[index], backgroundColor: .green) { dropped, index in
+                                viewModel.handleDrop(dropped: dropped, into: index)
+                            }
+                            .frame(width: 300)
+                            .background(GeometryReader { geometry in
+                                Color.clear.onAppear {
+                                    scrollViewProxy = proxy
+                                }
+                                .onChange(of: geometry.frame(in: .global).minX) { value in
+                                    handleScrollIfNeeded(xPosition: value, in: geometry)
+                                }
+                            })*/
 
-                        DroppableList("List 2", users: $users2, backgroundColor: .red) { dropped, index in
-                            if !users2.contains(dropped) {
-                                users2.insert(dropped, at: index)
-                                users1.removeAll { $0 == dropped }
-                                users3.removeAll { $0 == dropped }
-                            }
-                        }
-                        .frame(width: 300)
-                        .background(GeometryReader { geometry in
-                            Color.clear.onAppear {
-                                scrollViewProxy = proxy
-                            }
-                            .onChange(of: geometry.frame(in: .global).minX) { value in
-                                handleScrollIfNeeded(xPosition: value, in: geometry)
-                            }
-                        })
-
-                        DroppableList("List 3", users: $users3, backgroundColor: .cyan) { dropped, index in
-                            if !users3.contains(dropped) {
-                                users3.insert(dropped, at: index)
-                                users1.removeAll { $0 == dropped }
-                                users2.removeAll { $0 == dropped }
-                            }
-                        }
-                        .frame(width: 300)
-                        .background(GeometryReader { geometry in
-                            Color.clear.onAppear {
-                                scrollViewProxy = proxy
-                            }
-                            .onChange(of: geometry.frame(in: .global).minX) { value in
-                                handleScrollIfNeeded(xPosition: value, in: geometry)
-                            }
-                        })
                     }
                 }
             }.background(.white)
@@ -78,6 +59,7 @@ struct BoardView: View {
         }
         .onAppear {
             viewModel.startSessionExpirationTimer(for: "123456")
+            viewModel.fetchBoards(sessionId: "123456")
             print("Started session expiration timer.")
         }
         .alert(isPresented: $showSessionExpiredAlert) {
