@@ -30,11 +30,12 @@ struct DroppableList: View {
     
     var body: some View {
         ZStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .center, spacing: 0) {
                 HStack {
                     Text(title)
+                        .font(.title2)
                         .multilineTextAlignment(.leading)
-                    Spacer()
+                        .padding(.top, 16)
                 }
                 List {
                     if cards.isEmpty {
@@ -45,12 +46,14 @@ struct DroppableList: View {
                     } else {
                         ForEach(cards, id: \.self) { card in
                             DraggableCellView(card: card, selectedUser: $selectedUser, expandedUser: $expandedUser)
+                                .padding(.horizontal, 8)
                         }
                         .onMove(perform: moveCard)
                         .onInsert(of: ["public.text"], perform: dropCard)
                     }
                 }
-                
+                .padding(.top, -20)
+
                 HStack {
                     Button {
                         print("Basıldı")
@@ -59,14 +62,13 @@ struct DroppableList: View {
                     }
                 }
             }
-           // .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)
         }
         .padding(.horizontal, 0)
         .background(Color(red: 0.93, green: 0.93, blue: 0.93))
         .cornerRadius(8)
     }
-    
+
     struct EmptyPlaceholder: View {
         var body: some View {
             RoundedRectangle(cornerRadius: 0)
@@ -86,7 +88,7 @@ struct DroppableList: View {
                 if let ss = droppedString {
                     DispatchQueue.main.async {
                         if let dropAction = action {
-                            let droppedCard = Card(id: ss, name: ss)
+                            let droppedCard = Card(id: ss, description: ss, userName: ss)
                             print("Dropped card '\(ss)' at index \(index) from board \(boardIndex)")
                             dropAction(droppedCard, index, boardIndex)
                         }

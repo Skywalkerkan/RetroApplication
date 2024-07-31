@@ -17,7 +17,7 @@ struct DraggableCellView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(card.name)
+            Text(card.description)
                 .multilineTextAlignment(.leading)
                 .onDrag { NSItemProvider(object: card.id as! NSString) }
                 .padding(.top, 0)
@@ -34,10 +34,10 @@ struct DraggableCellView: View {
                 Spacer()
                 
                 Button(action: {
-                    selectedUser = selectedUser == card.name ? nil : card.name
-                    expandedUser = expandedUser == card.name ? nil : card.name
+                    selectedUser = selectedUser == card.description ? nil : card.description
+                    expandedUser = expandedUser == card.description ? nil : card.description
                 }) {
-                    Image(systemName: expandedUser == card.name ? "bubble.fill" : "bubble")
+                    Image(systemName: expandedUser == card.description ? "bubble.fill" : "bubble")
                         .resizable()
                         .frame(width: 16, height: 16)
                         .foregroundColor(.black)
@@ -52,7 +52,7 @@ struct DraggableCellView: View {
             .padding(.trailing, -8)
             .padding(.top, 4)
 
-            if expandedUser == card.name {
+            if expandedUser == card.description {
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(0..<5) { _ in
                         VStack(alignment: .leading, spacing: 8) {
@@ -80,8 +80,8 @@ struct DraggableCellView: View {
                 }
             }
         }
-        .padding(.leading, 4)
-        .padding(.trailing, 4)
+      //  .padding(.leading, 4)
+      //  .padding(.trailing, 4)
         .offset(dragOffset)
         /*.gesture(
             DragGesture()

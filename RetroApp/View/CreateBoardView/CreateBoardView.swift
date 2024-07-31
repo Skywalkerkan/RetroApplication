@@ -48,9 +48,9 @@ struct CreateBoardView: View {
             Button(action: {
                 let sessionId = "123456"
                 viewModel.createSession(createdBy: "Skaywalker", sessionId: sessionId)
-                let board = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, name: "card")])
-                let board2 = Board(id: UUID().uuidString, name: "Board 2", cards: [Card(id: UUID().uuidString, name: "card1"),Card(id: UUID().uuidString, name: "card2"),Card(id: UUID().uuidString, name: "card3")])
-                let board3 = Board(id: UUID().uuidString, name: "Board 3", cards: [Card(id: UUID().uuidString, name: "card4"), Card(id: UUID().uuidString, name: "card5"), Card(id: UUID().uuidString, name: "card6")])
+                let board = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card", userName: "Erkan")])
+                let board2 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card1", userName: "Erkan"), Card(id: UUID().uuidString, description: "card2", userName: "Erkan"), Card(id: UUID().uuidString, description: "card3", userName: "Erkan")])
+                let board3 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card4", userName: "Erkan"), Card(id: UUID().uuidString, description: "card5", userName: "Erkan"), Card(id: UUID().uuidString, description: "card6", userName: "Erkan")])
 
                 viewModel.createBoard(sessionId: sessionId, board: board)
                 viewModel.createBoard(sessionId: sessionId, board: board2)
