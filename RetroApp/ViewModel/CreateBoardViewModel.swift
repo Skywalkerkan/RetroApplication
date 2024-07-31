@@ -9,10 +9,16 @@ import SwiftUI
 
 class CreateBoardViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
+    
     @Published var sessionStatus: String = ""
+    @Published var retroStyles: [String] = ["Went Well - To Improve - Action Items",
+                                            "Start - Stop - Continue",
+                                            "Mad Sad Glad",
+                                            "Happy - Meh - Sad"]
 
-    func createSession(createdBy: String?, sessionId: String) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: 350) { success in
+
+    func createSession(createdBy: String?, sessionId: String, timer: Int, sessionName: String) {
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName) { success in
             DispatchQueue.main.async {
                 if success {
                     self.sessionStatus = "Session created with ID: \(sessionId)"
