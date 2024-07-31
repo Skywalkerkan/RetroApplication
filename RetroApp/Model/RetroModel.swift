@@ -25,11 +25,13 @@ struct Board: Identifiable, Codable, Equatable {
 
 struct Card: Identifiable, Hashable, Codable {
     var id: String
-    var name: String
+    var description: String
+    var userName: String
 
-    init(id: String = UUID().uuidString, name: String) {
+    init(id: String = UUID().uuidString, description: String, userName: String) {
         self.id = id
-        self.name = name
+        self.description = description
+        self.userName = userName
     }
 }
 /*

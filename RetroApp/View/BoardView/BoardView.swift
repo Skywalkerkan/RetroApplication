@@ -52,7 +52,7 @@ struct BoardView: View {
                                 for board in viewModel.boards {
                                     for card in board.cards {
                                         if card.id == dropped.id {
-                                            cardActual = Card(id: card.id, name: card.name)
+                                            cardActual = Card(id: card.id, description: card.description, userName: card.userName)
                                             found = true
                                             break
                                         }
@@ -82,7 +82,7 @@ struct BoardView: View {
                                     return updatedBoard
                                 }
                                 
-                                viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "1234", name: dropped.id ?? "213"), at: index)
+                                viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"), at: index)
                                 
                                 viewModel.updateBoards(sessionId: "123456", boards: viewModel.boards)
 /*
@@ -95,9 +95,15 @@ struct BoardView: View {
 
 
                     }
+                    .scrollTargetLayout()
+                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+
                 }
             }.background(.white)
-                .padding(.leading, 8)
+                .scrollTargetBehavior(.viewAligned)
+                .safeAreaPadding(.horizontal, 8)
+
+
         }
         .onAppear {
             viewModel.startSessionExpirationTimer(for: "123456")
@@ -159,3 +165,6 @@ struct BoardView: View {
 #Preview {
     BoardView()
 }
+
+
+
