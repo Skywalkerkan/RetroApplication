@@ -11,6 +11,7 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @State private var showRectangle = false
     @State private var sessionId: String = ""
+    @State private var userName: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
@@ -83,12 +84,12 @@ struct MainView: View {
                              
                              HStack {
                                  if isSecure {
-                                     SecureField("NickName", text: $sessionId)
+                                     SecureField("NickName", text: $userName)
                                          .padding()
                                          .background(Color(red: 0.93, green: 0.93, blue: 0.93))
                                          .cornerRadius(8)
                                  } else {
-                                     TextField("Nickname", text: $sessionId)
+                                     TextField("Nickname", text: $userName)
                                          .padding()
                                          .background(Color.white)
                                          .cornerRadius(8)

@@ -15,6 +15,7 @@ struct Session: Identifiable, Codable {
     var createdAt: Timestamp
     var expiresAt: Timestamp?
     var sessionName: String
+    var isAnonym: Bool
     var boards: [Board]
 }
 

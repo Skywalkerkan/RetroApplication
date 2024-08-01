@@ -12,8 +12,12 @@ struct DraggableCellView: View {
     let card: Card
     @Binding var selectedUser: String?
     @Binding var expandedUser: String?
+    @Binding var cellHeight: CGFloat 
+
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
+  //  @State private var cellHeight: CGFloat = 0
+
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -25,10 +29,12 @@ struct DraggableCellView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .background(GeometryReader { geometry in
                     Color.clear
+                        .preference(key: SizePreferenceKey.self, value: geometry.size.height)
                         .onChange(of: geometry.frame(in: .global).origin) { newPosition in
                             cellPosition = newPosition
                         }
                 })
+                .measureSize(size: $cellHeight)
 
             HStack {
                 Spacer()
@@ -83,16 +89,7 @@ struct DraggableCellView: View {
       //  .padding(.leading, 4)
       //  .padding(.trailing, 4)
         .offset(dragOffset)
-        /*.gesture(
-            DragGesture()
-                .onChanged { value in
-                    dragOffset = value.translation
-                    print("Drag offset: \(dragOffset)")
-                }
-                .onEnded { _ in
-                    dragOffset = .zero
-                }
-        )*/
+
     }
 }
 
@@ -100,3 +97,36 @@ struct DraggableCellView: View {
 #Preview {
     DraggableCell()
 }*/
+
+
+struct SizePreferenceKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+struct MeasureSizeModifier: ViewModifier {
+    @Binding var size: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .background(GeometryReader { geometry in
+                Color.clear
+                    .preference(key: SizePreferenceKey.self, value: geometry.size.height)
+            })
+            .onPreferenceChange(SizePreferenceKey.self) { newSize in
+                DispatchQueue.main.async {
+                    self.size = newSize
+                    print("Measured height: \(newSize)")
+                }
+            }
+    }
+}
+
+extension View {
+    func measureSize(size: Binding<CGFloat>) -> some View {
+        self.modifier(MeasureSizeModifier(size: size))
+    }
+}

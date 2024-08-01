@@ -19,28 +19,10 @@ struct BoardView: View {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 16) {
-                      /*  DroppableList("List 1", users: $users1, backgroundColor: .green) { dropped, index in
-                            if !users1.contains(dropped) {
-                                users1.insert(dropped, at: index)
-                                users2.removeAll { $0 == dropped }
-                                users3.removeAll { $0 == dropped }
-                            }
-                        }
-                        .frame(width: 300)
-                        .background(GeometryReader { geometry in
-                            Color.clear.onAppear {
-                                scrollViewProxy = proxy
-                            }
-                            .onChange(of: geometry.frame(in: .global).minX) { value in
-                                handleScrollIfNeeded(xPosition: value, in: geometry)
-                            }
-                        })*/
-                        
-                        
+
                         ForEach(viewModel.boards.indices, id: \.self) { index in
                             DroppableList("Board \(index+1)", boardIndex: index, cards: $viewModel.boards[index].cards, backgroundColor: .green) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
-                                
                                 
                                 var boardIndex = 0
                                 var cardIndex = 0
@@ -74,7 +56,6 @@ struct BoardView: View {
                                     boardIndex2 += 1
                                 }
                                 
-                                
                                 viewModel.boards = viewModel.boards.map { board in
                                     var updatedBoard = board
                                     print()
@@ -85,21 +66,16 @@ struct BoardView: View {
                                 viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"), at: index)
                                 
                                 viewModel.updateBoards(sessionId: "123456", boards: viewModel.boards)
-/*
-                                for board in viewModel.boards {
-                                }*/
-                                                  
+                     
                             }
                             .frame(width: 300)
                         }
-
-
                     }
                     .scrollTargetLayout()
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
 
                 }
-            }.background(.white)
+            }.background(.cyan)
                 .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 8)
 
@@ -130,7 +106,6 @@ struct BoardView: View {
         let screenHeight = UIScreen.main.bounds.height
         let scrollThreshold: CGFloat = 30
         let scrollAmount: CGFloat = 20
-
         if yPosition < scrollThreshold {
             withAnimation(.linear(duration: 0.1)) {
                 proxy.scrollTo(yPosition - scrollAmount, anchor: .top)
