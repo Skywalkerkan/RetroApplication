@@ -16,7 +16,7 @@ struct CreateBoardView: View {
     @State private var navigateToBoardView = false
     @State private var isListVisible: Bool = false
     @State private var chosenRetroStyle: String = "Went Well - To Improve - Action Items"
-    @State private var isChecked: Bool = false
+    @State private var isAnonym: Bool = false
     @State private var isTimer: Bool = false
     @State private var timeValue: Double = 5
 
@@ -110,16 +110,16 @@ struct CreateBoardView: View {
                     
                     HStack (){
                         Button(action: {
-                            isChecked.toggle()
+                            isAnonym.toggle()
                         }) {
-                            Image(systemName: isChecked ? "checkmark.square.fill" : "square")
-                                .foregroundColor(isChecked ? .cyan : .primary)
+                            Image(systemName: isAnonym ? "checkmark.square.fill" : "square")
+                                .foregroundColor(isAnonym ? .cyan : .primary)
                                 .imageScale(.large)
                         }
                         Text("Kullanıcılar anonim olarak giriş yapsın.")
                             .font(.body)
                             .onTapGesture {
-                                isChecked.toggle()
+                                isAnonym.toggle()
                             }
                     }
                     .padding(.top, 8)
@@ -164,7 +164,7 @@ struct CreateBoardView: View {
                 
                 Button(action: {
                     let sessionId = "123456"
-                    viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName)
+                    viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
                     let board = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card", userName: "Erkan")])
                     let board2 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card1", userName: "Erkan"), Card(id: UUID().uuidString, description: "card2", userName: "Erkan"), Card(id: UUID().uuidString, description: "card3", userName: "Erkan")])
                     let board3 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card4", userName: "Erkan"), Card(id: UUID().uuidString, description: "card5", userName: "Erkan"), Card(id: UUID().uuidString, description: "card6", userName: "Erkan")])

@@ -13,10 +13,15 @@ struct DroppableList: View {
     @Binding var cards: [Card]
     @State private var selectedUser: String? = nil
     @State private var expandedUser: String? = nil
-    
+    @State private var draggingCardIndex: Int?
+
+    @StateObject var viewModel = BoardViewModel()
+
     let backgroundColor: Color
     let action: ((Card, Int, Int) -> Void)?
     
+    @State private var cellHeight: CGFloat = 0
+
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
     
@@ -30,43 +35,56 @@ struct DroppableList: View {
     
     var body: some View {
         ZStack {
-            VStack(alignment: .center, spacing: 0) {
-                HStack {
-                    Text(title)
-                        .font(.title2)
-                        .multilineTextAlignment(.leading)
-                        .padding(.top, 16)
-                }
-                List {
-                    if cards.isEmpty {
-                        EmptyPlaceholder()
-                            .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
-                            .listRowBackground(Color.cyan)
-                            .frame(height: 300)
-                    } else {
-                        ForEach(cards, id: \.self) { card in
-                            DraggableCellView(card: card, selectedUser: $selectedUser, expandedUser: $expandedUser)
-                                .padding(.horizontal, 8)
-                        }
-                        .onMove(perform: moveCard)
-                        .onInsert(of: ["public.text"], perform: dropCard)
+            GeometryReader { geometry in
+                VStack(alignment: .center, spacing: 0) {
+                    HStack {
+                        Text(title)
+                            .font(.title2)
+                            .multilineTextAlignment(.leading)
+                            .padding(.top, 16)
                     }
-                }
-                .padding(.top, -20)
 
-                HStack {
-                    Button {
-                        print("Basıldı")
-                    } label: {
-                        Text("+ Kart Ekle")
+                    List {
+                        if cards.isEmpty {
+                            EmptyPlaceholder()
+                                .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
+                                .listRowBackground(Color.cyan)
+                                .frame(height: 300)
+                        } else {
+                            ForEach(cards, id: \.self) { card in
+                                DraggableCellView(card: card, selectedUser: $selectedUser, expandedUser: $expandedUser, cellHeight: $cellHeight)
+                                    
+                                    .padding(.horizontal, 8)
+                                
+                            }
+
+                            .onMove(perform: moveCard)
+                            .onInsert(of: ["public.text"], perform: dropCard)
+                        }
                     }
+                    .listRowSpacing(4)
+                    .frame(maxHeight: min(geometry.size.height - 70, CGFloat(cards.count * 70 + 50)))
+                    .padding(.top, -20)
+
+                     HStack {
+                         Button {
+                             print("Basıldı \(boardIndex)")
+                             let newCard = Card(id: UUID().uuidString, description: "DESCRİasG", userName: "Erkan 1")
+                             viewModel.addCardToBoard(sessionId: "123456", boardIndex: boardIndex, newCard: newCard)
+                             
+                         } label: {
+                             Text("+ Kart Ekle")
+                                 .foregroundColor(.black)
+                         }
+                    }
+                     .padding(.horizontal, 8)
                 }
+                .background(Color.pink)
+                .cornerRadius(20)
+                .scrollContentBackground(.hidden)
             }
-            .scrollContentBackground(.hidden)
         }
-        .padding(.horizontal, 0)
-        .background(Color(red: 0.93, green: 0.93, blue: 0.93))
-        .cornerRadius(8)
+
     }
 
     struct EmptyPlaceholder: View {

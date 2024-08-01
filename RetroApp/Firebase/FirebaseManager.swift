@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, completion: @escaping (Bool) -> Void) {
         let createdAt = Timestamp(date: Date())
         let expiresAt: Timestamp?
 
@@ -22,7 +22,7 @@ class FirebaseManager {
             expiresAt = nil
         }
 
-        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, boards: [])
+        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [])
 
         do {
             try db.collection("sessions").document(sessionId).setData(from: newSession) { error in
@@ -133,4 +133,53 @@ class FirebaseManager {
             }
         }
     }
+    
+    func getSession(byId sessionId: String, completion: @escaping (Session?, Error?) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("sessions").document(sessionId).getDocument { document, error in
+            if let document = document, document.exists {
+                let session = try? document.data(as: Session.self)
+                completion(session, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+        
+
+    func addCardToSession(sessionId: String, boardIndex: Int, newCard: Card, completion: @escaping (Bool) -> Void) {
+        getSession(byId: sessionId) { session, error in
+            if let session = session {
+                var updatedBoards = session.boards
+                if boardIndex < updatedBoards.count {
+                    var board = updatedBoards[boardIndex]
+                    board.cards.append(newCard)
+                    updatedBoards[boardIndex] = board
+                    
+                    let db = Firestore.firestore()
+                    let encoder = Firestore.Encoder()
+                    let boardsData = updatedBoards.map { try! encoder.encode($0) }
+                    
+                    db.collection("sessions").document(sessionId).updateData([
+                        "boards": boardsData
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating session: \(error)")
+                            completion(false)
+                        } else {
+                            completion(true)
+                        }
+                    }
+                } else {
+                    print("Board index \(boardIndex) is out of range")
+                    completion(false)
+                }
+            } else {
+                print("Session does not exist or error occurred: \(error?.localizedDescription ?? "Unknown error")")
+                completion(false)
+            }
+        }
+    }
+
 }
+

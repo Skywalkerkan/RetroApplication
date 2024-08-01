@@ -75,4 +75,14 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func addCardToBoard(sessionId: String, boardIndex: Int, newCard: Card) {
+        firebaseManager.addCardToSession(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard) { result in
+            if result {
+                print("Yazıldı")
+            } else {
+                print("Yazılamadı")
+            }
+        }
+    }
 }
