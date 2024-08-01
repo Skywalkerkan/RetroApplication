@@ -12,13 +12,13 @@ struct DraggableCellView: View {
     let card: Card
     @Binding var selectedUser: String?
     @Binding var expandedUser: String?
-    @Binding var cellHeight: CGFloat 
+  //  @Binding var cellHeight: CGFloat 
 
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
   //  @State private var cellHeight: CGFloat = 0
 
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(card.description)
@@ -30,74 +30,19 @@ struct DraggableCellView: View {
                 .background(GeometryReader { geometry in
                     Color.clear
                         .preference(key: SizePreferenceKey.self, value: geometry.size.height)
-                        .onChange(of: geometry.frame(in: .global).origin) { newPosition in
-                            cellPosition = newPosition
+                        .onChange(of: geometry.size.height) { newSize in
+                                print("Card height: \(newSize)")
+                              //  self.cellHeight = newSize
                         }
                 })
-                .measureSize(size: $cellHeight)
-
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    selectedUser = selectedUser == card.description ? nil : card.description
-                    expandedUser = expandedUser == card.description ? nil : card.description
-                }) {
-                    Image(systemName: expandedUser == card.description ? "bubble.fill" : "bubble")
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(.black)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .padding(.trailing, -2)
-
-                Text("5")
-                    .font(.subheadline)
-                    .foregroundColor(.black)
-            }
-            .padding(.trailing, -8)
-            .padding(.top, 4)
-
-            if expandedUser == card.description {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(0..<5) { _ in
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "person.circle")
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .padding(.leading, 8)
-                                    .foregroundColor(.black)
-                                Text("Anonymous")
-                                    .fontWeight(.black)
-                                    .font(.subheadline)
-                            }
-
-                            Text("Bu bir yorumdurasasdfa sdfadsfasfdfadsfasdfads")
-                                .padding(.leading, 4)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(nil)
-                        }
-                        .padding(8)
-                        .background(Color.gray)
-                        .cornerRadius(8)
-                    }
-                    .padding(.bottom, 8)
-                }
-            }
+             //   .measureSize(size: $cellHeight)
         }
-      //  .padding(.leading, 4)
-      //  .padding(.trailing, 4)
+        .background(Color(red: 0.99, green: 0.99, blue: 0.99))
+
         .offset(dragOffset)
 
     }
 }
-
-/*
-#Preview {
-    DraggableCell()
-}*/
-
 
 struct SizePreferenceKey: PreferenceKey {
     typealias Value = CGFloat

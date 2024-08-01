@@ -85,4 +85,15 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func deleteBoard(sessionId: String, boardIndex: Int) {
+        firebaseManager.deleteBoard(sessionId: sessionId, boardIndex: boardIndex) { result in
+            switch result {
+            case .success(_):
+                print("Success")
+            case .failure(let error):
+                print("deleting error \(error.localizedDescription)")
+            }
+        }
+    }
 }
