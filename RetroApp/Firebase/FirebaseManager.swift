@@ -180,6 +180,43 @@ class FirebaseManager {
             }
         }
     }
+    
+    func deleteBoard(sessionId: String, boardIndex: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+         let sessionRef = db.collection("sessions").document(sessionId)
+         
+         sessionRef.getDocument { (document, error) in
+             if let error = error {
+                 completion(.failure(error))
+                 return
+             }
+             
+             guard let document = document, document.exists else {
+                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Session document does not exist"])))
+                 return
+             }
+             
+             do {
+                 var session = try document.data(as: Session.self)
+                 
+                 guard boardIndex < session.boards.count else {
+                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Board index out of bounds"])))
+                     return
+                 }
+                 
+                 session.boards.remove(at: boardIndex)
+                 
+                 try sessionRef.setData(from: session) { error in
+                     if let error = error {
+                         completion(.failure(error))
+                     } else {
+                         completion(.success(()))
+                     }
+                 }
+             } catch {
+                 completion(.failure(error))
+             }
+         }
+     }
 
 }
 
