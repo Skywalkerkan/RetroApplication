@@ -12,16 +12,20 @@ struct BoardView: View {
     @State private var showSessionExpiredAlert = false
 
     @State private var scrollViewProxy: ScrollViewProxy? = nil
+    @State private var isAddBoarding: Bool = false
+    @State private var addBoardTextField: String = ""
     @StateObject var viewModel = BoardViewModel()
+    @FocusState private var isTextFieldFocused: Bool
+
 
     var body: some View {
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 16) {
-
+                        
                         ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList("Board \(index+1)", boardIndex: index, cards: $viewModel.boards[index].cards, backgroundColor: .green) { dropped, index, boardActualIndex in
+                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, backgroundColor: .green, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
                                 
                                 var boardIndex = 0
@@ -29,7 +33,7 @@ struct BoardView: View {
                                 var cardIndex2 = 0
                                 var boardIndex2 = 0
                                 var found = false
-
+                                
                                 var cardActual: Card?
                                 for board in viewModel.boards {
                                     for card in board.cards {
@@ -66,9 +70,38 @@ struct BoardView: View {
                                 viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"), at: index)
                                 
                                 viewModel.updateBoards(sessionId: "123456", boards: viewModel.boards)
-                     
+                                
                             }
                             .frame(width: 300)
+                        }
+                        VStack {
+                            if !isAddBoarding {
+                                
+                                Button {
+                                    isAddBoarding.toggle()
+                                    isTextFieldFocused.toggle()
+                                } label: {
+                                    Text("Board Oluştur")
+                                        .frame(width: 300, height: 50)
+                                }
+                                .background(Color.black)
+                                .cornerRadius(8)
+                                Spacer()
+                            } else {
+                                TextField("Liste Adı", text: $addBoardTextField)
+                                    .frame(width: 270)
+                                    .padding()
+                                    .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.gray, lineWidth: 0.5)
+                                    )
+                                    .focused($isTextFieldFocused)
+
+                                Spacer()
+
+                            }
                         }
                     }
                     .scrollTargetLayout()
@@ -97,11 +130,41 @@ struct BoardView: View {
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
         }
-        .navigationTitle("Board View Title")
+        .navigationTitle(viewModel.session?.sessionName ?? "")
+        .navigationBarBackButtonHidden(isAddBoarding)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if isAddBoarding {
+                    Button(action: {
+                        viewModel.createBoard(sessionId: "123456", board: Board(id: UUID().uuidString, name: addBoardTextField, cards: []))
+                        isAddBoarding.toggle()
+                        addBoardTextField = ""
+                    }) {
+                        Image(systemName: "checkmark")
+                    }
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                if isAddBoarding {
+                    Button(action: {
+                        isAddBoarding.toggle()
+                    }) {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                if isAddBoarding {
+                    Text("Listeye ekle")
+                }
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
     }
     
     func handleScrollIfNeeded(yPosition: CGFloat, in geometry: GeometryProxy) {
+        print(UIScreen.main.bounds.width)
+
         guard let proxy = scrollViewProxy else { return }
         let screenHeight = UIScreen.main.bounds.height
         let scrollThreshold: CGFloat = 30

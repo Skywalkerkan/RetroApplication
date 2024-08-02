@@ -10,21 +10,27 @@ import SwiftUI
 
 struct DraggableCellView: View {
     let card: Card
-    @Binding var selectedUser: String?
-    @Binding var expandedUser: String?
-  //  @Binding var cellHeight: CGFloat 
-
-    @State private var dragOffset = CGSize.zero
-    @State private var cellPosition: CGPoint = .zero
-  //  @State private var cellHeight: CGFloat = 0
-
+    var isAnonym: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            if !isAnonym {
+                HStack {
+                    Image(systemName: "person.circle")
+                    
+                    Text(card.userName)
+                }
+                
+                Divider()
+                    .background(Color.gray)
+                    .frame(height: 1)
+                    .padding(.top, 4)
+                
+            }
+
             Text(card.description)
                 .multilineTextAlignment(.leading)
-                .onDrag { NSItemProvider(object: card.id as! NSString) }
-                .padding(.top, 0)
+                .onDrag { NSItemProvider(object: card.id as NSString) }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .background(GeometryReader { geometry in
@@ -32,14 +38,12 @@ struct DraggableCellView: View {
                         .preference(key: SizePreferenceKey.self, value: geometry.size.height)
                         .onChange(of: geometry.size.height) { newSize in
                                 print("Card height: \(newSize)")
-                              //  self.cellHeight = newSize
                         }
                 })
-             //   .measureSize(size: $cellHeight)
+                .padding(.leading, 4)
+                .padding(.vertical, 8)
         }
         .background(Color(red: 0.99, green: 0.99, blue: 0.99))
-
-        .offset(dragOffset)
 
     }
 }
@@ -74,4 +78,9 @@ extension View {
     func measureSize(size: Binding<CGFloat>) -> some View {
         self.modifier(MeasureSizeModifier(size: size))
     }
+}
+
+
+#Preview {
+    DraggableCellView(card: Card(id: "123321525", description: "asdadsfas", userName: "Erkan"), isAnonym: true)
 }

@@ -79,7 +79,7 @@ class FirebaseManager {
         }
     }
 
-    func fetchBoards(for sessionId: String, completion: @escaping (Result<[Board], Error>) -> Void) {
+    func fetchBoards(for sessionId: String, completion: @escaping (Result<Session, Error>) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
         
         sessionRef.addSnapshotListener { documentSnapshot, error in
@@ -94,8 +94,7 @@ class FirebaseManager {
                 completion(.failure(error))
                 return
             }
-
-            completion(.success(session.boards))
+            completion(.success(session))
         }
     }
 

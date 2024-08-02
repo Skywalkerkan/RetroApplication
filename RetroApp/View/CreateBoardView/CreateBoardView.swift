@@ -165,9 +165,61 @@ struct CreateBoardView: View {
                 Button(action: {
                     let sessionId = "123456"
                     viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
-                    let board = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card", userName: "Erkan")])
-                    let board2 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card1", userName: "Erkan"), Card(id: UUID().uuidString, description: "card2", userName: "Erkan"), Card(id: UUID().uuidString, description: "card3", userName: "Erkan")])
-                    let board3 = Board(id: UUID().uuidString, name: "Board 1", cards: [Card(id: UUID().uuidString, description: "card4", userName: "Erkan"), Card(id: UUID().uuidString, description: "card5", userName: "Erkan"), Card(id: UUID().uuidString, description: "card6", userName: "Erkan")])
+                    let board = Board(
+                        id: UUID().uuidString,
+                        name: "Went Well",
+                        cards: [
+                            Card(
+                                id: UUID().uuidString,
+                                description: "We successfully completed the project ahead of the deadline, exceeding all expectations and receiving positive feedback from the client.",
+                                userName: "Erkan"
+                            )
+                        ]
+                    )
+
+                    let board2 = Board(
+                        id: UUID().uuidString,
+                        name: "To Improve",
+                        cards: [
+                            Card(
+                                id: UUID().uuidString,
+                                description: "There were some communication gaps between the development team and the stakeholders, leading to delays in certain deliverables.",
+                                userName: "Kerem"
+                            ),
+                            Card(
+                                id: UUID().uuidString,
+                                description: "The code review process was sometimes slow, causing bottlenecks in the development pipeline and delaying the integration of new features.",
+                                userName: "Ahmet"
+                            ),
+                            Card(
+                                id: UUID().uuidString,
+                                description: "We need to improve our testing procedures to ensure higher code quality and reduce the number of bugs found in production.",
+                                userName: "Mehmet"
+                            )
+                        ]
+                    )
+
+                    let board3 = Board(
+                        id: UUID().uuidString,
+                        name: "Action Items",
+                        cards: [
+                            Card(
+                                id: UUID().uuidString,
+                                description: "Implement a weekly meeting to discuss ongoing projects and ensure all team members are aligned on priorities and deadlines.",
+                                userName: "Erkan"
+                            ),
+                            Card(
+                                id: UUID().uuidString,
+                                description: "Create a detailed documentation for the new features to help both the development team and the stakeholders understand the functionalities better.",
+                                userName: "Erkan"
+                            ),
+                            Card(
+                                id: UUID().uuidString,
+                                description: "Set up automated testing to catch bugs early in the development process and improve overall code quality.",
+                                userName: "Erkan"
+                            )
+                        ]
+                    )
                     
                     viewModel.createBoard(sessionId: sessionId, board: board)
                     viewModel.createBoard(sessionId: sessionId, board: board2)
