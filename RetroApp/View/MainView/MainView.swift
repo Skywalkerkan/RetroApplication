@@ -16,9 +16,56 @@ struct MainView: View {
     @State private var isLoading = false
     @State private var isValidId = false
     
+    var horizontalItems = ["1","2","3","4"]
+    var verticalItems = ["Item A", "Item B", "Item C", "Item D"]
+    
     var body: some View {
         NavigationView {
              ZStack {
+
+                 List {
+
+                     if !horizontalItems.isEmpty {
+                         Section(header: Text("Yıldızlı Panolar")) {
+                             ScrollView(.horizontal, showsIndicators: false) {
+                                 HStack(spacing: 16) {
+                                     ForEach(horizontalItems, id: \.self) { item in
+                                         VStack {
+                                             Rectangle()
+                                                 .frame(width: 150, height: 100)
+                                                 .cornerRadius(4)
+                                                 .foregroundColor(.cyan)
+                                             Text(item)
+                                                 .foregroundColor(.black)
+                                                 .cornerRadius(10)
+                                         }
+                                         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+                                        // .frame(width: 150) // Ensure fixed width for each item
+                                     }
+                                 }
+                             }
+                             .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                         }
+                     }
+
+                     Section(header: Text("Son Kullanılan Panolar")) {
+                         ForEach(verticalItems, id: \.self) { item in
+                             HStack {
+                                 
+                                 Rectangle()
+                                     .frame(width: 60, height: 40)
+                                     .foregroundColor(.green)
+                                     .cornerRadius(2)
+                                 Text(item)
+                                     .padding()
+                                     .foregroundColor(.black)
+                                     .cornerRadius(10)
+                             }
+
+                         }
+                     }
+                 }
+                 .listStyle(GroupedListStyle())
                  VStack {
                      Spacer()
                      HStack {
@@ -134,7 +181,6 @@ struct MainView: View {
                              }
                              .padding(.top, 16)
                              
-                             //Spacer()
                          }
                          .frame(width: 300, height: 300)
                          .background(.white)

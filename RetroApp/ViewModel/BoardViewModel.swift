@@ -12,6 +12,7 @@ import Combine
 class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false
     @Published var boards: [Board] = []
+    @Published var session: Session?
     private var sessionExpirationTimer: Timer?
     private var timePrintTimer: Timer?
 
@@ -57,9 +58,11 @@ class BoardViewModel: ObservableObject {
     func fetchBoards(sessionId: String) {
         firebaseManager.fetchBoards(for: sessionId) { result in
             switch result {
-            case.success(let boards):
-                self.boards = boards
-                print(self.boards)
+            case.success(let session):
+               // self.boards = boards
+                    self.session = session
+                self.boards = session.boards
+                print("session kartları \(session.sessionName)")
             case .failure(let error):
                 print("error")
             }
@@ -85,6 +88,17 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func createBoard(sessionId: String, board: Board) {
+        firebaseManager.addBoard(to: sessionId, board: board) { result in
+            if result {
+                print("ok")
+            } else {
+                print("no")
+            }
+        }
+    }
+
     
     func deleteBoard(sessionId: String, boardIndex: Int) {
         firebaseManager.deleteBoard(sessionId: sessionId, boardIndex: boardIndex) { result in
