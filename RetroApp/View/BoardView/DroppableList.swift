@@ -11,30 +11,26 @@ struct DroppableList: View {
     let title: String
     let boardIndex: Int
     @Binding var cards: [Card]
-  //  @State private var selectedUser: String? = nil
-   // @State private var expandedUser: String? = nil
     @State private var draggingCardIndex: Int?
     @State private var boardInfoClicked: Bool = false
-    private let infoItems = ["1", "2", "3"] // Example data
     @State private var isMoveActive: Bool = false
     @StateObject var viewModel = BoardViewModel()
 
-    let backgroundColor: Color
     let isAnonym: Bool
     let action: ((Card, Int, Int) -> Void)?
-    
+    let sessionId: String
     @State private var cellHeight: CGFloat = 0
     @State var cellHeights = [CGFloat]()
 
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
     
-    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, backgroundColor: Color,isAnonym: Bool, action: ((Card, Int, Int) -> Void)? = nil) {
+    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
         self.boardIndex = boardIndex
         self._cards = cards
+        self.sessionId = sessionId
         self.isAnonym = isAnonym
-        self.backgroundColor = backgroundColor
         self.action = action
     }
     
@@ -55,7 +51,7 @@ struct DroppableList: View {
                             }
                             
                             Button("Delete", role: .destructive) {
-                                viewModel.deleteBoard(sessionId: "123456", boardIndex: boardIndex)
+                                viewModel.deleteBoard(sessionId: sessionId, boardIndex: boardIndex)
                             }
                             
                         } label: {
@@ -108,7 +104,7 @@ struct DroppableList: View {
                          Button {
                              print("Basıldı \(boardIndex)")
                              let newCard = Card(id: UUID().uuidString, description: "asdfsadfasdfsdkfjsdakfjasdkfhasdkjfhaskjdfhaksdfjasdk", userName: "Erkan 1")
-                             viewModel.addCardToBoard(sessionId: "123456", boardIndex: boardIndex, newCard: newCard)
+                             viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
                              
                          } label: {
                              Text("+ Kart Ekle")

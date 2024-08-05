@@ -19,6 +19,7 @@ struct CreateBoardView: View {
     @State private var isAnonym: Bool = false
     @State private var isTimer: Bool = false
     @State private var timeValue: Double = 5
+    @State private var sessionId: String = ""
 
     @ObservedObject var viewModel = CreateBoardViewModel()
     
@@ -148,22 +149,13 @@ struct CreateBoardView: View {
                             .padding(.top, 8)
 
                     }
-                    /*HStack {
-                        Text("Pano Arkaplanı")
-                        Spacer()
-                        Rectangle()
-                            .cornerRadius(4)
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.red)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 40)*/
                 }
                 .padding(.horizontal, 16)
                 
                 Spacer()
                 
                 Button(action: {
-                    let sessionId = "123456"
+                    sessionId = generateRandomSessionID(length: 6)
                     viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
                     let board = Board(
                         id: UUID().uuidString,
@@ -221,6 +213,7 @@ struct CreateBoardView: View {
                         ]
                     )
                     
+                    
                     viewModel.createBoard(sessionId: sessionId, board: board)
                     viewModel.createBoard(sessionId: sessionId, board: board2)
                     viewModel.createBoard(sessionId: sessionId, board: board3)
@@ -237,7 +230,7 @@ struct CreateBoardView: View {
                 .padding(.bottom, 64)
                 
                 NavigationLink(
-                    destination: BoardView().navigationBarTitleDisplayMode(.inline),
+                    destination: BoardView(sessionId: self.sessionId).navigationBarTitleDisplayMode(.inline),
                     isActive: $navigateToBoardView,
                     label: { EmptyView() }
                 )
@@ -249,6 +242,18 @@ struct CreateBoardView: View {
             
 
         }
+    }
+    
+    func generateRandomSessionID(length: Int) -> String {
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let charactersArray = Array(characters)
+        var randomString = ""
+
+        for _ in 0..<length {
+            let randomIndex = Int(arc4random_uniform(UInt32(charactersArray.count)))
+            randomString.append(charactersArray[randomIndex])
+        }
+        return randomString
     }
 }
 

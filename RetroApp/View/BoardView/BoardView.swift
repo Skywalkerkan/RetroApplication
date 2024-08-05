@@ -10,13 +10,16 @@ import SwiftUI
 struct BoardView: View {
 
     @State private var showSessionExpiredAlert = false
-
     @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var isAddBoarding: Bool = false
     @State private var addBoardTextField: String = ""
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
-
+    var sessionId: String
+    
+    init(sessionId: String) {
+        self.sessionId = sessionId
+    }
 
     var body: some View {
         VStack {
@@ -25,7 +28,7 @@ struct BoardView: View {
                     HStack(spacing: 16) {
                         
                         ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, backgroundColor: .green, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
+                            DroppableList(viewModel.boards[index].name,  boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
                                 
                                 var boardIndex = 0
@@ -69,11 +72,12 @@ struct BoardView: View {
                                 
                                 viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"), at: index)
                                 
-                                viewModel.updateBoards(sessionId: "123456", boards: viewModel.boards)
+                                viewModel.updateBoards(sessionId: sessionId, boards: viewModel.boards)
                                 
                             }
                             .frame(width: 300)
                         }
+                        
                         VStack {
                             if !isAddBoarding {
                                 
@@ -115,8 +119,8 @@ struct BoardView: View {
 
         }
         .onAppear {
-            viewModel.startSessionExpirationTimer(for: "123456")
-            viewModel.fetchBoards(sessionId: "123456")
+            viewModel.startSessionExpirationTimer(for: sessionId)
+            viewModel.fetchBoards(sessionId: sessionId)
             print("Started session expiration timer.")
         }
         .alert(isPresented: $showSessionExpiredAlert) {
@@ -136,7 +140,7 @@ struct BoardView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if isAddBoarding {
                     Button(action: {
-                        viewModel.createBoard(sessionId: "123456", board: Board(id: UUID().uuidString, name: addBoardTextField, cards: []))
+                        viewModel.createBoard(sessionId: sessionId, board: Board(id: UUID().uuidString, name: addBoardTextField, cards: []))
                         isAddBoarding.toggle()
                         addBoardTextField = ""
                     }) {
@@ -200,9 +204,10 @@ struct BoardView: View {
     }
 }
 
+/*
 #Preview {
     BoardView()
-}
+}*/
 
 
 
