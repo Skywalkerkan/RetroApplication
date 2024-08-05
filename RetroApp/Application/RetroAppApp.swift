@@ -8,6 +8,7 @@
 
 import SwiftUI
 import FirebaseCore
+import SwiftData
 
 @main
 struct RetroAppApp: App {
@@ -17,6 +18,7 @@ struct RetroAppApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                .modelContainer(for: [SessionPanel.self])
         }
     }
 }

@@ -22,6 +22,9 @@ struct CreateBoardView: View {
     @State private var sessionId: String = ""
 
     @ObservedObject var viewModel = CreateBoardViewModel()
+    @State private var item = SessionPanel()
+    
+    @Environment(\.modelContext) var context
     
     var body: some View {
         ZStack {
@@ -62,7 +65,6 @@ struct CreateBoardView: View {
                         .padding(.top, 12)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(.gray)
-                    
                     
                     Rectangle()
                         .fill(Color(red: 0.95, green: 0.95, blue: 0.95))
@@ -156,6 +158,7 @@ struct CreateBoardView: View {
                 
                 Button(action: {
                     sessionId = generateRandomSessionID(length: 6)
+                    context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName))
                     viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
                     let board = Board(
                         id: UUID().uuidString,
@@ -212,8 +215,7 @@ struct CreateBoardView: View {
                             )
                         ]
                     )
-                    
-                    
+                                        
                     viewModel.createBoard(sessionId: sessionId, board: board)
                     viewModel.createBoard(sessionId: sessionId, board: board2)
                     viewModel.createBoard(sessionId: sessionId, board: board3)
@@ -230,7 +232,7 @@ struct CreateBoardView: View {
                 .padding(.bottom, 64)
                 
                 NavigationLink(
-                    destination: BoardView(sessionId: self.sessionId).navigationBarTitleDisplayMode(.inline),
+                    destination: BoardView(sessionId: sessionId).navigationBarTitleDisplayMode(.inline),
                     isActive: $navigateToBoardView,
                     label: { EmptyView() }
                 )
