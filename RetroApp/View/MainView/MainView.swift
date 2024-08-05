@@ -153,7 +153,7 @@ struct MainView: View {
                              .padding([.leading, .trailing], 24)
                              
                              
-                             NavigationLink(destination: BoardView(), isActive: $isValidId) {
+                             NavigationLink(destination: BoardView(sessionId: self.sessionId), isActive: $isValidId) {
                                  Button(action: {
                                      isLoading = true
                                      viewModel.joinSession(sessionId) { isValid in
