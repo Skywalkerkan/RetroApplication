@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
@@ -15,12 +16,15 @@ struct MainView: View {
     @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
+    @State private var navigationPath = NavigationPath()
+
+    @Query private var items: [SessionPanel]
     
     var horizontalItems = ["1","2","3","4"]
     var verticalItems = ["Item A", "Item B", "Item C", "Item D"]
     
     var body: some View {
-        NavigationView {
+        NavigationStack() {
              ZStack {
 
                  List {
@@ -40,7 +44,7 @@ struct MainView: View {
                                                  .cornerRadius(10)
                                          }
                                          .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
-                                        // .frame(width: 150) // Ensure fixed width for each item
+
                                      }
                                  }
                              }
@@ -49,14 +53,14 @@ struct MainView: View {
                      }
 
                      Section(header: Text("Son Kullanılan Panolar")) {
-                         ForEach(verticalItems, id: \.self) { item in
+                         ForEach(items, id: \.self) { item in
                              HStack {
                                  
                                  Rectangle()
                                      .frame(width: 60, height: 40)
                                      .foregroundColor(.green)
                                      .cornerRadius(2)
-                                 Text(item)
+                                 Text(item.sessionName)
                                      .padding()
                                      .foregroundColor(.black)
                                      .cornerRadius(10)
