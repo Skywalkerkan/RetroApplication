@@ -11,11 +11,13 @@ class CreateBoardViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
     
     @Published var sessionStatus: String = ""
-    @Published var retroStyles: [String] = ["Went Well - To Improve - Action Items",
-                                            "Start - Stop - Continue",
-                                            "Mad Sad Glad",
-                                            "Happy - Meh - Sad"]
-
+    @Published var retroStyles: [String] = ["Went Well - To Improve - Action Items", "Start - Stop - Continue", "Mad - Sad - Glad", "Happy - Meh - Sad"]
+    @Published var boardRetroNames: [String: [String]] = [
+        "Went Well - To Improve - Action Items": ["Went Well", "To Improve", "Action Items"],
+        "Start - Stop - Continue": ["Start", "Stop", "Continue"],
+        "Mad - Sad - Glad": ["Mad", "Sad", "Glad"],
+        "Happy - Meh - Sad": ["Happy", "Meh", "Sad"]
+    ]
 
     func createSession(createdBy: String?, sessionId: String, timer: Int, sessionName: String, isAnonym: Bool) {
         firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName, isAnonym: isAnonym) { success in
