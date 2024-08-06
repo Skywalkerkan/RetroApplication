@@ -25,6 +25,10 @@ struct DroppableList: View {
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
     @State private var showingBottomSheet: Bool = false
+    @State private var addingCardClicked: Bool = false
+    @State private var scrollToBottom: Bool = false
+    @State private var newCardDescription: String = ""
+
 
     
     init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, action: ((Card, Int, Int) -> Void)? = nil) {
@@ -69,68 +73,99 @@ struct DroppableList: View {
                     .background(Color(red: 241/255, green: 242/255, blue: 244/255))
                     .zIndex(6)
 
-                    List {
-                        if cards.isEmpty {
-                            EmptyPlaceholder()
-                                .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
-                                .listRowBackground(Color.cyan)
-                                .frame(height: 300)
-                        } else {
-                            ForEach(cards, id: \.self) { card in
-                                DraggableCellView(card: card, isAnonym: isAnonym)
-
-                                    .listRowInsets(EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5))
-                                    .listRowBackground(Color.white)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color(red: 0.98, green: 0.98, blue: 0.98), lineWidth: 1)
-                                    )
-
-                                    .onTapGesture {
-                                        print("Basıldı \(boardIndex) \(card)")
-                                        showingBottomSheet = true
-                                    }
-                                    .onPreferenceChange(SizePreferenceKey.self) { newSize in
-                                           DispatchQueue.main.async {
-                                                   print("cardlarım \(boardIndex) \(cards)")
-                                                   print("Card height: \(newSize) \(boardIndex)")
-                                                   self.cellHeight = newSize
-                                                   cellHeights.append(newSize) // Burada hata yok
-                                                   print("Sayı \(cellHeights.count)")
-                                           }
-                                       }
+                    ScrollViewReader { proxy in
+                        List {
+                            if cards.isEmpty {
+                                EmptyPlaceholder()
+                                    .onDrop(of: [.data], isTargeted: nil, perform: dropOnEmptyList)
+                                    .listRowBackground(Color.clear)
+                                    .frame(height: 300)
+                            } else {
+                                ForEach(cards, id: \.self) { card in
+                                    DraggableCellView(card: card, isAnonym: isAnonym)
+                                        .listRowInsets(EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5))
+                                        .listRowBackground(Color.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Color(red: 0.98, green: 0.98, blue: 0.98), lineWidth: 1)
+                                        )
+                                        .onTapGesture {
+                                            print("Basıldı \(boardIndex) \(card)")
+                                            showingBottomSheet = true
+                                        }
+                                        .onPreferenceChange(SizePreferenceKey.self) { newSize in
+                                            DispatchQueue.main.async {
+                                                print("cardlarım \(boardIndex) \(cards)")
+                                                print("Card height: \(newSize) \(boardIndex)")
+                                                self.cellHeight = newSize
+                                                cellHeights.append(newSize)
+                                                print("Sayı \(cellHeights.count)")
+                                            }
+                                        }
+                                        .id(card.id) // Assign an ID to each card
+                                }
+                                .onMove(perform: moveCard)
+                                .onInsert(of: ["public.text"], perform: dropCard)
                             }
+                        }
+                        .onChange(of: scrollToBottom) { _ in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                   if let lastCard = cards.last {
+                                       print("gidiliyor")
+                                       withAnimation {
+                                           proxy.scrollTo(lastCard.id, anchor: .bottom)
+                                       }
+                                   }
+                               }  
+                        }
+                        .shadow(color: .black.opacity(0.2), radius: 3, x: 2, y: 2)
+                        .zIndex(2)
+                        // .frame(maxHeight: min(geometry.size.height - 70, calculateHeight(cellHeights: cellHeights) /* CGFloat(cards.count * 70 + 50)*/))
 
-                            .onMove(perform: moveCard)
-                            .onInsert(of: ["public.text"], perform: dropCard)
+                        .listRowSpacing(8)
+                        .padding(.top, -20)
+                    }
+
+                    HStack {
+                        if addingCardClicked {
+                            TextField("Kart Ekle", text: $newCardDescription, axis: .vertical)
+                                .textFieldStyle(.roundedBorder)
+                                .background(Color.white)
+                                .padding(.leading, 8)
+                                .padding(.top, 4)
+
+                            Spacer()
+                            Button {
+                                let newCard = Card(id: UUID().uuidString, description: newCardDescription, userName: "Erkan 1")
+                                viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
+                                addingCardClicked = false
+                                scrollToBottom = false
+                            } label: {
+                                Text("Ekle")
+                                    .foregroundColor(.green)
+                            }
+                            
+                        } else {
+                            
+                            Button {
+                                print("Basıldı \(boardIndex)")
+                                addingCardClicked = true
+                                scrollToBottom = true
+                                //  viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
+                            } label: {
+                                Text("+ Kart Ekle")
+                                    .foregroundColor(.black)
+                            }
                         }
                     }
-                    .shadow(color: .black.opacity(0.2), radius: 3, x: 2, y: 2)
-
-                    .zIndex(2)
-                    .listRowSpacing(8)
-                   // .frame(maxHeight: min(geometry.size.height - 70, calculateHeight(cellHeights: cellHeights) /* CGFloat(cards.count * 70 + 50)*/))
-                    .padding(.top, -20)
-
-                     HStack {
-                         Button {
-                             print("Basıldı \(boardIndex)")
-                             let newCard = Card(id: UUID().uuidString, description: "asdfsadfasdfsdkfjsdakfjasdkfhasdkjfhaskjdfhaksdfjasdk", userName: "Erkan 1")
-                             viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
-                            
-                         } label: {
-                             Text("+ Kart Ekle")
-                                 .foregroundColor(.black)
-                         }
-                     }
-                     .zIndex(10)
-                     .frame(height: 40)
-                     .padding(.horizontal, 8)
+                    .zIndex(10)
+                    .frame(height: 50)
+                    .padding(.horizontal, 8)
                 }
                 .background(Color(red: 0.97, green: 0.97, blue: 0.97))
                 .cornerRadius(20)
                 .scrollContentBackground(.hidden)
-                
+
                 if boardInfoClicked {
                     List {
                         Text("Erkan")
@@ -144,7 +179,6 @@ struct DroppableList: View {
                     .listStyle(.plain)
                     .padding(EdgeInsets(top: 40, leading: 25, bottom: 0, trailing: 25))
                     .scrollDisabled(true)
-                   
                 }
             }
             .sheet(isPresented: $showingBottomSheet) {
@@ -153,7 +187,6 @@ struct DroppableList: View {
                     .presentationDragIndicator(.visible)
             }
         }
-
     }
     
     func calculateHeight(cellHeights: [CGFloat]) -> CGFloat {
@@ -168,7 +201,7 @@ struct DroppableList: View {
     struct EmptyPlaceholder: View {
         var body: some View {
             RoundedRectangle(cornerRadius: 0)
-                .foregroundColor(.cyan)
+                .foregroundColor(.clear)
                 .frame(maxWidth: .infinity, maxHeight: 200)
         }
     }
