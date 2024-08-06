@@ -10,15 +10,22 @@ import SwiftData
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
-    @State private var showRectangle = false
+    @State private var showSessionFinder = false
     @State private var sessionId: String = ""
     @State private var userName: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
+    @State private var navigateToBoardView = false
+    @State private var showButtons = false
+
+    @State private var chosenSession: String = ""
+    
     @State private var navigationPath = NavigationPath()
 
     @Query private var items: [SessionPanel]
+    @Environment(\.modelContext) var context
+
     
     var horizontalItems = ["1","2","3","4"]
     var verticalItems = ["Item A", "Item B", "Item C", "Item D"]
@@ -64,35 +71,49 @@ struct MainView: View {
                                      .padding()
                                      .foregroundColor(.black)
                                      .cornerRadius(10)
-                             }
+                                 Button(action: {
+                                     chosenSession = item.sessionId
+                                     viewModel.joinSession(chosenSession) { isValid in
+                                         isLoading = false
+                                         isValidId = isValid
+                                         if isValid {
+                                             print("Valid session ID")
+                                             navigateToBoardView = true
+                                         } else {
+                                             print("Invalid session ID")
+                                         }
+                                     }
+                                 }) {
 
+                                 }
+                                 .background(
+                                     NavigationLink(destination: BoardView(sessionId: item.sessionId), isActive: $navigateToBoardView) {
+                                         EmptyView()
+                                     }
+                                 )
+                             }
                          }
+                         .onDelete { indexes in
+                             for index in indexes {
+                                 deleteItem(items[index])
+                             }
+                         }
+
                      }
                  }
                  .listStyle(GroupedListStyle())
-                 VStack {
-                     Spacer()
-                     HStack {
-                         Spacer()
-                         NavigationLink(destination: CreateBoardView()) {
-                             Image(systemName: "plus")
-                                 .foregroundColor(.white)
-                                 .frame(width: 50, height: 50)
-                                 .background(Color.cyan)
-                                 .clipShape(Circle())
-                         }
-                         .padding(16)
-                     }
-                 }
                  
+                 AnimationButtonView(onJoinPanel: {
+                     showSessionFinder = true
+                 })
                  
-                 if showRectangle {
+                 if showSessionFinder {
                      Color.black
                          .opacity(0.5)
                          .ignoresSafeArea()
                          .onTapGesture {
                              withAnimation {
-                                 showRectangle = false
+                                 showSessionFinder = false
                              }
                          }
                      
@@ -155,7 +176,7 @@ struct MainView: View {
                                  .padding(.leading, 8)
                              }
                              .padding([.leading, .trailing], 24)
-                             
+
                              
                              NavigationLink(destination: BoardView(sessionId: self.sessionId), isActive: $isValidId) {
                                  Button(action: {
@@ -196,17 +217,13 @@ struct MainView: View {
 
              }
              .navigationBarTitle("My List", displayMode: .inline)
-             .navigationBarItems(
-                 trailing: Button(action: {
-                     withAnimation {
-                         showRectangle.toggle()
-                     }
-                 }) {
-                     Image(systemName: "plus")
-                 }
-             )
          }
+        
     }
+    func deleteItem(_ item: SessionPanel) {
+        context.delete(item)
+    }
+    
 }
 
 struct MainView_Previews: PreviewProvider {
