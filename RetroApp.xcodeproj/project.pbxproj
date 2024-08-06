@@ -13,6 +13,7 @@
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
+		DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC009E22C623E4B0023513D /* BottomSheetView.swift */; };
 		DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */; };
 		DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* MainView.swift */; };
 		DEF7EC532C513E400036BBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC522C513E400036BBD8 /* Assets.xcassets */; };
@@ -84,6 +85,7 @@
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		DEC009E22C623E4B0023513D /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		DEF7EC4B2C513E3E0036BBD8 /* RetroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAppApp.swift; sourceTree = "<group>"; };
 		DEF7EC502C513E3E0036BBD8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				DEF7ECCC2C5226C30036BBD8 /* DroppableList.swift */,
 				DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */,
 				DEA786E82C5BA03E00404936 /* InfoView.swift */,
+				DEC009E22C623E4B0023513D /* BottomSheetView.swift */,
 			);
 			path = BoardView;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
+				DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */,
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,
 				DEF7ECD22C524B060036BBD8 /* PanelCell.swift in Sources */,
 				DEA718122C60C3290093994A /* Session.swift in Sources */,

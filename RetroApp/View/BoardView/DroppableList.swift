@@ -24,6 +24,8 @@ struct DroppableList: View {
 
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
+    @State private var showingBottomSheet: Bool = false
+
     
     init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
@@ -42,6 +44,8 @@ struct DroppableList: View {
                         Text(title)
                             .font(.headline)
                             .lineLimit(2)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         
                         Spacer()
                         
@@ -58,12 +62,12 @@ struct DroppableList: View {
                             Image(systemName: "ellipsis.circle").renderingMode(.original).tint(.black)
                                 .imageScale(.large)
                                 .frame(width: 25, height: 25)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
                         }
                     }
-                    .background(Color.indigo)
+                    .background(Color(red: 241/255, green: 242/255, blue: 244/255))
                     .zIndex(6)
-                    .padding(.top, 12)
-                    .padding(.horizontal)
 
                     List {
                         if cards.isEmpty {
@@ -74,11 +78,17 @@ struct DroppableList: View {
                         } else {
                             ForEach(cards, id: \.self) { card in
                                 DraggableCellView(card: card, isAnonym: isAnonym)
-                                    
-                                    .padding(.horizontal, 8)
+
+                                    .listRowInsets(EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5))
+                                    .listRowBackground(Color.white)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color(red: 0.98, green: 0.98, blue: 0.98), lineWidth: 1)
+                                    )
+
                                     .onTapGesture {
                                         print("Basıldı \(boardIndex) \(card)")
-                                    
+                                        showingBottomSheet = true
                                     }
                                     .onPreferenceChange(SizePreferenceKey.self) { newSize in
                                            DispatchQueue.main.async {
@@ -95,8 +105,10 @@ struct DroppableList: View {
                             .onInsert(of: ["public.text"], perform: dropCard)
                         }
                     }
+                    .shadow(color: .black.opacity(0.2), radius: 3, x: 2, y: 2)
+
                     .zIndex(2)
-                    .listRowSpacing(4)
+                    .listRowSpacing(8)
                    // .frame(maxHeight: min(geometry.size.height - 70, calculateHeight(cellHeights: cellHeights) /* CGFloat(cards.count * 70 + 50)*/))
                     .padding(.top, -20)
 
@@ -105,15 +117,17 @@ struct DroppableList: View {
                              print("Basıldı \(boardIndex)")
                              let newCard = Card(id: UUID().uuidString, description: "asdfsadfasdfsdkfjsdakfjasdkfhasdkjfhaskjdfhaksdfjasdk", userName: "Erkan 1")
                              viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
-                             
+                            
                          } label: {
                              Text("+ Kart Ekle")
                                  .foregroundColor(.black)
                          }
-                    }
+                     }
+                     .zIndex(10)
+                     .frame(height: 40)
                      .padding(.horizontal, 8)
                 }
-                .background(Color.indigo)
+                .background(Color(red: 0.97, green: 0.97, blue: 0.97))
                 .cornerRadius(20)
                 .scrollContentBackground(.hidden)
                 
@@ -132,6 +146,11 @@ struct DroppableList: View {
                     .scrollDisabled(true)
                    
                 }
+            }
+            .sheet(isPresented: $showingBottomSheet) {
+                BottomSheetView(descriptionString: "Erkancık")
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
             }
         }
 
@@ -182,3 +201,4 @@ struct DroppableList: View {
         return true
     }
 }
+
