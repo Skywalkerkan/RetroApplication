@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA786E82C5BA03E00404936 /* InfoView.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
@@ -77,6 +78,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA786E82C5BA03E00404936 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			children = (
 				DEF7EC502C513E3E0036BBD8 /* MainView.swift */,
 				DEF7ECD12C524B060036BBD8 /* PanelCell.swift */,
+				DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
 				DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */,
+				DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */,
 				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,

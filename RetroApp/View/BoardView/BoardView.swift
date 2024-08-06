@@ -20,7 +20,7 @@ struct BoardView: View {
     init(sessionId: String) {
         self.sessionId = sessionId
     }
-
+ 
     var body: some View {
         VStack {
             ScrollView(.horizontal) {
