@@ -13,38 +13,37 @@ struct DraggableCellView: View {
     var isAnonym: Bool
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            if !isAnonym {
-                HStack {
-                    Image(systemName: "person.circle")
+            VStack(alignment: .leading, spacing: 0) {
+                if !isAnonym {
+                    HStack {
+                        Image(systemName: "person.circle")
+                        
+                        Text(card.userName)
+                    }
                     
-                    Text(card.userName)
+                    Divider()
+                        .background(Color.gray)
+                        .frame(height: 1)
+                        .padding(.top, 8)
                 }
                 
-                Divider()
-                    .background(Color.gray)
-                    .frame(height: 1)
-                    .padding(.top, 4)
-                
-            }
-
-            Text(card.description)
-                .multilineTextAlignment(.leading)
-                .onDrag { NSItemProvider(object: card.id as NSString) }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fixedSize(horizontal: false, vertical: true)
-                .background(GeometryReader { geometry in
-                    Color.clear
-                        .preference(key: SizePreferenceKey.self, value: geometry.size.height)
-                        .onChange(of: geometry.size.height) { newSize in
+                Text(card.description)
+                    .multilineTextAlignment(.leading)
+                    .onDrag { NSItemProvider(object: card.id as NSString) }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .background(GeometryReader { geometry in
+                        Color.clear
+                            .preference(key: SizePreferenceKey.self, value: geometry.size.height)
+                            .onChange(of: geometry.size.height) { newSize in
                                 print("Card height: \(newSize)")
-                        }
-                })
-                .padding(.leading, 4)
-                .padding(.vertical, 8)
-        }
-        .background(Color(red: 0.99, green: 0.99, blue: 0.99))
+                            }
+                    })
 
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(.white)
     }
 }
 

@@ -28,7 +28,7 @@ struct BoardView: View {
                     HStack(spacing: 16) {
                         
                         ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList(viewModel.boards[index].name,  boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
+                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
                                 
                                 var boardIndex = 0
@@ -112,7 +112,7 @@ struct BoardView: View {
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
 
                 }
-            }.background(.cyan)
+            }.background(Color(red: 42/255, green: 195/255, blue: 241/255))
                 .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 8)
 
