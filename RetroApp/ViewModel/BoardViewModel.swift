@@ -120,4 +120,15 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func reorderCardInSession(sessionId: String, boardIndex: Int, cards: [Card]) {
+        firebaseManager.reorderCardsInSession(sessionId: sessionId, boardIndex: boardIndex, newCardOrder: cards) { result in
+            if result {
+                print("Başarılı bir şekilde değiştirildi kartlar")
+            } else {
+                print("Kart Yerleri başarısız")
+            }
+        }
+    }
+    
 }

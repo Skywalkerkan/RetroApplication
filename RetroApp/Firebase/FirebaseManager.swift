@@ -295,6 +295,40 @@ class FirebaseManager {
         }
     }
 
+    
+    func reorderCardsInSession(sessionId: String, boardIndex: Int, newCardOrder: [Card], completion: @escaping (Bool) -> Void) {
+        getSession(byId: sessionId) { session, error in
+            if let session = session {
+                var updatedBoards = session.boards
+                if boardIndex < updatedBoards.count {
+                    var board = updatedBoards[boardIndex]
+                    board.cards = newCardOrder
+                    updatedBoards[boardIndex] = board
+                    
+                    let db = Firestore.firestore()
+                    let encoder = Firestore.Encoder()
+                    let boardsData = updatedBoards.map { try! encoder.encode($0) }
+                    
+                    db.collection("sessions").document(sessionId).updateData([
+                        "boards": boardsData
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating session: \(error)")
+                            completion(false)
+                        } else {
+                            completion(true)
+                        }
+                    }
+                } else {
+                    print("Board index \(boardIndex) is out of range")
+                    completion(false)
+                }
+            } else {
+                print("Session does not exist or error occurred: \(error?.localizedDescription ?? "Unknown error")")
+                completion(false)
+            }
+        }
+    }
 
 }
 
