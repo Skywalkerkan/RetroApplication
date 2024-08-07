@@ -123,13 +123,13 @@ struct BoardView: View {
             viewModel.fetchBoards(sessionId: sessionId)
             print("Started session expiration timer.")
         }
-        .alert(isPresented: $showSessionExpiredAlert) {
+       /* .alert(isPresented: $showSessionExpiredAlert) {
             return Alert(
                 title: Text("Oturum Süresi Doldu"),
                 message: Text("Bu oturumun süresi doldu. Lütfen yeni bir oturum oluşturun."),
                 dismissButton: .default(Text("Tamam"))
             )
-        }
+        }*/
         .onReceive(viewModel.$showSessionExpiredAlert) { showAlert in
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
