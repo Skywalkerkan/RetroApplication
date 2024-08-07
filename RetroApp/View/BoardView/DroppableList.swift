@@ -182,7 +182,11 @@ struct DroppableList: View {
                 }
             }
             .sheet(isPresented: $showingBottomSheet) {
-                BottomSheetView(descriptionString: "Erkancık")
+                BottomSheetView(cardContext: "Card conteslşdkglKDSLŞ GKSDŞLKAŞLFKSA ŞLFASŞFLKSAŞFSKAŞFŞSAFKSAŞ FASFŞK",
+                                boardName: title,
+                                cardDescription: "Card Description ",
+                                cardCreatedTime: "07 Ağustos 2024 08.53",
+                                cardCreatedBy: "Skaywalker")
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
