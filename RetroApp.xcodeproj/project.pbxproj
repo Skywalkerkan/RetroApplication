@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
+		DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA786E82C5BA03E00404936 /* InfoView.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
@@ -80,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
+		DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA786E82C5BA03E00404936 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				DEF7ECCE2C5226F40036BBD8 /* DraggableCell.swift */,
 				DEA786E82C5BA03E00404936 /* InfoView.swift */,
 				DEC009E22C623E4B0023513D /* BottomSheetView.swift */,
+				DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */,
 			);
 			path = BoardView;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */,
 				DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */,
 				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
+				DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */,
 				DEF7EC582C513E400036BBD8 /* Persistence.swift in Sources */,
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
 				DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */,
