@@ -21,7 +21,7 @@ struct DroppableList: View {
     let sessionId: String
     @State private var cellHeight: CGFloat = 0
     @State var cellHeights = [CGFloat]()
-
+    @State private var cardId: String = ""
     @State private var dragOffset = CGSize.zero
     @State private var cellPosition: CGPoint = .zero
     @State private var showingBottomSheet: Bool = false
@@ -91,6 +91,8 @@ struct DroppableList: View {
                                         )
                                         .onTapGesture {
                                             print("Basıldı \(boardIndex) \(card)")
+
+                                            cardId = card.id
                                             showingBottomSheet = true
                                         }
                                         .onPreferenceChange(SizePreferenceKey.self) { newSize in
@@ -102,7 +104,7 @@ struct DroppableList: View {
                                                 print("Sayı \(cellHeights.count)")
                                             }
                                         }
-                                        .id(card.id) // Assign an ID to each card
+                                        .id(card.id)
                                 }
                                 .onMove(perform: moveCard)
                                 .onInsert(of: ["public.text"], perform: dropCard)
