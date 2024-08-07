@@ -76,6 +76,8 @@ struct AnimationButtonView: View {
                         .padding(16)
                     }
                 }
+            }.onAppear() {
+                showButtons = false
             }
         }
 }

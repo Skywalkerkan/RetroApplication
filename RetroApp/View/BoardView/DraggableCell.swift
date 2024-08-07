@@ -22,9 +22,10 @@ struct DraggableCellView: View {
                     }
                     
                     Divider()
-                        .background(Color.gray)
-                        .frame(height: 1)
-                        .padding(.top, 8)
+                        .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+                        .frame(height: 0.8)
+                        .padding(.top, 2)
+                        .padding(.bottom, 4)
                 }
                 
                 Text(card.description)
@@ -36,9 +37,10 @@ struct DraggableCellView: View {
                         Color.clear
                             .preference(key: SizePreferenceKey.self, value: geometry.size.height)
                             .onChange(of: geometry.size.height) { newSize in
-                                print("Card height: \(newSize)")
+                                //print("Card height: \(newSize)")
                             }
                     })
+                   // .padding(.top, 6)
 
             }
             .padding(.horizontal, 12)

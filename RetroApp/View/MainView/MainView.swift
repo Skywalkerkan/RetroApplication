@@ -216,6 +216,9 @@ struct MainView: View {
                  }
 
              }
+             .onAppear(){
+                 showButtons = false
+             }
              .navigationBarTitle("My List", displayMode: .inline)
          }
         
