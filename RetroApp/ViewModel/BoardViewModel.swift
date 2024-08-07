@@ -110,4 +110,14 @@ class BoardViewModel: ObservableObject {
             }
         }
     }
+    
+    func deleteCardFromBoard(sessionId: String, boardIndex: Int, cardId: String) {
+        firebaseManager.deleteCardFromSession(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId) { result in
+            if result {
+                print("Başarılı şekilde silindi")
+            } else {
+                print("Silinemedi")
+            }
+        }
+    }
 }
