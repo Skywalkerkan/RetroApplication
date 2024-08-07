@@ -25,7 +25,7 @@ struct BoardView: View {
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
-                    HStack(spacing: 16) {
+                    HStack(spacing: 4) {
                         
                         ForEach(viewModel.boards.indices, id: \.self) { index in
                             DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
@@ -75,6 +75,7 @@ struct BoardView: View {
                                 viewModel.updateBoards(sessionId: sessionId, boards: viewModel.boards)
                                 
                             }
+                            .padding(.top, -4)
                             .frame(width: 300)
                         }
                         
@@ -112,7 +113,7 @@ struct BoardView: View {
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
 
                 }
-            }.background(Color(red: 42/255, green: 195/255, blue: 241/255))
+            }.background(Color(red: 81/255, green: 94/255, blue: 132/255))
                 .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 8)
 

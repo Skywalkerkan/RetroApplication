@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE45197C2C6389CD006BDBFE /* AddCardView.swift */; };
 		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
 		DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
 		DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				DEA786E82C5BA03E00404936 /* InfoView.swift */,
 				DEC009E22C623E4B0023513D /* BottomSheetView.swift */,
 				DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */,
+				DE45197C2C6389CD006BDBFE /* AddCardView.swift */,
 			);
 			path = BoardView;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */,
 				DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */,
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,
+				DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */,
 				DEF7ECD22C524B060036BBD8 /* PanelCell.swift in Sources */,
 				DEA718122C60C3290093994A /* Session.swift in Sources */,
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,

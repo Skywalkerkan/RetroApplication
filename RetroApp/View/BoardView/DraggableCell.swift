@@ -40,6 +40,8 @@ struct DraggableCellView: View {
                                 //print("Card height: \(newSize)")
                             }
                     })
+                    .font(.subheadline)
+                    .foregroundColor(.black)
                    // .padding(.top, 6)
 
             }
