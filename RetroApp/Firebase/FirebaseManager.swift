@@ -256,14 +256,14 @@ class FirebaseManager {
         }
     }
 
-    func updateCardNameInBoard(sessionId: String, boardIndex: Int, cardId: String, newName: String, completion: @escaping (Bool) -> Void) {
+    func updateCardNameInBoard(sessionId: String, boardIndex: Int, cardId: String, newCardDescription: String, completion: @escaping (Bool) -> Void) {
         getSession(byId: sessionId) { session, error in
             if let session = session {
                 var updatedBoards = session.boards
                 if boardIndex < updatedBoards.count {
                     var board = updatedBoards[boardIndex]
                     if let cardIndex = board.cards.firstIndex(where: { $0.id == cardId }) {
-                        board.cards[cardIndex].description = newName
+                        board.cards[cardIndex].description = newCardDescription
                         updatedBoards[boardIndex] = board
                         
                         let db = Firestore.firestore()

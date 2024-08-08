@@ -11,56 +11,25 @@ struct BottomSheetView: View {
     
     @State var cardContext: String
     @State var boardName: String
-    @State var cardDescription: String
     @State var cardCreatedTime: String
     @State var cardCreatedBy: String
+    @Binding var isChangedDescription: Bool
 
     var body: some View {
         ZStack {
-            VStack (alignment: .leading, spacing: 0) {
+            VStack (alignment: .leading, spacing: 4) {
                 TextEditor(text: $cardContext)
-                    .frame(minHeight: 70, alignment: .leading)
-                    .frame(maxHeight: 300)
+                    .frame(minHeight: 30, alignment: .leading)
+                    .frame(maxHeight: 200)
                     .foregroundColor(.black)
                     .font(.body)
                     .fixedSize(horizontal: false, vertical: true)
                     .multilineTextAlignment(.leading)
                     .padding(.horizontal, 8)
                     .padding(.top, 8)
-                    .padding(.bottom, -4)
+                    .padding(.bottom, 4)
                     .background(Color.white)
-                
-                HStack {
-                    Text("Spring 1")
-                        .bold()
-                    Text("Listesinde")
-                    Text("Went Well Boardu")
-                        .bold()
-                    Spacer()
-                }
-                .padding(.bottom, 12)
-                .padding(.horizontal, 12)
 
-                Divider()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "line.3.horizontal.decrease")
-                        .frame(width: 45, height: 45, alignment: .center)
-                        .foregroundColor(.gray)
-                    
-                    TextEditor(text: $cardDescription)
-                        .padding(.leading, -4)
-                        .frame(minHeight: 40, alignment: .leading)
-                        .frame(maxHeight: 70)
-                        .cornerRadius(10, antialiased: true)
-                        .foregroundColor(.black)
-                        .font(.body)
-                        .padding()
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
-                    
-                    Spacer()
-                }
                 Divider()
                 
                 HStack(spacing: 0) {
@@ -96,6 +65,7 @@ struct BottomSheetView: View {
                 Spacer()
                 Button(action: {
                     print("Ekleme yeri")
+                    isChangedDescription.toggle()
                 }) {
                     Image(systemName: "checkmark")
                         .frame(width: 50, height: 50)

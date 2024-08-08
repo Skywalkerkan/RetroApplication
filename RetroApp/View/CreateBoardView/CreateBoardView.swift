@@ -175,7 +175,7 @@ struct CreateBoardView: View {
                     .offset(y: 100)
                     
                     NavigationLink(
-                        destination: BoardView(sessionId: sessionId).navigationBarTitleDisplayMode(.inline),
+                        destination: BoardView(sessionId: sessionId, currentUserName: userName).navigationBarTitleDisplayMode(.inline),
                         isActive: $navigateToBoardView,
                         label: { EmptyView() }
                     )

@@ -13,12 +13,14 @@ struct BoardView: View {
     @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var isAddBoarding: Bool = false
     @State private var addBoardTextField: String = ""
+    @State private var currentUserName: String
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
     var sessionId: String
     
-    init(sessionId: String) {
+    init(sessionId: String, currentUserName: String) {
         self.sessionId = sessionId
+        self.currentUserName = currentUserName
     }
  
     var body: some View {
@@ -28,7 +30,7 @@ struct BoardView: View {
                     HStack(spacing: 4) {
                         
                         ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false) { dropped, index, boardActualIndex in
+                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false, currentUserName: currentUserName) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
                                 
                                 var boardIndex = 0

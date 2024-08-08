@@ -84,6 +84,7 @@ extension View {
 }
 
 
+/*
 #Preview {
     DraggableCellView(card: Card(id: "123321525", description: "asdadsfas", userName: "Erkan"), isAnonym: true)
-}
+}*/
