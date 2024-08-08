@@ -12,6 +12,7 @@
 		DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA786E82C5BA03E00404936 /* InfoView.swift */; };
+		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
@@ -86,6 +87,7 @@
 		DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA786E82C5BA03E00404936 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
@@ -173,6 +175,14 @@
 			path = SwiftData;
 			sourceTree = "<group>";
 		};
+		DEA7B7452C63E9CA0053A2B1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		DEB257E52C52668200CC3B51 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +214,7 @@
 		DEF7EC4D2C513E3E0036BBD8 /* RetroApp */ = {
 			isa = PBXGroup;
 			children = (
+				DEA7B7452C63E9CA0053A2B1 /* Extensions */,
 				DEA718102C60C3110093994A /* SwiftData */,
 				DEB257E52C52668200CC3B51 /* Firebase */,
 				DEF7EC802C5140850036BBD8 /* Application */,
@@ -483,6 +494,7 @@
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
 				DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */,
+				DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */,
 				DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */,
 				DEF7ECCD2C5226C30036BBD8 /* DroppableList.swift in Sources */,
 				DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */,

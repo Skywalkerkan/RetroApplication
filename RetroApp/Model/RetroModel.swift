@@ -29,11 +29,13 @@ struct Card: Identifiable, Hashable, Codable {
     var id: String
     var description: String
     var userName: String
+    var createdAt: Timestamp?
 
-    init(id: String = UUID().uuidString, description: String, userName: String) {
+    init(id: String = UUID().uuidString, description: String, userName: String, createdAt: Timestamp = Timestamp()) {
         self.id = id
         self.description = description
         self.userName = userName
+        self.createdAt = createdAt
     }
 }
 /*

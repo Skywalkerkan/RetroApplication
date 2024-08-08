@@ -19,6 +19,9 @@ struct DroppableList: View {
     let isAnonym: Bool
     let action: ((Card, Int, Int) -> Void)?
     let sessionId: String
+    let currentUserName: String
+    @State var chosenCard: Card?
+    
     @State private var cellHeight: CGFloat = 0
     @State var cellHeights = [CGFloat]()
     @State private var cardId: String = ""
@@ -29,13 +32,15 @@ struct DroppableList: View {
     @State private var scrolltoTop: Bool = false
     @State private var newCardDescription: String = ""
     @State private var isAddCardViewVisible: Bool = false
+    @State private var isChangedDescription: Bool = false
     
-    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, action: ((Card, Int, Int) -> Void)? = nil) {
+    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, currentUserName: String, action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
         self.boardIndex = boardIndex
         self._cards = cards
         self.sessionId = sessionId
         self.isAnonym = isAnonym
+        self.currentUserName = currentUserName
         self.action = action
     }
     
@@ -88,11 +93,10 @@ struct DroppableList: View {
                     .background(Color(red: 229/255, green: 229/255, blue: 234/255))
                     .zIndex(7)
                     
-                    
- 
                     if isAddCardViewVisible {
                         AddCardView(cardDescription: "Type Something...") { description in
-                            let newCard = Card(id: UUID().uuidString, description: description, userName: "User2")
+                            print(currentUserName)
+                            let newCard = Card(id: UUID().uuidString, description: description, userName: currentUserName)
                             viewModel.addCardToBoard(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard)
                             cards.append(newCard)
                             scrolltoTop.toggle()
@@ -125,6 +129,9 @@ struct DroppableList: View {
                                             print("Basıldı \(boardIndex) \(card)")
 
                                             cardId = card.id
+                                            
+                                            chosenCard = card
+                                            
                                             showingBottomSheet = true
                                         }
                                         .onPreferenceChange(SizePreferenceKey.self) { newSize in
@@ -165,11 +172,16 @@ struct DroppableList: View {
                 .scrollContentBackground(.hidden)
             }
             .sheet(isPresented: $showingBottomSheet) {
-                BottomSheetView(cardContext: "Card conteslşdkglKDSLŞ GKSDŞLKAŞLFKSA ŞLFASŞFLKSAŞFSKAŞFŞSAFKSAŞ FASFŞK",
+                BottomSheetView(cardContext: chosenCard?.description ?? "None",
                                 boardName: title,
-                                cardDescription: "Card Description ",
-                                cardCreatedTime: "07 Ağustos 2024 08.53",
-                                cardCreatedBy: "Skaywalker")
+                                cardCreatedTime: chosenCard?.createdAt?.toString() ?? "Unknown Date" ,
+                                cardCreatedBy: chosenCard?.userName ?? "Anonymous",
+                                isChangedDescription: $isChangedDescription)
+                
+                .onChange(of: isChangedDescription) { newValue in
+                    print(newValue)
+                }
+                
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }

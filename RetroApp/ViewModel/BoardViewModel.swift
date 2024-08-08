@@ -131,4 +131,14 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    func updateCardName(sessionId: String, boardIndex: Int, cardId: String, newCardDescription: String) {
+        firebaseManager.updateCardNameInBoard(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId, newCardDescription: newCardDescription) { result in
+            if result {
+                print("Başarılı içerik değiştirme")
+            } else {
+                print("Başarısız içeril değiştirme")
+            }
+        }
+    }
+    
 }
