@@ -12,6 +12,8 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @State private var showSessionFinder = false
     @State private var sessionId: String = ""
+    @State private var sessionPassword: String = "123456"
+
     @State private var userName: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
@@ -73,7 +75,7 @@ struct MainView: View {
                                      .cornerRadius(10)
                                  Button(action: {
                                      chosenSession = item.sessionId
-                                     viewModel.joinSession(chosenSession) { isValid in
+                                     viewModel.joinSession(item.sessionId, sessionPassword: item.sessionPassword) { isValid in
                                          isLoading = false
                                          isValidId = isValid
                                          if isValid {
@@ -181,7 +183,7 @@ struct MainView: View {
                              NavigationLink(destination: BoardView(sessionId: self.sessionId, currentUserName: userName), isActive: $isValidId) {
                                  Button(action: {
                                      isLoading = true
-                                     viewModel.joinSession(sessionId) { isValid in
+                                     viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { isValid in
                                          isLoading = false
                                          isValidId = isValid
                                          if isValid {

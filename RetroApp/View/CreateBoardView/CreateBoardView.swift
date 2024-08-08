@@ -21,6 +21,7 @@ struct CreateBoardView: View {
     @State private var isTimer: Bool = false
     @State private var timeValue: Double = 5
     @State private var sessionId: String = ""
+    @State private var sessionPassword: String = "123456"
 
     @ObservedObject var viewModel = CreateBoardViewModel()
     @State private var item = SessionPanel()
@@ -191,7 +192,7 @@ struct CreateBoardView: View {
     }
     
     func createSession() {
-        viewModel.createSession(createdBy: userName, sessionId: sessionId, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
+        viewModel.createSession(createdBy: userName, sessionId: sessionId, sessionPassword: sessionPassword, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
         
         for retroName in viewModel.boardRetroNames {
             if retroName.key == chosenRetroStyle {

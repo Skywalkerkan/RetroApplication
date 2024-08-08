@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, sessionPassword: String, completion: @escaping (Bool) -> Void) {
         let createdAt = Timestamp(date: Date())
         let expiresAt: Timestamp?
 
@@ -22,7 +22,9 @@ class FirebaseManager {
             expiresAt = nil
         }
 
-        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [])
+        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword)
+        
+       // let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [])
 
         do {
             try db.collection("sessions").document(sessionId).setData(from: newSession) { error in
@@ -56,7 +58,7 @@ class FirebaseManager {
         }
     }
     
-    func joinSession(sessionId: String, completion: @escaping (Bool) -> Void) {
+    func joinSession(sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
         sessionRef.getDocument { (document, error) in
             guard let document = document, document.exists,
@@ -67,7 +69,13 @@ class FirebaseManager {
 
             let currentTime = Timestamp(date: Date())
             
-            if let expiresAt = session.expiresAt {
+            if sessionPassword == session.sessionPassword {
+                completion(true)
+            } else {
+                completion(false)
+            }
+            
+           /* if let expiresAt = session.expiresAt {
                 if currentTime.compare(expiresAt) == .orderedAscending {
                     completion(true)
                 } else {
@@ -75,7 +83,7 @@ class FirebaseManager {
                 }
             } else {
                 completion(true)
-            }
+            }*/
         }
     }
 
