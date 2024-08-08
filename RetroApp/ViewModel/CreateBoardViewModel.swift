@@ -19,8 +19,8 @@ class CreateBoardViewModel: ObservableObject {
         "Happy - Meh - Sad": ["Happy", "Meh", "Sad"]
     ]
 
-    func createSession(createdBy: String?, sessionId: String, timer: Int, sessionName: String, isAnonym: Bool) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName, isAnonym: isAnonym) { success in
+    func createSession(createdBy: String?, sessionId: String, sessionPassword: String, timer: Int, sessionName: String, isAnonym: Bool) {
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword) { success in
             DispatchQueue.main.async {
                 if success {
                     self.sessionStatus = "Session created with ID: \(sessionId)"
@@ -32,8 +32,8 @@ class CreateBoardViewModel: ObservableObject {
     }
     
     
-    func joinSession(sessionId: String) {
-        firebaseManager.joinSession(sessionId: sessionId) { canJoin in
+    func joinSession(sessionId: String, sessionPassword: String) {
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { canJoin in
             DispatchQueue.main.async {
                 if canJoin {
                     self.sessionStatus = "Successfully joined session"

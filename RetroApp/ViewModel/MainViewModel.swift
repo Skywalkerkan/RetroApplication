@@ -13,8 +13,8 @@ class MainViewModel: ObservableObject {
     
     @Published var isItValidId = false
     
-    func joinSession(_ sessionId: String, completion: @escaping (Bool) -> Void) {
-        firebaseManager.joinSession(sessionId: sessionId) { isValidId in
+    func joinSession(_ sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { isValidId in
             DispatchQueue.main.async {
                 if isValidId {
                     self.isItValidId = true

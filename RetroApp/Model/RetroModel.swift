@@ -13,10 +13,12 @@ struct Session: Identifiable, Codable {
     @DocumentID var id: String?
     var createdBy: String
     var createdAt: Timestamp
-    var expiresAt: Timestamp?
+    var timerInitialTime: Timestamp?
+    var timerExpiresDate: Timestamp?
     var sessionName: String?
     var isAnonym: Bool
     var boards: [Board]
+    var sessionPassword: String
 }
 
 struct Board: Identifiable, Codable, Equatable {

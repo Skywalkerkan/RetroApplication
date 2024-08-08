@@ -12,11 +12,14 @@ import SwiftData
 class SessionPanel {
     var sessionId: String
     var sessionName: String
+    var sessionPassword: String
     var userName: String
 
-    init(sessionId: String = "", sessionName: String = "", userName: String = "") {
+    init(sessionId: String = "", sessionName: String = "",
+         sessionPassword: String = "", userName: String = "") {
         self.sessionId = sessionId
         self.sessionName = sessionName
+        self.sessionPassword = sessionPassword
         self.userName = userName
     }
 }
