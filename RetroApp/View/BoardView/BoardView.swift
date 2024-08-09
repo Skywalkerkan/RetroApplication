@@ -139,7 +139,7 @@ struct BoardView: View {
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
         }
-        .navigationTitle(viewModel.session?.sessionName ?? "")
+       // .navigationTitle(viewModel.session?.sessionName ?? "")
         .navigationBarBackButtonHidden(isAddBoarding)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -167,7 +167,26 @@ struct BoardView: View {
                     Text("Listeye ekle")
                 }
             }
+            
+            ToolbarItem(placement: .principal) {
+                HStack {
+                    Button(action: {
+                        print("Stop button tapped")
+                    }) {
+                        Image(systemName: "pause.fill")
+                            .foregroundColor(.black)
+                    }
+                    Text("16 : 04")
+                    Button(action: {
+                        print("Play button tapped")
+                    }) {
+                        Image(systemName: "stop.fill")
+                            .foregroundColor(.black)
+                    }
+                }
+            }
         }
+        
         .navigationBarItems(trailing:
             Button(action: {
                 self.showSettings.toggle()
