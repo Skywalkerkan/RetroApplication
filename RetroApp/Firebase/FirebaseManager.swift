@@ -142,13 +142,80 @@ class FirebaseManager {
     }
     
     func getSession(byId sessionId: String, completion: @escaping (Session?, Error?) -> Void) {
-        let db = Firestore.firestore()
         db.collection("sessions").document(sessionId).getDocument { document, error in
             if let document = document, document.exists {
                 let session = try? document.data(as: Session.self)
                 completion(session, nil)
             } else {
                 completion(nil, error)
+            }
+        }
+    }
+    
+    func getSessionSettings(byId sessionId: String, completion: @escaping (Session?, Error?) -> Void) {
+        let db = Firestore.firestore()
+        let sessionRef = db.collection("sessions").document(sessionId)
+        
+        sessionRef.addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let document = documentSnapshot, document.exists,
+                  let session = try? document.data(as: Session.self) else {
+                let error = NSError(domain: "SessionNotFound", code: 0, userInfo: [NSLocalizedDescriptionKey: "Session not found or failed to decode session data."])
+                completion(nil, error)
+                return
+            }
+            
+            completion(session, nil)
+        }
+    }
+
+    func addSettingToSession(byId sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timerMinutes: Int, allowUserChange: Bool, completion: @escaping  (Bool) -> Void) {
+        
+        getSession(byId: sessionId) { [weak self] session, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error getting session: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+            guard var session = session else {
+                print("Session not found.")
+                completion(false)
+                return
+            }
+            
+            session.isAnonym = isAnonymous
+            session.isTimerActive = isTimerActive
+            session.allowUserChange = allowUserChange
+            
+            if timerMinutes > 0 {
+                let currentDate = Date()
+                session.timerInitialTime = Timestamp(date: currentDate)
+                session.timerExpiresDate = Timestamp(date: currentDate.addingTimeInterval(TimeInterval(timerMinutes * 60)))
+            } else {
+                session.timerInitialTime = nil
+                session.timerExpiresDate = nil
+            }
+           // session.allowUserChange = allowUserChange
+            
+            do {
+                try db.collection("sessions").document(sessionId).setData(from: session) { error in
+                    if let error = error {
+                        print("Error updating session: \(error.localizedDescription)")
+                        completion(false)
+                    } else {
+                        print("Session successfully updated.")
+                        completion(true)
+                    }
+                }
+            } catch {
+                print("Error encoding session: \(error.localizedDescription)")
+                completion(false)
             }
         }
     }

@@ -13,6 +13,8 @@
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA786E82C5BA03E00404936 /* InfoView.swift */; };
 		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
+		DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */; };
+		DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
@@ -88,6 +90,8 @@
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA786E82C5BA03E00404936 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
+		DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
@@ -278,6 +282,7 @@
 				DEF7ECBC2C51422A0036BBD8 /* MainViewModel.swift */,
 				DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */,
 				DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */,
+				DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 				DEC009E22C623E4B0023513D /* BottomSheetView.swift */,
 				DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */,
 				DE45197C2C6389CD006BDBFE /* AddCardView.swift */,
+				DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */,
 			);
 			path = BoardView;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */,
+				DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */,
 				DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */,
 				DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */,
 				DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */,
@@ -508,6 +515,7 @@
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,
 				DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */,
 				DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */,
+				DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

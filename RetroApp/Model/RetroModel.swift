@@ -15,8 +15,10 @@ struct Session: Identifiable, Codable {
     var createdAt: Timestamp
     var timerInitialTime: Timestamp?
     var timerExpiresDate: Timestamp?
+    var isTimerActive: Bool?
     var sessionName: String?
     var isAnonym: Bool
+    var allowUserChange: Bool?
     var boards: [Board]
     var sessionPassword: String
 }

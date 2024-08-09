@@ -14,6 +14,8 @@ struct BoardView: View {
     @State private var isAddBoarding: Bool = false
     @State private var addBoardTextField: String = ""
     @State private var currentUserName: String
+    @State private var showSettings = false
+
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
     var sessionId: String
@@ -166,6 +168,20 @@ struct BoardView: View {
                 }
             }
         }
+        .navigationBarItems(trailing:
+            Button(action: {
+                self.showSettings.toggle()
+            }) {
+                Image(systemName: "gear")
+                    .imageScale(.large)
+                    .padding(.leading, 16)
+            }
+        )
+        
+        .fullScreenCover(isPresented: $showSettings, content: {
+            SettingsView(sessionId: sessionId)
+        })
+        
         .navigationBarTitleDisplayMode(.inline)
     }
     
