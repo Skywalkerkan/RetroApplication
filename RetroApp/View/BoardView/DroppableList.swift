@@ -78,7 +78,7 @@ struct DroppableList: View {
                     }
                     .frame(width: 270, height: 40)
                     .cornerRadius(4)
-                    .background(Color(red: 81/255, green: 94/255, blue: 132/255))
+                    //.background(Color(red: 81/255, green: 94/255, blue: 132/255))
                     .zIndex(6)
                     
                     Button(action: {

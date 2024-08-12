@@ -16,6 +16,7 @@
 		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
 		DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */; };
 		DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */; };
+		DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
@@ -93,6 +94,7 @@
 		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
 		DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletView.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				DEF7ECD42C525A370036BBD8 /* CreateBoardView.swift */,
+				DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */,
 			);
 			path = CreateBoardView;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				DEA786E92C5BA03E00404936 /* InfoView.swift in Sources */,
 				DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */,
 				DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */,
+				DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

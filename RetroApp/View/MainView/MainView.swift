@@ -13,25 +13,21 @@ struct MainView: View {
     @State private var showSessionFinder = false
     @State private var sessionId: String = ""
     @State private var sessionPassword: String = "123456"
-
     @State private var userName: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
     @State private var navigateToBoardView = false
     @State private var showButtons = false
-
+    @State private var showCrateView: Bool = false
     @State private var chosenSession: String = ""
     
     @State private var navigationPath = NavigationPath()
 
     @Query private var items: [SessionPanel]
     @Environment(\.modelContext) var context
-
     
     var horizontalItems = ["1","2","3","4"]
-    var verticalItems = ["Item A", "Item B", "Item C", "Item D"]
-    
     var body: some View {
         NavigationStack() {
              ZStack {
@@ -64,10 +60,13 @@ struct MainView: View {
                      Section(header: Text("Son Kullanılan Panolar")) {
                          ForEach(items, id: \.self) { item in
                              HStack {
-                                 Rectangle()
-                                     .frame(width: 60, height: 40)
-                                     .foregroundColor(.green)
-                                     .cornerRadius(2)
+                                 Image(item.sessionBackground)
+                                     .resizable()
+                                     .scaledToFill()
+                                     .frame(width: 50, height: 40)
+                                     .cornerRadius(8)
+                                     .clipped()
+                                     .contentShape(Rectangle())
                                  VStack(alignment: .leading ,spacing: 4) {
                                      Text(item.sessionName)
                                          .foregroundColor(.black)
@@ -83,18 +82,20 @@ struct MainView: View {
                                      viewModel.joinSession(item.sessionId, sessionPassword: item.sessionPassword) { isValid in
                                          isLoading = false
                                          isValidId = isValid
-                                         if isValid {
+                                         navigateToBoardView = true
+                                         print(item.sessionId)
+                                         /*if isValid {
                                              print("Valid session ID")
                                              navigateToBoardView = true
                                          } else {
                                              print("Invalid session ID")
-                                         }
+                                         }*/
                                      }
                                  }) {
 
                                  }
                                  .background(
-                                    NavigationLink(destination: BoardView(sessionId: item.sessionId, currentUserName: item.userName), isActive: $navigateToBoardView) {
+                                    NavigationLink(destination: BoardView(sessionId: item.sessionId, currentUserName: item.userName, showCreateView: $showCrateView, chosenBackground: item.sessionBackground), isActive: $navigateToBoardView) {
                                          EmptyView()
                                      }
                                  )
@@ -185,7 +186,7 @@ struct MainView: View {
                              .padding([.leading, .trailing], 24)
 
                              
-                             NavigationLink(destination: BoardView(sessionId: self.sessionId, currentUserName: userName), isActive: $isValidId) {
+                             NavigationLink(destination: BoardView(sessionId: self.sessionId, currentUserName: userName, showCreateView: $showCrateView), isActive: $isValidId) {
                                  Button(action: {
                                      isLoading = true
                                      viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { isValid in
