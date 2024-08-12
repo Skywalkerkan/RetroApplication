@@ -41,7 +41,7 @@ struct CreateBoardView: View {
                         
                         TextField("Enter board name", text: $sessionName)
                             .padding()
-                            .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .cornerRadius(8)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -56,7 +56,22 @@ struct CreateBoardView: View {
                         
                         TextField("Nick Name", text: $userName)
                             .padding()
-                            .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.gray, lineWidth: 0.5)
+                            )
+                        
+                        Text("Session Password")
+                            .font(.headline)
+                            .padding(.top, 12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.gray)
+                        
+                        TextField("Password", text: $sessionPassword)
+                            .padding()
+                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .cornerRadius(8)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -70,9 +85,13 @@ struct CreateBoardView: View {
                             .foregroundColor(.gray)
                         
                         Rectangle()
-                            .fill(Color(red: 0.95, green: 0.95, blue: 0.95))
+                            .fill(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .frame(maxWidth: .infinity, maxHeight: 50)
                             .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.gray, lineWidth: 0.5)
+                            )
                             .overlay(
                                 HStack {
                                     Text(chosenRetroStyle)
@@ -157,9 +176,7 @@ struct CreateBoardView: View {
                         
                     }
                     .padding(.horizontal, 16)
-                    
-                    Spacer()
-                    
+    
                     Button(action: {
                         sessionId = generateRandomSessionID(length: 6)
                         context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName))
