@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BottomSheetView: View {
     
-    @State var cardContext: String
+    @Binding var cardContext: String
     @State var boardName: String
     @State var cardCreatedTime: String
     @State var cardCreatedBy: String
@@ -18,47 +18,20 @@ struct BottomSheetView: View {
     var body: some View {
         ZStack {
             VStack (alignment: .leading, spacing: 4) {
+                Text("Kartı düzenle")
+                    .font(.title2)
+                    .bold()
+                    .padding(.leading, 4)
                 TextEditor(text: $cardContext)
-                    .frame(minHeight: 30, alignment: .leading)
-                    .frame(maxHeight: 200)
+                    .frame(minHeight: 25, alignment: .leading)
                     .foregroundColor(.black)
                     .font(.body)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .multilineTextAlignment(.leading)
-                    .padding(.horizontal, 8)
-                    .padding(.top, 8)
-                    .padding(.bottom, 4)
                     .background(Color.white)
-
-                Divider()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "clock")
-                        .frame(width: 50, height: 50, alignment: .leading)
-                        .padding(.leading, 12)
-                        .foregroundColor(.gray)
-                    Text("\(cardCreatedTime)")
-
-                    Spacer()
-                }
-                Divider()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "person")
-                        .frame(width: 50, height: 50, alignment: .leading)
-                        .padding(.leading, 12)
-                        .foregroundColor(.gray)
-                    
-                    Text("\(cardCreatedBy)")
-                    Spacer()
-                }
-
-                Divider()
-                Spacer()
-                
             }
+            .padding(8)
             
         }
+        
         VStack {
             Spacer()
             HStack {

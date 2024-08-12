@@ -33,6 +33,7 @@ struct DroppableList: View {
     @State private var newCardDescription: String = ""
     @State private var isAddCardViewVisible: Bool = false
     @State private var isChangedDescription: Bool = false
+    @State var cardContext: String = ""
     
     init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, currentUserName: String, action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
@@ -131,7 +132,7 @@ struct DroppableList: View {
                                             cardId = card.id
                                             
                                             chosenCard = card
-                                            
+                                            cardContext = card.description
                                             showingBottomSheet = true
                                         }
                                         .onPreferenceChange(SizePreferenceKey.self) { newSize in
@@ -172,14 +173,14 @@ struct DroppableList: View {
                 .scrollContentBackground(.hidden)
             }
             .sheet(isPresented: $showingBottomSheet) {
-                BottomSheetView(cardContext: chosenCard?.description ?? "None",
+                BottomSheetView(cardContext: $cardContext,
                                 boardName: title,
                                 cardCreatedTime: chosenCard?.createdAt?.toString() ?? "Unknown Date" ,
                                 cardCreatedBy: chosenCard?.userName ?? "Anonymous",
                                 isChangedDescription: $isChangedDescription)
                 
                 .onChange(of: isChangedDescription) { newValue in
-                    print(newValue)
+                    viewModel.updateCardName(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId, newCardDescription: cardContext)
                 }
                 
                     .presentationDetents([.medium])
