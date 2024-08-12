@@ -64,15 +64,20 @@ struct MainView: View {
                      Section(header: Text("Son Kullanılan Panolar")) {
                          ForEach(items, id: \.self) { item in
                              HStack {
-                                 
                                  Rectangle()
                                      .frame(width: 60, height: 40)
                                      .foregroundColor(.green)
                                      .cornerRadius(2)
-                                 Text(item.sessionName)
-                                     .padding()
-                                     .foregroundColor(.black)
-                                     .cornerRadius(10)
+                                 VStack(alignment: .leading ,spacing: 4) {
+                                     Text(item.sessionName)
+                                         .foregroundColor(.black)
+                                         .font(.title3)
+                                     Text(item.sessionCreatedTime.formatted(date: .abbreviated, time: .omitted))
+                                         .font(.footnote)
+                                         .foregroundColor(.gray)
+                                 }
+                                 .padding(.leading, 16)
+                                 .padding(.vertical, 4)
                                  Button(action: {
                                      chosenSession = item.sessionId
                                      viewModel.joinSession(item.sessionId, sessionPassword: item.sessionPassword) { isValid in

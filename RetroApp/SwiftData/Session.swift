@@ -13,13 +13,15 @@ class SessionPanel {
     var sessionId: String
     var sessionName: String
     var sessionPassword: String
+    var sessionCreatedTime: Date
     var userName: String
 
     init(sessionId: String = "", sessionName: String = "",
-         sessionPassword: String = "", userName: String = "") {
+         sessionPassword: String = "", sessionCreatedTime: Date = Date(), userName: String = "") {
         self.sessionId = sessionId
         self.sessionName = sessionName
         self.sessionPassword = sessionPassword
+        self.sessionCreatedTime = sessionCreatedTime
         self.userName = userName
     }
 }
