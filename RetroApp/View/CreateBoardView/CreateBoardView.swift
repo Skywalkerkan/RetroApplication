@@ -9,6 +9,11 @@ import SwiftUI
 
 struct CreateBoardView: View {
     
+    @Binding var showCreateView: Bool
+    @State private var selectedColorIndex: Int = 0
+    @State private var isColorPalettePresented = false
+    @State var imageName: String  = "1"
+    @State private var navigateToNewPage = false
     @State private var sessionName: String = ""
     @State private var userName: String = ""
     @State private var showAlert = false
@@ -29,7 +34,7 @@ struct CreateBoardView: View {
     @Environment(\.modelContext) var context
     
     var body: some View {
-        ZStack {
+        NavigationView {
             VStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 4) {
@@ -40,7 +45,7 @@ struct CreateBoardView: View {
                             .foregroundColor(.gray)
                         
                         TextField("Enter board name", text: $sessionName)
-                            .padding()
+                            .padding(12)
                             .background(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .cornerRadius(8)
                             .overlay(
@@ -55,7 +60,7 @@ struct CreateBoardView: View {
                             .foregroundColor(.gray)
                         
                         TextField("Nick Name", text: $userName)
-                            .padding()
+                            .padding(12)
                             .background(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .cornerRadius(8)
                             .overlay(
@@ -70,7 +75,7 @@ struct CreateBoardView: View {
                             .foregroundColor(.gray)
                         
                         TextField("Password", text: $sessionPassword)
-                            .padding()
+                            .padding(12)
                             .background(Color(red: 0.99, green: 0.99, blue: 0.99))
                             .cornerRadius(8)
                             .overlay(
@@ -107,6 +112,31 @@ struct CreateBoardView: View {
                                     isListVisible.toggle()
                                 }
                             }
+                        
+                        VStack {
+                            HStack {
+                                Text("Pano Arkaplanı")
+                                    .font(.headline)
+                                    .foregroundStyle(.gray)
+                                Spacer()
+                                Image("\((selectedColorIndex ?? 0)+1)")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 30, height: 30)
+                                    .cornerRadius(8)
+                                    .clipped()
+                            }
+                            .padding(.vertical, 8)
+                            .onTapGesture {
+                                isColorPalettePresented = true
+                            }
+                        }
+                        .fullScreenCover(isPresented: $isColorPalettePresented) {
+                            ColorPaletteView(selectedIndex: $selectedColorIndex)
+                                .onChange(of: selectedColorIndex) { newIndex in
+                                    
+                                }
+                        }
                         
                         if isListVisible {
                             VStack {
@@ -165,7 +195,6 @@ struct CreateBoardView: View {
                         }
                         .padding(.top, 8)
                         
-                        
                         if isTimer {
                             Text("Güncel Ayarlanan Zaman \(Int(timeValue))")
                                 .padding(.top, 8)
@@ -179,9 +208,11 @@ struct CreateBoardView: View {
     
                     Button(action: {
                         sessionId = generateRandomSessionID(length: 6)
-                        context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName))
+                        context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName, sessionBackground: "\(selectedColorIndex+1)"))
                         createSession()
                         navigateToBoardView = true
+                        //navigateToNewPage = true
+
                     }) {
                         Text("Kaydet")
                             .frame(width: 200, height: 50)
@@ -189,11 +220,10 @@ struct CreateBoardView: View {
                             .background(Color.cyan)
                             .cornerRadius(8)
                     }
-                    .padding(.bottom, 0)
-                    .offset(y: 100)
+                    .offset(y: 30)
                     
                     NavigationLink(
-                        destination: BoardView(sessionId: sessionId, currentUserName: userName).navigationBarTitleDisplayMode(.inline),
+                        destination: BoardView(sessionId: sessionId, currentUserName: userName, showCreateView: $showCreateView).navigationBarTitleDisplayMode(.inline),
                         isActive: $navigateToBoardView,
                         label: { EmptyView() }
                     )
@@ -202,9 +232,18 @@ struct CreateBoardView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Pano Eklenemedi"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        showCreateView = false
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.black)
+                    }
+                }
+            }
             .navigationTitle("Pano Oluştur")
-            
-
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -238,9 +277,6 @@ struct CreateBoardView: View {
     }
 }
 
-#Preview {
-    CreateBoardView()
-}
 
 
 

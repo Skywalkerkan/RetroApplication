@@ -8,29 +8,35 @@
 import SwiftUI
 
 struct BoardView: View {
+    @Environment(\.presentationMode) var presentationMode
 
+    @Binding private var showCreateView: Bool
     @State private var showSessionExpiredAlert = false
     @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var isAddBoarding: Bool = false
     @State private var addBoardTextField: String = ""
     @State private var currentUserName: String
+    @State private var chosenBackground: String
     @State private var showSettings = false
 
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
     var sessionId: String
     
-    init(sessionId: String, currentUserName: String) {
+    init(sessionId: String, currentUserName: String, showCreateView: Binding<Bool>, chosenBackground: String = "2") {
         self.sessionId = sessionId
         self.currentUserName = currentUserName
+        _showCreateView = showCreateView
+        self.chosenBackground = chosenBackground
     }
  
     var body: some View {
+
+        
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 4) {
-                        
                         ForEach(viewModel.boards.indices, id: \.self) { index in
                             DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false, currentUserName: currentUserName) { dropped, index, boardActualIndex in
                                 print(dropped.id ,index, boardActualIndex)
@@ -117,12 +123,17 @@ struct BoardView: View {
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
 
                 }
-            }.background(Color(red: 81/255, green: 94/255, blue: 132/255))
-                .scrollTargetBehavior(.viewAligned)
-                .safeAreaPadding(.horizontal, 8)
-
-
+            }
+            .background(
+                Image(chosenBackground) // Replace "your_image_name" with the actual image name in your assets
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            )
+            .scrollTargetBehavior(.viewAligned)
+                .safeAreaPadding(.horizontal, 0)
         }
+
         .onAppear {
             viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
@@ -140,8 +151,20 @@ struct BoardView: View {
             showSessionExpiredAlert = showAlert
         }
        // .navigationTitle(viewModel.session?.sessionName ?? "")
-        .navigationBarBackButtonHidden(isAddBoarding)
+        //.navigationBarBackButtonHidden(isAddBoarding)
+        .navigationBarBackButtonHidden()
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    if !showCreateView {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    showCreateView = false
+                }) {
+                    Image(systemName: "arrowshape.backward.fill")
+                        .foregroundColor(.black)
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if isAddBoarding {
                     Button(action: {
@@ -194,6 +217,7 @@ struct BoardView: View {
                 Image(systemName: "gear")
                     .imageScale(.large)
                     .padding(.leading, 16)
+                    .foregroundColor(.black)
             }
         )
         

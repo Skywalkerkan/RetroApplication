@@ -10,10 +10,12 @@ import SwiftUI
 struct AnimationButtonView: View {
     
     @State private var showButtons = false
+    @State private var showCreateView = false
     var onJoinPanel: () -> Void
 
     var body: some View {
         ZStack {
+            
             if showButtons {
                 Color.black.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
@@ -29,8 +31,11 @@ struct AnimationButtonView: View {
                 HStack {
                     Spacer()
                     ZStack {
+                        
                         if showButtons {
-                            NavigationLink(destination: CreateBoardView()) {
+                            Button(action: {
+                                showCreateView = true
+                            }) {
                                 VStack {
                                     Circle()
                                         .fill(Color.white)
@@ -52,6 +57,9 @@ struct AnimationButtonView: View {
                             }
                             .offset(y: -70)
                             .transition(.scale)
+                            .fullScreenCover(isPresented: $showCreateView) {
+                                CreateBoardView(showCreateView: $showCreateView)
+                            }
                         }
 
                         if showButtons {
@@ -93,6 +101,11 @@ struct AnimationButtonView: View {
                     }
                     .padding(16)
                 }
+            }
+        }
+        .onChange(of: showCreateView) { newValue in
+            if !showCreateView {
+                showButtons = false
             }
         }
         .onAppear() {
