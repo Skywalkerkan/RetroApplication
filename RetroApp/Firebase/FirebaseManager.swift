@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, sessionPassword: String, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, sessionPassword: String, sessionBackground: String, completion: @escaping (Bool) -> Void) {
         let createdAt = Timestamp(date: Date())
         let expiresAt: Timestamp?
 
@@ -22,7 +22,7 @@ class FirebaseManager {
             expiresAt = nil
         }
 
-        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword)
+        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword, sessionBackground: sessionBackground)
         
        // let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [])
 
@@ -402,6 +402,82 @@ class FirebaseManager {
                 print("Session does not exist or error occurred: \(error?.localizedDescription ?? "Unknown error")")
                 completion(false)
             }
+        }
+    }
+
+    func saveUserSession(user: User, completion: @escaping (Result<Void, Error>) -> Void) {
+        let deviceID = DeviceManager.shared.deviceID
+        let docRef = db.collection("Users").document(deviceID)
+
+        docRef.getDocument { (document, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else if let document = document, document.exists {
+                var sessions = document.get("sessions") as? [[String: Any]] ?? []
+                if !sessions.contains(where: { $0["sessionId"] as? String == user.sessionId }) {
+                    let newUserSession: [String: Any] = [
+                        "sessionId": user.sessionId,
+                        "sessionName": user.sessionName,
+                        "userName": user.userName,
+                        "backgroundImage": user.backgroundImage,
+                        "createdTime": user.createdTime
+                    ]
+                    sessions.append(newUserSession)
+                    docRef.updateData(["sessions": sessions]) { error in
+                        if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            completion(.success(()))
+                        }
+                    }
+                } else {
+                    completion(.success(()))
+                }
+            } else {
+                let newUserSession: [String: Any] = [
+                    "sessionId": user.sessionId,
+                    "sessionName": user.sessionName,
+                    "userName": user.userName,
+                    "backgroundImage": user.backgroundImage,
+                    "createdTime": user.createdTime
+                ]
+                docRef.setData(["sessions": [newUserSession]]) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchSessionIdsForUser(completion: @escaping (Result<[User], Error>) -> Void) {
+        let deviceID = DeviceManager.shared.deviceID
+        let docRef = db.collection("Users").document(deviceID)
+        
+        docRef.addSnapshotListener { documentSnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let document = documentSnapshot, document.exists else {
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])
+                completion(.failure(error))
+                return
+            }
+            
+            let sessionData = document.get("sessions") as? [[String: Any]] ?? []
+            let users = sessionData.compactMap { data -> User? in
+                guard let sessionId = data["sessionId"] as? String,
+                      let sessionName = data["sessionName"] as? String,
+                      let userName = data["userName"] as? String,
+                      let backgroundImage = data["backgroundImage"] as? String,
+                      let createdTime = data["createdTime"] as? Timestamp else { return nil }
+                return User(sessionId: sessionId, sessionName: sessionName, userName: userName, backgroundImage: backgroundImage, createdTime: createdTime)
+            }
+            completion(.success(users))
         }
     }
 

@@ -18,7 +18,16 @@ struct BoardView: View {
     @State private var currentUserName: String
     @State private var chosenBackground: String
     @State private var showSettings = false
-
+    
+    @State private var isAnonymous: Bool = false
+    @State private var isTimerActive: Bool = false
+    @State private var timerMinutes: Int = 0
+    @State private var isTimer = false
+    @State private var allowUserChange: Bool = false
+    @State private var lastTime: Date?
+    @State private var timeRemaining: Int = 0
+    @State private var timer: Timer?
+    
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
     var sessionId: String
@@ -32,7 +41,6 @@ struct BoardView: View {
  
     var body: some View {
 
-        
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
@@ -125,7 +133,7 @@ struct BoardView: View {
                 }
             }
             .background(
-                Image(chosenBackground) // Replace "your_image_name" with the actual image name in your assets
+                Image(viewModel.session?.sessionBackground ?? chosenBackground) // Replace "your_image_name" with the actual image name in your assets
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -133,11 +141,36 @@ struct BoardView: View {
             .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 0)
         }
+        
 
         .onAppear {
             viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
+            print(viewModel.session?.sessionBackground)
+          //  print(user)
             print("Started session expiration timer.")
+            viewModel.getSessionSettings(sessionId: sessionId) { success in
+                if success {
+                    if let session = viewModel.session {
+                        isAnonymous = session.isAnonym
+                        isTimer = session.isTimerActive ?? false
+                        isTimerActive = session.isTimerActive ?? false
+                        lastTime = session.timerExpiresDate?.dateValue()
+                        if isTimer {
+                            startTimer()
+                        }
+                    }
+                }
+            }
+        }
+        .onChange(of: viewModel.session) { newSession in
+            if let session = newSession {
+               // print("Session updated: \(session)")
+                let user = User(sessionId: sessionId, sessionName: viewModel.session?.sessionName ?? "Anonymous", userName: currentUserName, backgroundImage: viewModel.session?.sessionBackground ?? "1")
+                viewModel.saveUserSession(user: user)
+            } else {
+               // print("Session is nil")
+            }
         }
        /* .alert(isPresented: $showSessionExpiredAlert) {
             return Alert(
@@ -195,11 +228,13 @@ struct BoardView: View {
                 HStack {
                     Button(action: {
                         print("Stop button tapped")
+                        isTimerActive.toggle()
+                        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimerActive, timer: 600, allowUserChange: true)
                     }) {
                         Image(systemName: "pause.fill")
                             .foregroundColor(.black)
                     }
-                    Text("16 : 04")
+                    Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
                     Button(action: {
                         print("Play button tapped")
                     }) {
@@ -226,6 +261,27 @@ struct BoardView: View {
         })
         
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func startTimer() {
+        guard let lastTime = lastTime else { return }
+        
+        let currentTime = Date()
+        let timeInterval = lastTime.timeIntervalSince(currentTime)
+        timeRemaining = Int(max(timeInterval, 0))
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            } else {
+                stopTimer()
+            }
+        }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     func handleScrollIfNeeded(yPosition: CGFloat, in geometry: GeometryProxy) {
