@@ -20,7 +20,7 @@ struct MainView: View {
     @State private var navigateToBoardView = false
     @State private var showButtons = false
     @State private var showCrateView: Bool = false
-    @State private var chosenSession: String = ""
+    @State private var chosenSession: String?
     
     @State private var navigationPath = NavigationPath()
 
@@ -58,54 +58,73 @@ struct MainView: View {
                      }
 
                      Section(header: Text("Son Kullanılan Panolar")) {
-                         ForEach(items, id: \.self) { item in
+                         ForEach(viewModel.userSessions) { item in
                              HStack {
-                                 Image(item.sessionBackground)
+                                 Image(item.backgroundImage)
                                      .resizable()
                                      .scaledToFill()
                                      .frame(width: 50, height: 40)
                                      .cornerRadius(8)
                                      .clipped()
                                      .contentShape(Rectangle())
-                                 VStack(alignment: .leading ,spacing: 4) {
+                                 
+                                 VStack(alignment: .leading, spacing: 4) {
                                      Text(item.sessionName)
                                          .foregroundColor(.black)
                                          .font(.title3)
-                                     Text(item.sessionCreatedTime.formatted(date: .abbreviated, time: .omitted))
+                                     Text(item.createdTime.dateValue().formatted(date: .abbreviated, time: .omitted))
                                          .font(.footnote)
                                          .foregroundColor(.gray)
                                  }
                                  .padding(.leading, 16)
                                  .padding(.vertical, 4)
-                                 Button(action: {
-                                     chosenSession = item.sessionId
+                                 
+                                 Spacer()
+                                 
+                                /* Button(action: {
+                                     isLoading = true
+                                    // chosenSession = item.sessionId
                                      viewModel.joinSession(item.sessionId, sessionPassword: item.sessionPassword) { isValid in
                                          isLoading = false
-                                         isValidId = isValid
-                                         navigateToBoardView = true
-                                         print(item.sessionId)
-                                         /*if isValid {
-                                             print("Valid session ID")
+                                         if isValid {
+                                             isValidId = true
                                              navigateToBoardView = true
                                          } else {
-                                             print("Invalid session ID")
-                                         }*/
+                                             isValidId = false
+                                             navigateToBoardView = false
+                                         }
+                                         print(item.sessionId)
                                      }
                                  }) {
-
+                                     Text("Join")
+                                         .font(.headline)
+                                         .foregroundColor(.blue)
+                                 }*/
+                                 Button {
+                                     navigateToBoardView = true
+                                 } label: {
+                                     Text("")
                                  }
-                                 .background(
-                                    NavigationLink(destination: BoardView(sessionId: item.sessionId, currentUserName: item.userName, showCreateView: $showCrateView, chosenBackground: item.sessionBackground), isActive: $navigateToBoardView) {
-                                         EmptyView()
-                                     }
-                                 )
+
+                                 
+                                 NavigationLink(destination: BoardView(
+                                     sessionId: item.sessionId,
+                                     currentUserName: item.userName,
+                                     showCreateView: $showCrateView,
+                                     chosenBackground: item.backgroundImage
+                                 ), isActive: $navigateToBoardView) {
+                                     EmptyView()
+                                 }
                              }
+                             .padding(.vertical, 8)
+                             .background(Color.white)
+                             .clipShape(RoundedRectangle(cornerRadius: 8))
                          }
-                         .onDelete { indexes in
+                        /* .onDelete { indexes in
                              for index in indexes {
                                  deleteItem(items[index])
                              }
-                         }
+                         }*/
 
                      }
                  }
@@ -226,6 +245,7 @@ struct MainView: View {
              }
              .onAppear(){
                  showButtons = false
+                 viewModel.fetchUserSessions()
              }
              .navigationBarTitle("My List", displayMode: .inline)
          }

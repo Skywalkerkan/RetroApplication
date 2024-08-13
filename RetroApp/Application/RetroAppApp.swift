@@ -14,6 +14,7 @@ import SwiftData
 struct RetroAppApp: App {
     init() {
         FirebaseApp.configure()
+        DeviceManager.shared.initializeDeviceID()
     }
     var body: some Scene {
         WindowGroup {

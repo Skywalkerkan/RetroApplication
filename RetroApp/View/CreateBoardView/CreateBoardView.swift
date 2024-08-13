@@ -131,12 +131,7 @@ struct CreateBoardView: View {
                                 isColorPalettePresented = true
                             }
                         }
-                        .fullScreenCover(isPresented: $isColorPalettePresented) {
-                            ColorPaletteView(selectedIndex: $selectedColorIndex)
-                                .onChange(of: selectedColorIndex) { newIndex in
-                                    
-                                }
-                        }
+
                         
                         if isListVisible {
                             VStack {
@@ -209,6 +204,8 @@ struct CreateBoardView: View {
                     Button(action: {
                         sessionId = generateRandomSessionID(length: 6)
                         context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName, sessionBackground: "\(selectedColorIndex+1)"))
+                        let user = User(sessionId: sessionId, sessionName: sessionName, userName: userName, backgroundImage: "\(selectedColorIndex+1)")
+                        viewModel.saveUserSession(user: user)
                         createSession()
                         navigateToBoardView = true
                         //navigateToNewPage = true
@@ -229,6 +226,12 @@ struct CreateBoardView: View {
                     )
                 }
             }
+            .fullScreenCover(isPresented: $isColorPalettePresented) {
+                ColorPaletteView(selectedIndex: $selectedColorIndex)
+                    .onChange(of: selectedColorIndex) { newIndex in
+                        
+                    }
+            }
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Pano Eklenemedi"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
             }
@@ -248,7 +251,7 @@ struct CreateBoardView: View {
     }
     
     func createSession() {
-        viewModel.createSession(createdBy: userName, sessionId: sessionId, sessionPassword: sessionPassword, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym)
+        viewModel.createSession(createdBy: userName, sessionId: sessionId, sessionPassword: sessionPassword, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym, sessionBackground: "\(selectedColorIndex+1)")
         
         for retroName in viewModel.boardRetroNames {
             if retroName.key == chosenRetroStyle {

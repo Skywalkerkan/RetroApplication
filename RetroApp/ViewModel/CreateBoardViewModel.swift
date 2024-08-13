@@ -19,8 +19,8 @@ class CreateBoardViewModel: ObservableObject {
         "Happy - Meh - Sad": ["Happy", "Meh", "Sad"]
     ]
 
-    func createSession(createdBy: String?, sessionId: String, sessionPassword: String, timer: Int, sessionName: String, isAnonym: Bool) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword) { success in
+    func createSession(createdBy: String?, sessionId: String, sessionPassword: String, timer: Int, sessionName: String, isAnonym: Bool, sessionBackground: String) {
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword, sessionBackground: sessionBackground) { success in
             DispatchQueue.main.async {
                 if success {
                     self.sessionStatus = "Session created with ID: \(sessionId)"
@@ -50,6 +50,17 @@ class CreateBoardViewModel: ObservableObject {
                 print("ok")
             } else {
                 print("no")
+            }
+        }
+    }
+    
+    func saveUserSession(user: User) {
+        firebaseManager.saveUserSession(user: user) { result in
+            switch result {
+            case .success(_):
+                print("başarılı")
+            case .failure(let error):
+                print(error)
             }
         }
     }

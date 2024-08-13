@@ -20,17 +20,21 @@ struct ColorPaletteView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 16) {
-                ForEach(0..<images.count / 3, id: \.self) { rowIndex in
-                    HStack(spacing: 16) {
-                        ForEach(0..<3) { columnIndex in
-                            let index = rowIndex * 3 + columnIndex
+            ScrollView {
+                VStack(spacing: 16) {
+                    let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
+                    
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(images.indices, id: \.self) { index in
                             let imageName = images[index]
                             
                             Image(imageName)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: (UIScreen.main.bounds.width - (padding * 2) - (16 * 2)) / 3, height: (UIScreen.main.bounds.width - (padding * 2) - (16 * 2)) / 3)
+                                .frame(
+                                    width: (UIScreen.main.bounds.width - (padding * 2) - (16 * 2)) / 3,
+                                    height: (UIScreen.main.bounds.width - (padding * 2) - (16 * 2)) / 3
+                                )
                                 .cornerRadius(8)
                                 .clipped()
                                 .contentShape(Rectangle())
@@ -40,30 +44,28 @@ struct ColorPaletteView: View {
                                     presentationMode.wrappedValue.dismiss()
                                 }
                                 .overlay(
-                                    Group {
-                                        if selectedIndex == index {
-                                            Image(systemName: "checkmark")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 30, height: 30)
-                                                .foregroundColor(.white)
-                                                .padding(8)
-                                        }
-                                    }
+                                    selectedIndex == index
+                                    ? Image(systemName: "checkmark")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(.white)
+                                        .padding(8)
+                                    : nil
                                 )
                         }
                     }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
+                .padding(.horizontal, padding)
+                .padding(.vertical, 16)
             }
-            .padding(.horizontal, padding)
-            .padding(.vertical, 16)
             .navigationBarTitle("Renk Paleti Seçimi", displayMode: .inline)
             .navigationBarItems(leading: Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }) {
-                Image(systemName: "xmark")
+                Image(systemName: "arrowshape.backward.fill")
                     .foregroundColor(.black)
                     .padding(.leading, 10)
             })
