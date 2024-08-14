@@ -17,9 +17,16 @@ struct AnimationButtonView: View {
         ZStack {
             
             if showButtons {
-                Color.black.opacity(0.5)
-                    .edgesIgnoringSafeArea(.all)
-                    .transition(.opacity)
+                Button(action: {
+                    withAnimation {
+                        showButtons = false
+                    }
+                }) {
+                    Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+                        .transition(.opacity)
+                }
+                .buttonStyle(PlainButtonStyle())
             } else {
                 Color.black.opacity(0)
                     .edgesIgnoringSafeArea(.all)
@@ -84,6 +91,7 @@ struct AnimationButtonView: View {
                                         .font(.system(size: 14))
                                 }
                             }
+                            .offset(y: 10)
                             .offset(x: -70)
                             .transition(.scale)
                         }
@@ -93,10 +101,10 @@ struct AnimationButtonView: View {
                                 showButtons.toggle()
                             }
                         }) {
-                            Image(systemName: "plus.circle.fill")
+                            Image(systemName: showButtons ? "xmark.circle.fill" : "plus.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
-                                .foregroundColor(.cyan)
+                                .foregroundColor(showButtons ? .red : .cyan)
                         }
                     }
                     .padding(16)
@@ -113,8 +121,6 @@ struct AnimationButtonView: View {
         }
     }
 }
-
-
 /*
 struct AnimationButtonView_Previews: PreviewProvider {
     static var previews: some View {

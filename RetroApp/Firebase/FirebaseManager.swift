@@ -173,7 +173,7 @@ class FirebaseManager {
         }
     }
 
-    func addSettingToSession(byId sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timerMinutes: Int, allowUserChange: Bool, completion: @escaping  (Bool) -> Void) {
+    func addSettingToSession(byId sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timerMinutes: Int, timeRemains: Int?,  allowUserChange: Bool, completion: @escaping  (Bool) -> Void) {
         
         getSession(byId: sessionId) { [weak self] session, error in
             guard let self = self else { return }
@@ -192,14 +192,26 @@ class FirebaseManager {
             session.isAnonym = isAnonymous
             session.isTimerActive = isTimerActive
             session.allowUserChange = allowUserChange
+            session.timeRemains = timeRemains
+
             
-            if timerMinutes > 0 {
-                let currentDate = Date()
-                session.timerInitialTime = Timestamp(date: currentDate)
-                session.timerExpiresDate = Timestamp(date: currentDate.addingTimeInterval(TimeInterval(timerMinutes * 60)))
+            if let timeRemains = timeRemains, let initialTime = session.timerInitialTime {
+                let initialDate = initialTime.dateValue()
+                
+                let newExpiresDate = initialDate.addingTimeInterval(TimeInterval(timeRemains))
+                session.timerExpiresDate = Timestamp(date: newExpiresDate)
             } else {
-                session.timerInitialTime = nil
-                session.timerExpiresDate = nil
+                
+                
+                if timerMinutes > 0 {
+                    let currentDate = Date()
+                    //print(timeRemains)
+                    session.timerInitialTime = Timestamp(date: currentDate)
+                    session.timerExpiresDate = Timestamp(date: currentDate.addingTimeInterval(TimeInterval(timerMinutes)))
+                } else {
+                    session.timerInitialTime = nil
+                    session.timerExpiresDate = nil
+                }
             }
            // session.allowUserChange = allowUserChange
             

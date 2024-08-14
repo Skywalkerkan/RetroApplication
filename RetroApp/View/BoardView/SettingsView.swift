@@ -79,7 +79,7 @@ struct SettingsView: View {
                         Toggle("Timer", isOn: $isTimer)
                     }
                     
-                    if isTimerActive && isTimer {
+                    if (isTimerActive) && isTimer || ((timeRemaining) != 0){
                         
                         HStack(alignment: .center, spacing: 16) {
                             Text("Time Remaining:")
@@ -148,8 +148,12 @@ struct SettingsView: View {
                         isTimer = session.isTimerActive ?? false
                         isTimerActive = session.isTimerActive ?? false
                         lastTime = session.timerExpiresDate?.dateValue()
+                        timeRemaining = session.timeRemains ?? 0
                         if isTimer {
                             startTimer()
+                        }
+                        if timeRemaining != 0 && !isTimer{
+                            stopTimer()
                         }
                     }
                 }
@@ -188,7 +192,7 @@ struct SettingsView: View {
 
     
     func saveSettings() {
-        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimer, timer: timerMinutes, allowUserChange: true)
+        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimer, timer: timerMinutes*60, timeRemains: nil, allowUserChange: true)
         isTimerActive = isTimer
         startTimer()
     }

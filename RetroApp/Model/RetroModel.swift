@@ -16,6 +16,7 @@ struct Session: Identifiable, Codable, Equatable {
     var timerInitialTime: Timestamp?
     var timerExpiresDate: Timestamp?
     var isTimerActive: Bool?
+    var timeRemains: Int?
     var sessionName: String?
     var isAnonym: Bool
     var allowUserChange: Bool?
