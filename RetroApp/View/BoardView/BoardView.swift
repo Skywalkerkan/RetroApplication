@@ -146,7 +146,6 @@ struct BoardView: View {
         .onAppear {
             viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
-            print(viewModel.session?.sessionBackground)
           //  print(user)
             print("Started session expiration timer.")
             viewModel.getSessionSettings(sessionId: sessionId) { success in
@@ -155,6 +154,11 @@ struct BoardView: View {
                         isAnonymous = session.isAnonym
                         isTimer = session.isTimerActive ?? false
                         isTimerActive = session.isTimerActive ?? false
+                        timeRemaining = session.timeRemains ?? 0
+                        //print(timeRemaining)
+                        if timeRemaining != 0 {
+                            stopTimer()
+                        }
                         lastTime = session.timerExpiresDate?.dateValue()
                         if isTimer {
                             startTimer()
@@ -228,10 +232,25 @@ struct BoardView: View {
                 HStack {
                     Button(action: {
                         print("Stop button tapped")
-                        isTimerActive.toggle()
-                        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimerActive, timer: 600, allowUserChange: true)
+                        if isTimerActive {
+                            print("üstteki")
+                            stopTimer()
+                            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: timeRemaining, allowUserChange: true)
+                        } else {
+                            print("alttaki")
+                            if timeRemaining != 0{
+                                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: true, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                startTimer()
+                            } else {
+                                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                            }
+                        }
+                        if timeRemaining != 0{
+                            print("time remains \(timeRemaining)")
+                            isTimerActive.toggle()
+                        }
                     }) {
-                        Image(systemName: "pause.fill")
+                        Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
                             .foregroundColor(.black)
                     }
                     Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
@@ -264,17 +283,23 @@ struct BoardView: View {
     }
     
     private func startTimer() {
+        print(timeRemaining)
+
         guard let lastTime = lastTime else { return }
         
         let currentTime = Date()
         let timeInterval = lastTime.timeIntervalSince(currentTime)
-        timeRemaining = Int(max(timeInterval, 0))
+        timeRemaining = Int(max(timeInterval, 0)) + timeRemaining
+        if timeRemaining == 0 {
+            isTimerActive = false
+        }
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if timeRemaining > 0 {
                 timeRemaining -= 1
             } else {
                 stopTimer()
+                isTimerActive = false
             }
         }
     }
