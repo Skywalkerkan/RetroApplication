@@ -10,18 +10,17 @@ import SwiftUI
 struct DroppableList: View {
     let title: String
     let boardIndex: Int
-    @Binding var cards: [Card]
-    @State private var draggingCardIndex: Int?
-    @State private var boardInfoClicked: Bool = false
-    @State private var isMoveActive: Bool = false
-    @StateObject var viewModel = BoardViewModel()
-
     let isAnonym: Bool
     let action: ((Card, Int, Int) -> Void)?
     let sessionId: String
     let currentUserName: String
     @State var chosenCard: Card?
     
+    @Binding var cards: [Card]
+    @State private var draggingCardIndex: Int?
+    @State private var boardInfoClicked: Bool = false
+    @State private var isMoveActive: Bool = false
+    @StateObject var viewModel = BoardViewModel()
     @State private var cellHeight: CGFloat = 0
     @State var cellHeights = [CGFloat]()
     @State private var cardId: String = ""
@@ -78,7 +77,6 @@ struct DroppableList: View {
                     }
                     .frame(width: 270, height: 40)
                     .cornerRadius(4)
-                    //.background(Color(red: 81/255, green: 94/255, blue: 132/255))
                     .zIndex(6)
                     
                     Button(action: {
@@ -108,8 +106,6 @@ struct DroppableList: View {
                         }
                     }
                     
-                    
-
                     ScrollViewReader { proxy in
                         List {
                             if cards.isEmpty {
@@ -135,16 +131,6 @@ struct DroppableList: View {
                                             cardContext = card.description
                                             showingBottomSheet = true
                                         }
-                                        .onPreferenceChange(SizePreferenceKey.self) { newSize in
-                                            DispatchQueue.main.async {
-                                                print("cardlarım \(boardIndex) \(cards)")
-                                                print("Card height: \(newSize) \(boardIndex)")
-                                                self.cellHeight = newSize
-                                                cellHeights.append(newSize)
-                                                print("Sayı \(cellHeights.count)")
-                                            }
-                                        }
-                                        .id(card.id)
                                 }
                                 .onMove(perform: moveCard)
                                 .onInsert(of: ["public.text"], perform: dropCard)
@@ -179,21 +165,12 @@ struct DroppableList: View {
                 
                 .onChange(of: isChangedDescription) { newValue in
                     viewModel.updateCardName(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId, newCardDescription: cardContext)
+                    showingBottomSheet = false
                 }
-                
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
         }
-    }
-    
-    func calculateHeight(cellHeights: [CGFloat]) -> CGFloat {
-        var cellHeight: CGFloat = 0
-        for cell in cellHeights {
-            cellHeight += cell
-            cellHeight += 26
-        }
-        return cellHeight + 50
     }
 
     struct EmptyPlaceholder: View {
@@ -226,7 +203,6 @@ struct DroppableList: View {
             }
         }
     }
-
     
     func dropOnEmptyList(items: [NSItemProvider]) -> Bool {
         dropCard(at: cards.endIndex, items)
