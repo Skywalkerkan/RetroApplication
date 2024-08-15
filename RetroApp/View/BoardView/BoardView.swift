@@ -72,7 +72,7 @@ struct BoardView: View {
                                     Text("Board Oluştur")
                                         .frame(width: 300, height: 50)
                                 }
-                                .background(Color.black)
+                                .background(Color.white)
                                 .cornerRadius(8)
                                 Spacer()
                             } else {
@@ -100,13 +100,12 @@ struct BoardView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             )
+            .background(Color.black)
             .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 0)
         }
         .onAppear {
-            viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
-            print("Started session expiration timer.")
             viewModel.getSessionSettings(sessionId: sessionId) { success in
                 if success {
                     if let session = viewModel.session {
