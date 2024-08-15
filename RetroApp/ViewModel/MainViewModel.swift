@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class MainViewModel: ObservableObject {
-    private var firebaseManager = FirebaseManager()
+    var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false
     @Published var userSessions = [User]()
@@ -23,7 +23,7 @@ class MainViewModel: ObservableObject {
                     completion(true)
                 } else {
                     self.isItValidId = false
-                    print("Session expired or does not exist")
+                    print("Session can not be found")
                     completion(false)
                 }
             }

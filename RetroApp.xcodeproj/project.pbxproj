@@ -18,10 +18,12 @@
 		DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */; };
 		DEA9EBFB2C6B350600D7964D /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9EBFA2C6B350600D7964D /* DeviceManager.swift */; };
 		DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */; };
+		DEAB73DE2C6DD2BD00A021B6 /* MainViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
 		DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC009E22C623E4B0023513D /* BottomSheetView.swift */; };
+		DECC12CC2C6D083500C47A69 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECC12CB2C6D083500C47A69 /* NoDataView.swift */; };
 		DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */; };
 		DEF7EC512C513E3E0036BBD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF7EC502C513E3E0036BBD8 /* MainView.swift */; };
 		DEF7EC532C513E400036BBD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF7EC522C513E400036BBD8 /* Assets.xcassets */; };
@@ -97,10 +99,12 @@
 		DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		DEA9EBFA2C6B350600D7964D /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletView.swift; sourceTree = "<group>"; };
+		DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewTest.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		DEC009E22C623E4B0023513D /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
+		DECC12CB2C6D083500C47A69 /* NoDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataView.swift; sourceTree = "<group>"; };
 		DEF7EC4B2C513E3E0036BBD8 /* RetroApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF7EC4E2C513E3E0036BBD8 /* RetroAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAppApp.swift; sourceTree = "<group>"; };
 		DEF7EC502C513E3E0036BBD8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -199,6 +203,14 @@
 			path = DeviceManager;
 			sourceTree = "<group>";
 		};
+		DEAB73DC2C6DD28C00A021B6 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
 		DEB257E52C52668200CC3B51 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +269,7 @@
 		DEF7EC632C513E400036BBD8 /* RetroAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				DEAB73DC2C6DD28C00A021B6 /* MainView */,
 				DEF7EC642C513E400036BBD8 /* RetroAppTests.swift */,
 			);
 			path = RetroAppTests;
@@ -330,6 +343,7 @@
 				DEF7EC502C513E3E0036BBD8 /* MainView.swift */,
 				DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */,
 				DE093F472C69FBDE00BCA5E2 /* PanelView.swift */,
+				DECC12CB2C6D083500C47A69 /* NoDataView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -514,6 +528,7 @@
 				DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */,
 				DEF7ECCB2C5226850036BBD8 /* BoardView.swift in Sources */,
 				DEF7ECBF2C5142AD0036BBD8 /* RetroModel.swift in Sources */,
+				DECC12CC2C6D083500C47A69 /* NoDataView.swift in Sources */,
 				DEF7ECBD2C51422A0036BBD8 /* MainViewModel.swift in Sources */,
 				DEA9EBFB2C6B350600D7964D /* DeviceManager.swift in Sources */,
 				DEF7ECD52C525A370036BBD8 /* CreateBoardView.swift in Sources */,
@@ -540,6 +555,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEF7EC652C513E400036BBD8 /* RetroAppTests.swift in Sources */,
+				DEAB73DE2C6DD2BD00A021B6 /* MainViewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
