@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DE093F482C69FBDE00BCA5E2 /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE093F472C69FBDE00BCA5E2 /* PanelView.swift */; };
 		DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE45197C2C6389CD006BDBFE /* AddCardView.swift */; };
 		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
 		DEA2EF832C627BBB0025CD00 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */; };
@@ -88,7 +87,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DE093F472C69FBDE00BCA5E2 /* PanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
 		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
 		DEA2EF822C627BBB0025CD00 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
@@ -342,7 +340,6 @@
 			children = (
 				DEF7EC502C513E3E0036BBD8 /* MainView.swift */,
 				DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */,
-				DE093F472C69FBDE00BCA5E2 /* PanelView.swift */,
 				DECC12CB2C6D083500C47A69 /* NoDataView.swift */,
 			);
 			path = MainView;
@@ -521,7 +518,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE093F482C69FBDE00BCA5E2 /* PanelView.swift in Sources */,
 				DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */,
 				DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */,
 				DEF7ECCF2C5226F40036BBD8 /* DraggableCell.swift in Sources */,

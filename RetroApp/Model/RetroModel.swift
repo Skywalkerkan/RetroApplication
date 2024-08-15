@@ -53,13 +53,3 @@ struct User: Identifiable, Hashable, Codable {
     var backgroundImage: String
     var createdTime: Timestamp = Timestamp()
 }
-
-
-/*
-struct ListItem: Identifiable, Codable {
-    @DocumentID var id: String?
-    var name: String
-    var description: String?
-    var dueDate: Date?
-    var likes: Int
-}*/
