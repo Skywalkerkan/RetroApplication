@@ -38,57 +38,26 @@ struct BoardView: View {
     }
  
     var body: some View {
-
         VStack {
             ScrollView(.horizontal) {
                 ScrollViewReader { proxy in
                     HStack(spacing: 4) {
                         ForEach(viewModel.boards.indices, id: \.self) { index in
-                            DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false, currentUserName: currentUserName) { dropped, index, boardActualIndex in
+                            DroppableList(
+                                viewModel.boards[index].name,
+                                boardIndex: index,
+                                cards: $viewModel.boards[index].cards,
+                                sessionId: self.sessionId,
+                                isAnonym: viewModel.session?.isAnonym ?? false,
+                                currentUserName: currentUserName
+                            ) { dropped, index, boardActualIndex in
                                 
-                                var boardIndex = 0
-                                var cardIndex = 0
-                                var cardIndex2 = 0
-                                var boardIndex2 = 0
-                                var found = false
-                                
-                                var cardActual: Card?
-                                for board in viewModel.boards {
-                                    for card in board.cards {
-                                        if card.id == dropped.id {
-                                            cardActual = Card(id: card.id, description: card.description, userName: card.userName)
-                                            found = true
-                                            break
-                                        }
-                                        cardIndex += 1
-                                    }
-                                    if found { break }
-                                    cardIndex = 0
-                                    boardIndex += 1
-                                }
-                                
-                                for board in viewModel.boards {
-                                    for card in board.cards {
-                                        if card.id == dropped.id {
-                                            print("cardid \(card.id)")
-                                            break
-                                        }
-                                        print(card.id)
-                                    }
-                                    boardIndex2 += 1
-                                }
-                                
-                                viewModel.boards = viewModel.boards.map { board in
-                                    var updatedBoard = board
-                                    print()
-                                    updatedBoard.cards.removeAll { $0.id == dropped.id }
-                                    return updatedBoard
-                                }
-                                
-                                viewModel.boards[boardActualIndex].cards.insert(cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"), at: index)
-                                
-                                viewModel.updateBoards(sessionId: sessionId, boards: viewModel.boards)
-                                
+                                handleDroppedCard(
+                                    dropped: dropped,
+                                    index: index,
+                                    boardActualIndex: boardActualIndex
+                                )
+        
                             }
                             .padding(.top, -4)
                             .frame(width: 300)
@@ -96,7 +65,6 @@ struct BoardView: View {
                         
                         VStack {
                             if !isAddBoarding {
-                                
                                 Button {
                                     isAddBoarding.toggle()
                                     isTextFieldFocused.toggle()
@@ -118,15 +86,12 @@ struct BoardView: View {
                                             .stroke(Color.gray, lineWidth: 0.5)
                                     )
                                     .focused($isTextFieldFocused)
-
                                 Spacer()
-
                             }
                         }
                     }
                     .scrollTargetLayout()
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
-
                 }
             }
             .background(
@@ -138,8 +103,6 @@ struct BoardView: View {
             .scrollTargetBehavior(.viewAligned)
                 .safeAreaPadding(.horizontal, 0)
         }
-        
-
         .onAppear {
             viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
@@ -267,6 +230,40 @@ struct BoardView: View {
             SettingsView(sessionId: sessionId)
         }
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func handleDroppedCard(dropped: Card, index: Int, boardActualIndex: Int) {
+        var boardIndex = 0
+        var cardIndex = 0
+        var found = false
+        var cardActual: Card?
+
+        for board in viewModel.boards {
+            for card in board.cards {
+                if card.id == dropped.id {
+                    cardActual = card
+                    found = true
+                    break
+                }
+                cardIndex += 1
+            }
+            if found { break }
+            cardIndex = 0
+            boardIndex += 1
+        }
+
+        viewModel.boards = viewModel.boards.map { board in
+            var updatedBoard = board
+            updatedBoard.cards.removeAll { $0.id == dropped.id }
+            return updatedBoard
+        }
+
+        viewModel.boards[boardActualIndex].cards.insert(
+            cardActual ?? Card(id: "12345", description: "12345", userName: "Erkan1"),
+            at: index
+        )
+
+        viewModel.updateBoards(sessionId: sessionId, boards: viewModel.boards)
     }
     
     private func startTimer() {
