@@ -14,6 +14,7 @@ struct BottomSheetView: View {
     @State var cardCreatedTime: String
     @State var cardCreatedBy: String
     @Binding var isChangedDescription: Bool
+    @FocusState private var isTextEditorFocused: Bool
 
     var body: some View {
         ZStack {
@@ -27,9 +28,12 @@ struct BottomSheetView: View {
                     .foregroundColor(.black)
                     .font(.body)
                     .background(Color.white)
+                    .focused($isTextEditorFocused)
+                    .onAppear {
+                        isTextEditorFocused = true
+                    }
             }
             .padding(8)
-            
         }
         
         VStack {
@@ -55,13 +59,4 @@ struct BottomSheetView: View {
         }
     }
 }
-
-/*
-struct BottomSheetView_Previews: PreviewProvider {
-    @State static var descriptionString = "Initial text"
-    
-    static var previews: some View {
-        BottomSheetView(cardContext: "Erkan")
-    }
-}*/
 

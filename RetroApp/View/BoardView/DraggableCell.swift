@@ -17,7 +17,6 @@ struct DraggableCellView: View {
                 if !isAnonym {
                     HStack {
                         Image(systemName: "person.circle")
-                        
                         Text(card.userName)
                     }
                     
@@ -33,16 +32,8 @@ struct DraggableCellView: View {
                     .onDrag { NSItemProvider(object: card.id as NSString) }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
-                    .background(GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: SizePreferenceKey.self, value: geometry.size.height)
-                            .onChange(of: geometry.size.height) { newSize in
-                                //print("Card height: \(newSize)")
-                            }
-                    })
-                    .font(.subheadline)
+                    .font(.headline)
                     .foregroundColor(.black)
-                   // .padding(.top, 6)
 
             }
             .padding(.horizontal, 12)
@@ -50,41 +41,3 @@ struct DraggableCellView: View {
             .background(.white)
     }
 }
-
-struct SizePreferenceKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
-struct MeasureSizeModifier: ViewModifier {
-    @Binding var size: CGFloat
-
-    func body(content: Content) -> some View {
-        content
-            .background(GeometryReader { geometry in
-                Color.clear
-                    .preference(key: SizePreferenceKey.self, value: geometry.size.height)
-            })
-            .onPreferenceChange(SizePreferenceKey.self) { newSize in
-                DispatchQueue.main.async {
-                    self.size = newSize
-                    print("Measured height: \(newSize)")
-                }
-            }
-    }
-}
-
-extension View {
-    func measureSize(size: Binding<CGFloat>) -> some View {
-        self.modifier(MeasureSizeModifier(size: size))
-    }
-}
-
-
-/*
-#Preview {
-    DraggableCellView(card: Card(id: "123321525", description: "asdadsfas", userName: "Erkan"), isAnonym: true)
-}*/

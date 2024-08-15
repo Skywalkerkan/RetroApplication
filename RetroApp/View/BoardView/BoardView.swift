@@ -12,7 +12,6 @@ struct BoardView: View {
 
     @Binding private var showCreateView: Bool
     @State private var showSessionExpiredAlert = false
-    @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var isAddBoarding: Bool = false
     @State private var addBoardTextField: String = ""
     @State private var currentUserName: String
@@ -46,7 +45,6 @@ struct BoardView: View {
                     HStack(spacing: 4) {
                         ForEach(viewModel.boards.indices, id: \.self) { index in
                             DroppableList(viewModel.boards[index].name, boardIndex: index, cards: $viewModel.boards[index].cards, sessionId: self.sessionId, isAnonym: viewModel.session?.isAnonym ?? false, currentUserName: currentUserName) { dropped, index, boardActualIndex in
-                                print(dropped.id ,index, boardActualIndex)
                                 
                                 var boardIndex = 0
                                 var cardIndex = 0
@@ -145,7 +143,6 @@ struct BoardView: View {
         .onAppear {
             viewModel.startSessionExpirationTimer(for: sessionId)
             viewModel.fetchBoards(sessionId: sessionId)
-          //  print(user)
             print("Started session expiration timer.")
             viewModel.getSessionSettings(sessionId: sessionId) { success in
                 if success {
@@ -173,13 +170,6 @@ struct BoardView: View {
                 
             }
         }
-       /* .alert(isPresented: $showSessionExpiredAlert) {
-            return Alert(
-                title: Text("Oturum Süresi Doldu"),
-                message: Text("Bu oturumun süresi doldu. Lütfen yeni bir oturum oluşturun."),
-                dismissButton: .default(Text("Tamam"))
-            )
-        }*/
         .onReceive(viewModel.$showSessionExpiredAlert) { showAlert in
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
@@ -205,6 +195,7 @@ struct BoardView: View {
                         addBoardTextField = ""
                     }) {
                         Image(systemName: "checkmark")
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -214,6 +205,7 @@ struct BoardView: View {
                         isAddBoarding.toggle()
                     }) {
                         Image(systemName: "xmark")
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -224,36 +216,38 @@ struct BoardView: View {
             }
             
             ToolbarItem(placement: .principal) {
-                HStack {
-                    Button(action: {
-                        print("Stop button tapped")
-                        if isTimerActive {
-                            print("üstteki")
-                            stopTimer()
-                            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: timeRemaining, allowUserChange: true)
-                        } else {
-                            print("alttaki")
-                            if timeRemaining != 0{
-                                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: true, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
-                                startTimer()
+                if !isAddBoarding {
+                    HStack {
+                        Button(action: {
+                            print("Stop button tapped")
+                            if isTimerActive {
+                                print("üstteki")
+                                stopTimer()
+                                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: timeRemaining, allowUserChange: true)
                             } else {
-                                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                print("alttaki")
+                                if timeRemaining != 0{
+                                    viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: true, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                    startTimer()
+                                } else {
+                                    viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                }
                             }
+                            if timeRemaining != 0{
+                                print("time remains \(timeRemaining)")
+                                isTimerActive.toggle()
+                            }
+                        }) {
+                            Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
+                                .foregroundColor(.black)
                         }
-                        if timeRemaining != 0{
-                            print("time remains \(timeRemaining)")
-                            isTimerActive.toggle()
+                        Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
+                        Button(action: {
+                            print("Play button tapped")
+                        }) {
+                            Image(systemName: "stop.fill")
+                                .foregroundColor(.black)
                         }
-                    }) {
-                        Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
-                            .foregroundColor(.black)
-                    }
-                    Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
-                    Button(action: {
-                        print("Play button tapped")
-                    }) {
-                        Image(systemName: "stop.fill")
-                            .foregroundColor(.black)
                     }
                 }
             }
@@ -269,11 +263,9 @@ struct BoardView: View {
                     .foregroundColor(.black)
             }
         )
-        
-        .fullScreenCover(isPresented: $showSettings, content: {
+        .fullScreenCover(isPresented: $showSettings) {
             SettingsView(sessionId: sessionId)
-        })
-        
+        }
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -302,43 +294,6 @@ struct BoardView: View {
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
-    }
-    
-    func handleScrollIfNeeded(yPosition: CGFloat, in geometry: GeometryProxy) {
-        print(UIScreen.main.bounds.width)
-
-        guard let proxy = scrollViewProxy else { return }
-        let screenHeight = UIScreen.main.bounds.height
-        let scrollThreshold: CGFloat = 30
-        let scrollAmount: CGFloat = 20
-        if yPosition < scrollThreshold {
-            withAnimation(.linear(duration: 0.1)) {
-                proxy.scrollTo(yPosition - scrollAmount, anchor: .top)
-            }
-        } else if yPosition > screenHeight - scrollThreshold {
-            withAnimation(.linear(duration: 0.1)) {
-                proxy.scrollTo(yPosition + scrollAmount, anchor: .bottom)
-            }
-        }
-    }
-
-    func handleScrollIfNeeded(xPosition: CGFloat, in geometry: GeometryProxy) {
-        print(UIScreen.main.bounds.width)
-
-        guard let proxy = scrollViewProxy else { return }
-        let screenWidth = UIScreen.main.bounds.width
-        let scrollThreshold: CGFloat = 30
-        let scrollAmount: CGFloat = 20
-        print(scrollThreshold)
-        if xPosition < scrollThreshold {
-            withAnimation(.linear(duration: 0.1)) {
-                proxy.scrollTo(xPosition - scrollAmount, anchor: .leading)
-            }
-        } else if xPosition > screenWidth - scrollThreshold {
-            withAnimation(.linear(duration: 0.1)) {
-                proxy.scrollTo(xPosition + scrollAmount, anchor: .trailing)
-            }
-        }
     }
 }
 
