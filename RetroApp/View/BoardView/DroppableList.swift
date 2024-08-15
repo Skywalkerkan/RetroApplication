@@ -15,7 +15,6 @@ struct DroppableList: View {
     let sessionId: String
     let currentUserName: String
     @State var chosenCard: Card?
-    
     @Binding var cards: [Card]
     @State private var draggingCardIndex: Int?
     @State private var boardInfoClicked: Bool = false
@@ -85,7 +84,7 @@ struct DroppableList: View {
                         isAddCardViewVisible.toggle()
                     }) {
                         Image(systemName: "plus")
-                            .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
+                            .foregroundColor(.black)
                             .frame(width: 268, height: 30)
                             .cornerRadius(2)
                     }
