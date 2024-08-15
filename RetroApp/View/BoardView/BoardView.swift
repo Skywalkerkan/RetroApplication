@@ -133,7 +133,7 @@ struct BoardView: View {
                 }
             }
             .background(
-                Image(viewModel.session?.sessionBackground ?? chosenBackground) // Replace "your_image_name" with the actual image name in your assets
+                Image(viewModel.session?.sessionBackground ?? chosenBackground)
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

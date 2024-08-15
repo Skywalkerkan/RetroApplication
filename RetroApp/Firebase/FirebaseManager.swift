@@ -24,8 +24,6 @@ class FirebaseManager {
 
         let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword, sessionBackground: sessionBackground)
         
-       // let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, expiresAt: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [])
-
         do {
             try db.collection("sessions").document(sessionId).setData(from: newSession) { error in
                 if let error = error {
@@ -74,16 +72,6 @@ class FirebaseManager {
             } else {
                 completion(false)
             }
-            
-           /* if let expiresAt = session.expiresAt {
-                if currentTime.compare(expiresAt) == .orderedAscending {
-                    completion(true)
-                } else {
-                    completion(false)
-                }
-            } else {
-                completion(true)
-            }*/
         }
     }
 
@@ -205,7 +193,6 @@ class FirebaseManager {
                 
                 if timerMinutes > 0 {
                     let currentDate = Date()
-                    //print(timeRemains)
                     session.timerInitialTime = Timestamp(date: currentDate)
                     session.timerExpiresDate = Timestamp(date: currentDate.addingTimeInterval(TimeInterval(timerMinutes)))
                 } else {
@@ -213,7 +200,6 @@ class FirebaseManager {
                     session.timerExpiresDate = nil
                 }
             }
-           // session.allowUserChange = allowUserChange
             
             do {
                 try db.collection("sessions").document(sessionId).setData(from: session) { error in
