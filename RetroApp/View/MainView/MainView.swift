@@ -12,7 +12,7 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @State private var showSessionFinder = false
     @State private var sessionId: String = ""
-    @State private var sessionPassword: String = "123456"
+    @State private var sessionPassword: String = ""
     @State private var userName: String = ""
     @State private var isSecure = true
     @State private var isLoading = false
@@ -20,10 +20,10 @@ struct MainView: View {
     @State private var navigateToBoardView = false
     @State private var showButtons = false
     @State private var showCrateView: Bool = false
-    @State private var chosenSession: String?
+    @State private var showAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
     
-    @State private var navigationPath = NavigationPath()
-
     @Query private var items: [SessionPanel]
     @Environment(\.modelContext) var context
     
@@ -134,6 +134,9 @@ struct MainView: View {
                                         .padding(12)
                                         .background(Color(red: 0.96, green: 0.96, blue: 0.96))
                                         .cornerRadius(8)
+                                        .onChange(of: sessionId) { newValue in
+                                            sessionId = newValue.uppercased()
+                                        }
                                 }
                                 .padding([.leading, .trailing], 24)
                             }
@@ -174,14 +177,24 @@ struct MainView: View {
                             HStack {
                                 NavigationLink(destination: BoardView(sessionId: self.sessionId, currentUserName: userName, showCreateView: $showCrateView), isActive: $isValidId) {
                                     Button(action: {
-                                        isLoading = true
-                                        viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { isValid in
-                                            isLoading = false
-                                            isValidId = isValid
-                                            if isValid {
-                                                print("Valid session ID")
-                                            } else {
-                                                print("Invalid session ID")
+                                        print(sessionId, sessionPassword, userName)
+                                        if sessionId.isEmpty || sessionPassword.isEmpty || userName.isEmpty {
+                                            alertTitle = "Missing Information"
+                                            alertMessage = "Please fill in all required fields."
+                                            showAlert = true
+                                        } else {
+                                            isLoading = true
+                                            viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { isValid in
+                                                isLoading = false
+                                                isValidId = isValid
+                                                if isValid {
+                                                    print("Valid session ID")
+                                                } else {
+                                                    print("Invalid session ID")
+                                                    alertTitle = "Invalid Session"
+                                                    alertMessage = "The session ID or password is incorrect. Please try again."
+                                                    showAlert = true
+                                                }
                                             }
                                         }
                                     }) {
@@ -201,6 +214,13 @@ struct MainView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.top, 4)
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text(alertTitle),
+                                    message: Text(alertMessage),
+                                    dismissButton: .default(Text("OK"))
+                                )
+                            }
                         }
                         .frame(width: 300, height: 330)
                         .background(.white)
@@ -212,6 +232,7 @@ struct MainView: View {
             }
             .onAppear {
                 showButtons = false
+                showSessionFinder = false
                 viewModel.fetchUserSessions()
             }
             .navigationBarTitle("My List", displayMode: .inline)

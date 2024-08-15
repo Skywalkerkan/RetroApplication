@@ -159,14 +159,6 @@ struct SettingsView: View {
                 }
             }
         }
-        .onChange(of: isTimer) {
-          /*  if isTimer == false && isTimerActive == true {
-                stopTimer()
-                print("stopluyor")
-            } else {
-                startTimer()
-            }*/
-        }
     }
     
     private func startTimer() {
@@ -197,9 +189,3 @@ struct SettingsView: View {
         startTimer()
     }
 }
-
-
-/*
-#Preview {
-    SettingsView()
-}*/

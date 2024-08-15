@@ -163,8 +163,6 @@ struct DroppableList: View {
                         .contentMargins(.vertical, 10)
                         .shadow(color: .black.opacity(0.2), radius: 3, x: 2, y: 2)
                         .zIndex(2)
-                        // .frame(maxHeight: min(geometry.size.height - 70, calculateHeight(cellHeights: cellHeights) /* CGFloat(cards.count * 70 + 50)*/))
-
                         .listRowSpacing(8)
                     }
                 }

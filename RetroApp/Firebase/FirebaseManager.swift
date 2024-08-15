@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, sessionName: String, isAnonym: Bool, sessionPassword: String, sessionBackground: String, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, isTimerActive: Bool, sessionName: String, isAnonym: Bool, sessionPassword: String, sessionBackground: String, completion: @escaping (Bool) -> Void) {
         let createdAt = Timestamp(date: Date())
         let expiresAt: Timestamp?
 
@@ -22,7 +22,7 @@ class FirebaseManager {
             expiresAt = nil
         }
 
-        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword, sessionBackground: sessionBackground)
+        let newSession = Session(id: sessionId, createdBy: createdBy, createdAt: createdAt, timerInitialTime: createdAt, timerExpiresDate: expiresAt, isTimerActive: isTimerActive, sessionName: sessionName, isAnonym: isAnonym, boards: [], sessionPassword: sessionPassword, sessionBackground: sessionBackground)
         
         do {
             try db.collection("sessions").document(sessionId).setData(from: newSession) { error in

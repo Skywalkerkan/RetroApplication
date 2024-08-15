@@ -17,6 +17,7 @@ struct CreateBoardView: View {
     @State private var sessionName: String = ""
     @State private var userName: String = ""
     @State private var showAlert = false
+    @State private var alertTitle = ""
     @State private var alertMessage: String = ""
     @State private var navigateToBoardView = false
     @State private var isListVisible: Bool = false
@@ -24,9 +25,10 @@ struct CreateBoardView: View {
     @State private var chosenRetroIndex: Int = 0
     @State private var isAnonym: Bool = false
     @State private var isTimer: Bool = false
-    @State private var timeValue: Double = 5
     @State private var sessionId: String = ""
-    @State private var sessionPassword: String = "123456"
+    @State private var sessionPassword: String = ""
+    @State private var timerMinutes: Int = 5
+    @State private var timerMinutesInput: String = "5"
 
     @ObservedObject var viewModel = CreateBoardViewModel()
     @State private var item = SessionPanel()
@@ -37,125 +39,122 @@ struct CreateBoardView: View {
         NavigationView {
             VStack {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Panel İsmi")
-                            .font(.headline)
-                            .padding(.top, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(.gray)
+                    VStack(alignment: .leading, spacing: 16) {
                         
-                        TextField("Enter board name", text: $sessionName)
-                            .padding(12)
-                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 0.5)
-                            )
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Session Name")
+                                .font(.headline)
+                            TextField("Enter session name", text: $sessionName)
+                                .padding(12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color(.lightGray), lineWidth: 0.5)
+                                )
+                        }
                         
-                        Text("Görünecek Kullanıcı Adı")
-                            .font(.headline)
-                            .padding(.top, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(.gray)
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Session Password")
+                                .font(.headline)
+                            SecureField("Enter session password", text: $sessionPassword)
+                                .padding(12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color(.lightGray), lineWidth: 0.5)
+                                )
+                        }
                         
-                        TextField("Nick Name", text: $userName)
-                            .padding(12)
-                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 0.5)
-                            )
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("User Nickname")
+                                .font(.headline)
+                            TextField("Enter your nickname", text: $userName)
+                                .padding(12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color(.lightGray), lineWidth: 0.5)
+                                )
+                        }
                         
-                        Text("Session Password")
-                            .font(.headline)
-                            .padding(.top, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(.gray)
-                        
-                        TextField("Password", text: $sessionPassword)
-                            .padding(12)
-                            .background(Color(red: 0.99, green: 0.99, blue: 0.99))
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 0.5)
-                            )
-                        
-                        Text("Retro Style")
-                            .font(.headline)
-                            .padding(.top, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(.gray)
-                        
-                        Rectangle()
-                            .fill(Color(red: 0.99, green: 0.99, blue: 0.99))
-                            .frame(maxWidth: .infinity, maxHeight: 50)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray, lineWidth: 0.5)
-                            )
-                            .overlay(
-                                HStack {
-                                    Text(chosenRetroStyle)
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                        .padding(.leading, 16)
-                                    Spacer()
-                                }
-                            )
-                            .frame(minHeight: 50)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Choose Retro Style")
+                                .font(.headline)
+                            
+                            Button(action: {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
                                     isListVisible.toggle()
                                 }
+                            }) {
+                                HStack {
+                                    Text(chosenRetroStyle.isEmpty ? "Select option" : chosenRetroStyle)
+                                        .foregroundColor(chosenRetroStyle.isEmpty ? .gray : .black)
+                                    Spacer()
+                                    Image(systemName: isListVisible ? "chevron.up" : "chevron.down")
+                                        .foregroundColor(.gray)
+                                }
+                                .padding(.vertical, 14)
+                                .padding(.horizontal, 12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color(.lightGray), lineWidth: 0.5)
+                                )
                             }
-                        
-                        VStack {
-                            HStack {
-                                Text("Pano Arkaplanı")
-                                    .font(.headline)
-                                    .foregroundStyle(.gray)
-                                Spacer()
-                                Image("\((selectedColorIndex ?? 0)+1)")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 30, height: 30)
-                                    .cornerRadius(8)
-                                    .clipped()
-                            }
-                            .padding(.vertical, 8)
-                            .onTapGesture {
-                                isColorPalettePresented = true
-                            }
-                        }
-
-                        
-                        if isListVisible {
-                            VStack {
-                                List {
-                                    ForEach(viewModel.retroStyles, id: \.self) { style in
-                                        Button {
-                                            print(style)
-                                            chosenRetroStyle = style
-                                            isListVisible.toggle()
-                                        } label: {
-                                            Text("\(style)")
+                            
+                            if isListVisible {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    
+                                    ForEach(viewModel.retroStyles.indices, id: \.self) { index in
+                                        Text("\(viewModel.retroStyles[index])")
+                                            .padding(12)
+                                            .frame(maxWidth: .infinity)
+                                            .background(Color.clear)
+                                            .onTapGesture {
+                                                chosenRetroStyle = "\(viewModel.retroStyles[index])"
+                                                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
+                                                    isListVisible = false
+                                                }
+                                            }
+                                        if index != 4 {
+                                            Divider()
                                         }
-                                        
                                     }
                                 }
-                                .listStyle(PlainListStyle())
-                                .background(Color.white)
-                                .cornerRadius(10)
-                                .shadow(radius: 10)
-                                .frame(width: UIScreen.main.bounds.width - 32, height: 180)
-                                .transition(.move(edge: .bottom))
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color(.lightGray), lineWidth: 0.5)
+                                )
+                                .scaleEffect(isListVisible ? 1 : 0.9)
+                                .opacity(isListVisible ? 1 : 0)
                             }
-                            .animation(.easeInOut(duration: 0.5))
-                            .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                        
+                        VStack {
+                            Button(action: {
+                                print("Select background tapped")
+                                isColorPalettePresented = true
+                            }) {
+                                HStack {
+                                    Text("Session background: ")
+                                        .font(.headline)
+                                        .foregroundStyle(.black)
+                                    Spacer()
+                                    Image("\((selectedColorIndex)+1)")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 30, height: 30)
+                                        .cornerRadius(8)
+                                        .clipped()
+                                }
+                                .padding(.vertical, 4)
+                            }
                         }
                         
                         HStack (){
@@ -166,13 +165,13 @@ struct CreateBoardView: View {
                                     .foregroundColor(isAnonym ? .cyan : .primary)
                                     .imageScale(.large)
                             }
-                            Text("Kullanıcılar anonim olarak giriş yapsın.")
+                            Text("Let users log in anonymously.")
                                 .font(.body)
                                 .onTapGesture {
                                     isAnonym.toggle()
                                 }
                         }
-                        .padding(.top, 8)
+                        .padding(.top, -4)
                         
                         HStack (){
                             Button(action: {
@@ -182,42 +181,75 @@ struct CreateBoardView: View {
                                     .foregroundColor(isTimer ? .cyan : .primary)
                                     .imageScale(.large)
                             }
-                            Text("Session için zamanlayıcı koy.")
+                            Text("Set timer for the session.")
                                 .font(.body)
                                 .onTapGesture {
                                     isTimer.toggle()
                                 }
                         }
-                        .padding(.top, 8)
+                        .padding(.top, 0)
                         
                         if isTimer {
-                            Text("Güncel Ayarlanan Zaman \(Int(timeValue))")
-                                .padding(.top, 8)
-                            Slider(value: $timeValue, in: 1...10, step: 1)
-                                .padding(.top, 8)
-                            
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Set Timer (in minutes)")
+                                    .font(.headline)
+                                
+                                HStack {
+                                    Stepper(
+                                        value: $timerMinutes,
+                                        in: 0...120,
+                                        step: 1
+                                    ) {
+                                        HStack {
+                                            Text("Duration: ")
+                                            TextField("Minutes", text: $timerMinutesInput)
+                                                .keyboardType(.numberPad)
+                                                .padding(12)
+                                                .background(Color(.white))
+                                                .cornerRadius(10)
+                                                .frame(width: 50)
+                                                .multilineTextAlignment(.center)
+                                            Text("minutes")
+                                        }
+                                    }
+                                    .onChange(of: timerMinutes) { newValue in
+                                        timerMinutesInput = String(newValue)
+                                    }
+                                    .padding(12)
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                                }
+                            }
                         }
                         
                     }
                     .padding(.horizontal, 16)
-    
+                    
+                    
                     Button(action: {
-                        sessionId = generateRandomSessionID(length: 6)
-                        context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName, sessionBackground: "\(selectedColorIndex+1)"))
-                        let user = User(sessionId: sessionId, sessionName: sessionName, userName: userName, backgroundImage: "\(selectedColorIndex+1)")
-                        viewModel.saveUserSession(user: user)
-                        createSession()
-                        navigateToBoardView = true
-                        //navigateToNewPage = true
-
+                        if sessionName.isEmpty || sessionPassword.isEmpty || userName.isEmpty {
+                            alertTitle = "Missing Information"
+                            alertMessage = "Please fill in all required fields."
+                            showAlert = true
+                        } else {
+                            sessionId = generateRandomSessionID(length: 6)
+                            context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName, sessionBackground: "\(selectedColorIndex+1)"))
+                            let user = User(sessionId: sessionId, sessionName: sessionName, userName: userName, backgroundImage: "\(selectedColorIndex+1)")
+                            viewModel.saveUserSession(user: user)
+                            createSession()
+                            navigateToBoardView = true
+                        }
                     }) {
-                        Text("Kaydet")
-                            .frame(width: 200, height: 50)
+                        Text("Save")
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
                             .foregroundColor(.white)
-                            .background(Color.cyan)
-                            .cornerRadius(8)
+                            .cornerRadius(10)
                     }
-                    .offset(y: 30)
+                    .padding(.vertical, 20)
+                    .padding(.horizontal, 16)
                     
                     NavigationLink(
                         destination: BoardView(sessionId: sessionId, currentUserName: userName, showCreateView: $showCreateView).navigationBarTitleDisplayMode(.inline),
@@ -233,7 +265,11 @@ struct CreateBoardView: View {
                     }
             }
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Pano Eklenemedi"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
+                Alert(
+                    title: Text(alertTitle),
+                    message: Text(alertMessage),
+                    dismissButton: .default(Text("OK"))
+                )
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -251,7 +287,7 @@ struct CreateBoardView: View {
     }
     
     func createSession() {
-        viewModel.createSession(createdBy: userName, sessionId: sessionId, sessionPassword: sessionPassword, timer: Int(timeValue)*60, sessionName: sessionName, isAnonym: isAnonym, sessionBackground: "\(selectedColorIndex+1)")
+        viewModel.createSession(createdBy: userName, sessionId: sessionId, sessionPassword: sessionPassword, timer: Int(timerMinutes)*60, isTimerActive: isTimer, sessionName: sessionName, isAnonym: isAnonym, sessionBackground: "\(selectedColorIndex+1)")
         
         for retroName in viewModel.boardRetroNames {
             if retroName.key == chosenRetroStyle {

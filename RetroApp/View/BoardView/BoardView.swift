@@ -18,7 +18,6 @@ struct BoardView: View {
     @State private var currentUserName: String
     @State private var chosenBackground: String
     @State private var showSettings = false
-    
     @State private var isAnonymous: Bool = false
     @State private var isTimerActive: Bool = false
     @State private var timerMinutes: Int = 0
@@ -155,7 +154,6 @@ struct BoardView: View {
                         isTimer = session.isTimerActive ?? false
                         isTimerActive = session.isTimerActive ?? false
                         timeRemaining = session.timeRemains ?? 0
-                        //print(timeRemaining)
                         if timeRemaining != 0 {
                             stopTimer()
                         }
@@ -169,11 +167,10 @@ struct BoardView: View {
         }
         .onChange(of: viewModel.session) { newSession in
             if let session = newSession {
-               // print("Session updated: \(session)")
                 let user = User(sessionId: sessionId, sessionName: viewModel.session?.sessionName ?? "Anonymous", userName: currentUserName, backgroundImage: viewModel.session?.sessionBackground ?? "1")
                 viewModel.saveUserSession(user: user)
             } else {
-               // print("Session is nil")
+                
             }
         }
        /* .alert(isPresented: $showSessionExpiredAlert) {
@@ -187,8 +184,6 @@ struct BoardView: View {
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
         }
-       // .navigationTitle(viewModel.session?.sessionName ?? "")
-        //.navigationBarBackButtonHidden(isAddBoarding)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -346,11 +341,6 @@ struct BoardView: View {
         }
     }
 }
-
-/*
-#Preview {
-    BoardView()
-}*/
 
 
 

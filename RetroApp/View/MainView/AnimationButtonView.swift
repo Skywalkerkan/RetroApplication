@@ -121,10 +121,3 @@ struct AnimationButtonView: View {
         }
     }
 }
-/*
-struct AnimationButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        AnimationButtonView()
-    }
-}
-*/
