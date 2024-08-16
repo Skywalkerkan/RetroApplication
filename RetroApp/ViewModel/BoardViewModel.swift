@@ -21,6 +21,7 @@ class BoardViewModel: ObservableObject {
         firebaseManager.fetchBoards(for: sessionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
+                    
                 case .success(let session):
                     self?.session = session
                     self?.boards = session.boards
