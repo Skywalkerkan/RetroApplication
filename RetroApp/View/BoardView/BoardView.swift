@@ -183,11 +183,9 @@ struct BoardView: View {
                         Button(action: {
                             print("Stop button tapped")
                             if isTimerActive {
-                                print("üstteki")
                                 stopTimer()
                                 viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: timeRemaining, allowUserChange: true)
                             } else {
-                                print("alttaki")
                                 if timeRemaining != 0{
                                     viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: true, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
                                     startTimer()
@@ -205,7 +203,7 @@ struct BoardView: View {
                         }
                         Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
                         Button(action: {
-                            print("Play button tapped")
+                            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timerMinutes, timeRemains: nil, allowUserChange: true)
                         }) {
                             Image(systemName: "stop.fill")
                                 .foregroundColor(.black)

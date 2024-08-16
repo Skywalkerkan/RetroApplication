@@ -175,7 +175,6 @@ class FirebaseManager {
             session.isTimerActive = isTimerActive
             session.allowUserChange = allowUserChange
             session.timeRemains = timeRemains
-
             
             if let timeRemains = timeRemains, let initialTime = session.timerInitialTime {
                 let initialDate = initialTime.dateValue()
