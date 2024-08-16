@@ -30,7 +30,7 @@ struct MainView: View {
                     NoDataView()
                 } else {
                     List {
-                        Section(header: Text("Son Kullanılan Panolar")) {
+                        Section(header: Text("Recent Sessions")) {
                             ForEach(viewModel.userSessions) { item in
                                 HStack {
                                     Image(item.backgroundImage)

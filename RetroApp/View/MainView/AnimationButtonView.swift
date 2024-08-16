@@ -55,7 +55,7 @@ struct AnimationButtonView: View {
                                                 .padding(.top, 2)
                                         )
                                     
-                                    Text("Panel Oluştur")
+                                    Text("Create Session")
                                         .foregroundColor(.white)
                                         .fontWeight(.bold)
                                         .font(.system(size: 14))
@@ -84,7 +84,7 @@ struct AnimationButtonView: View {
                                                 .padding(.leading, 2)
                                         )
                                     
-                                    Text("Panele Katıl")
+                                    Text("Create Session")
                                         .foregroundColor(.white)
                                         .fontWeight(.bold)
                                         .font(.system(size: 14))
