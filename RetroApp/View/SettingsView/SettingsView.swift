@@ -191,6 +191,8 @@ struct SettingsView: View {
                 Text("This action will permanently delete the session. Are you sure you want to proceed?")
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
         .onAppear {
             viewModel.getSessionSettings(sessionId: sessionId) { success in
                 if success {
