@@ -14,24 +14,20 @@ struct DroppableList: View {
     let action: ((Card, Int, Int) -> Void)?
     let sessionId: String
     let currentUserName: String
-    @State var chosenCard: Card?
-    @Binding var cards: [Card]
+    @State private var chosenCard: Card?
+    @Binding private var cards: [Card]
     @State private var draggingCardIndex: Int?
     @State private var boardInfoClicked: Bool = false
     @State private var isMoveActive: Bool = false
-    @StateObject var viewModel = BoardViewModel()
-    @State private var cellHeight: CGFloat = 0
-    @State var cellHeights = [CGFloat]()
     @State private var cardId: String = ""
-    @State private var dragOffset = CGSize.zero
-    @State private var cellPosition: CGPoint = .zero
     @State private var showingBottomSheet: Bool = false
     @State private var addingCardClicked: Bool = false
     @State private var scrolltoTop: Bool = false
     @State private var newCardDescription: String = ""
     @State private var isAddCardViewVisible: Bool = false
     @State private var isChangedDescription: Bool = false
-    @State var cardContext: String = ""
+    @State private var cardContext: String = ""
+    @StateObject var viewModel = BoardViewModel()
     
     init(_ title: String, boardIndex: Int, cards: Binding<[Card]>,
          sessionId: String, isAnonym: Bool, currentUserName: String,
@@ -117,8 +113,8 @@ struct DroppableList: View {
                             } else {
                                 ForEach(cards, id: \.self) { card in
                                     DraggableCellView(card: card, isAnonym: isAnonym)
-                                        .listRowInsets(EdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5))
-                                        .listRowBackground(Color(red: 81/255, green: 94/255, blue: 132/255))
+                                        .listRowInsets(EdgeInsets(top: 0.1, leading: 0.1, bottom: 0.1, trailing: 0.1))
+                                       // .listRowBackground(Color(red: 81/255, green: 94/255, blue: 132/255))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color(red: 0.98, green: 0.98, blue: 0.98), lineWidth: 1)
@@ -140,7 +136,6 @@ struct DroppableList: View {
                         .onChange(of: scrolltoTop) { _ in
                             DispatchQueue.main.async {
                                    if let lastCard = cards.first {
-                                       print("gidiliyor")
                                        withAnimation {
                                            proxy.scrollTo(lastCard.id, anchor: .bottom)
                                        }
@@ -148,9 +143,9 @@ struct DroppableList: View {
                                }  
                         }
                         .contentMargins(.vertical, 10)
-                        .shadow(color: .black.opacity(0.2), radius: 3, x: 2, y: 2)
+                        .shadow(color: .black.opacity(0.5), radius: 2, x: 2, y: 2)
                         .zIndex(2)
-                        .listRowSpacing(8)
+                        .listRowSpacing(10)
                     }
                 }
                 .background(Color.clear)

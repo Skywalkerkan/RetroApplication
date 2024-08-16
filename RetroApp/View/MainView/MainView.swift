@@ -14,7 +14,6 @@ struct MainView: View {
     @State private var sessionId: String = ""
     @State private var sessionPassword: String = ""
     @State private var userName: String = ""
-    @State private var isSecure = true
     @State private var isLoading = false
     @State private var isValidId = false
     @State private var navigateToBoardView = false
@@ -23,11 +22,7 @@ struct MainView: View {
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
-    
-    @Query private var items: [SessionPanel]
-    @Environment(\.modelContext) var context
-    
-    var horizontalItems = ["1","2","3","4"]
+        
     var body: some View {
         NavigationStack {
             ZStack {
@@ -35,27 +30,6 @@ struct MainView: View {
                     NoDataView()
                 } else {
                     List {
-                        if !horizontalItems.isEmpty {
-                            Section(header: Text("Yıldızlı Panolar")) {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 16) {
-                                        ForEach(horizontalItems, id: \.self) { item in
-                                            VStack {
-                                                Rectangle()
-                                                    .frame(width: 150, height: 100)
-                                                    .cornerRadius(4)
-                                                    .foregroundColor(.cyan)
-                                                Text(item)
-                                                    .foregroundColor(.black)
-                                                    .cornerRadius(10)
-                                            }
-                                            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
-                                        }
-                                    }
-                                }
-                                .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                            }
-                        }
                         Section(header: Text("Son Kullanılan Panolar")) {
                             ForEach(viewModel.userSessions) { item in
                                 HStack {
@@ -237,9 +211,6 @@ struct MainView: View {
             }
             .navigationBarTitle("My List", displayMode: .inline)
         }
-    }
-    func deleteItem(_ item: SessionPanel) {
-        context.delete(item)
     }
     
 }

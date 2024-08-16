@@ -29,12 +29,9 @@ struct CreateBoardView: View {
     @State private var sessionPassword: String = ""
     @State private var timerMinutes: Int = 5
     @State private var timerMinutesInput: String = "5"
-
-    @ObservedObject var viewModel = CreateBoardViewModel()
     @State private var item = SessionPanel()
-    
-    @Environment(\.modelContext) var context
-    
+    @ObservedObject var viewModel = CreateBoardViewModel()
+
     var body: some View {
         NavigationView {
             VStack {
@@ -233,7 +230,6 @@ struct CreateBoardView: View {
                             showAlert = true
                         } else {
                             sessionId = generateRandomSessionID(length: 6)
-                            context.insert(SessionPanel(sessionId: sessionId, sessionName: sessionName, userName: userName, sessionBackground: "\(selectedColorIndex+1)"))
                             let user = User(sessionId: sessionId, sessionName: sessionName, userName: userName, backgroundImage: "\(selectedColorIndex+1)")
                             viewModel.saveUserSession(user: user)
                             createSession()
@@ -260,9 +256,6 @@ struct CreateBoardView: View {
             }
             .fullScreenCover(isPresented: $isColorPalettePresented) {
                 ColorPaletteView(selectedIndex: $selectedColorIndex)
-                    .onChange(of: selectedColorIndex) { newIndex in
-                        
-                    }
             }
             .alert(isPresented: $showAlert) {
                 Alert(
