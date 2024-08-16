@@ -11,6 +11,7 @@ import Combine
 
 class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false
+    @Published var error: Error?
     @Published var boards: [Board] = []
     @Published var session: Session?
 
@@ -23,7 +24,7 @@ class BoardViewModel: ObservableObject {
                 self.session = session
                 self.boards = session.boards
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }
@@ -136,4 +137,14 @@ class BoardViewModel: ObservableObject {
         }
     }
     
+    func deleteUserSession(for sessionId: String) {
+        firebaseManager.deleteForUserSession(for: sessionId) { result in
+            switch result {
+            case .success(_):
+                print("")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }

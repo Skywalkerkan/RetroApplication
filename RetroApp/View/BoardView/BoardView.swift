@@ -137,6 +137,19 @@ struct BoardView: View {
             print("Received alert: \(showAlert)")
             showSessionExpiredAlert = showAlert
         }
+        
+        .alert("Error", isPresented: Binding<Bool>(
+            get: { viewModel.error != nil },
+            set: { _ in viewModel.error = nil }
+        )) {
+            Button("OK", role: .cancel) { 
+                viewModel.deleteUserSession(for: sessionId)
+                presentationMode.wrappedValue.dismiss()
+            }
+        } message: {
+            Text(viewModel.error?.localizedDescription ?? "Unknown error occurred.")
+        }
+
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {

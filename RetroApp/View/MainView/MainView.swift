@@ -164,13 +164,15 @@ struct MainView: View {
                                                 isValidId = isValid
                                                 if isValid {
                                                     print("Valid session ID")
+                                                } else if let error = viewModel.error {
+                                                    alertTitle = "Error"
+                                                    alertMessage = error.localizedDescription
+                                                    showAlert = true
                                                 } else {
-                                                    print("Invalid session ID")
                                                     alertTitle = "Invalid Session"
                                                     alertMessage = "The session ID or password is incorrect. Please try again."
                                                     showAlert = true
-                                                }
-                                            }
+                                                }                                            }
                                         }
                                     }) {
                                         if isLoading {
@@ -216,9 +218,7 @@ struct MainView: View {
     
     func deleteUserSession(at offsets: IndexSet) {
         let indices = offsets.map { $0 }
-        
-        print(indices)
-        
+                
         for index in indices {
             let userSession = viewModel.userSessions[index]
             viewModel.deleteUserSession(for: userSession.sessionId)
