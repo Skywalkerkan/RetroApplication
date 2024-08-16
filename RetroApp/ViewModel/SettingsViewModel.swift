@@ -9,7 +9,9 @@ import SwiftUI
 import Combine
 
 class SettingsViewModel: ObservableObject {
+    
     private var firebaseManager = FirebaseManager()
+    
     @Published var error: Error?
     @Published var isItValidId = false
     @Published var session: Session?
@@ -29,9 +31,9 @@ class SettingsViewModel: ObservableObject {
     func addSettingsToSession(sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timer: Int, timeRemains: Int?, allowUserChange: Bool) {
         firebaseManager.addSettingToSession(byId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimerActive, timerMinutes: timer, timeRemains: timeRemains, allowUserChange: allowUserChange) { result in
             if result {
-                print("Başarılı bir şekilde güncellendi settings")
+                print("Sucsessfully Updated Settings")
             } else {
-                print("Hata geldi")
+                print("Error Ocuured")
             }
         }
     }

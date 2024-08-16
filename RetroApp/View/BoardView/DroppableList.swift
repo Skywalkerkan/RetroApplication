@@ -53,10 +53,6 @@ struct DroppableList: View {
                         Spacer()
                         
                         Menu {
-                            Button("Rename yap") {
-                                
-                            }
-                            
                             Button("Delete", role: .destructive) {
                                 viewModel.deleteBoard(sessionId: sessionId, boardIndex: boardIndex)
                             }
@@ -112,7 +108,6 @@ struct DroppableList: View {
                                 ForEach(cards, id: \.self) { card in
                                     DraggableCellView(card: card, isAnonym: isAnonym)
                                         .listRowInsets(EdgeInsets(top: 0.1, leading: 0.1, bottom: 0.1, trailing: 0.1))
-                                       // .listRowBackground(Color(red: 81/255, green: 94/255, blue: 132/255))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color(red: 0.98, green: 0.98, blue: 0.98), lineWidth: 1)

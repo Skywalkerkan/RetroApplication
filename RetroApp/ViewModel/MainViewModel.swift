@@ -16,47 +16,56 @@ class MainViewModel: ObservableObject {
     @Published var userSessions = [User]()
     
     func joinSession(_ sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
-        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { result in
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { [weak self] result in
             switch result {
             case .success(let isValid):
-                if isValid {
-                    self.isItValidId = true
-                    print("Successfully joined session")
-                    completion(true)
-                } else {
-                    self.isItValidId = false
-                    print("Session can not be found")
-                    completion(false)
+                DispatchQueue.main.async {
+                    if isValid {
+                        self?.isItValidId = true
+                        print("Successfully joined session")
+                        completion(true)
+                    } else {
+                        self?.isItValidId = false
+                        print("Session cannot be found")
+                        completion(false)
+                    }
                 }
             case .failure(let error):
-                self.error = error
-                completion(false)
+                DispatchQueue.main.async {
+                    self?.error = error
+                    completion(false)
+                }
             }
         }
     }
     
     func fetchUserSessions() {
-        firebaseManager.fetchSessionIdsForUser { result in
+        firebaseManager.fetchSessionIdsForUser { [weak self] result in
             switch result {
             case .success(let user):
-                print("Başarılı")
                 DispatchQueue.main.async {
-                    self.userSessions = user
+                    print("Successfully fetched user")
+                    self?.userSessions = user
                 }
             case .failure(let error):
-                print("hatalı")
-                print(error)
+                DispatchQueue.main.async {
+                    self?.error = error
+                }
             }
         }
     }
     
     func deleteUserSession(for sessionId: String) {
-        firebaseManager.deleteForUserSession(for: sessionId) { result in
+        firebaseManager.deleteForUserSession(for: sessionId) { [weak self] result in
             switch result {
             case .success(_):
-                print("")
+                DispatchQueue.main.async {
+                    print("Successfully deleted user session")
+                }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self?.error = error
+                }
             }
         }
     }

@@ -18,59 +18,67 @@ class BoardViewModel: ObservableObject {
     private let firebaseManager = FirebaseManager()
     
     func fetchBoards(sessionId: String) {
-        firebaseManager.fetchBoards(for: sessionId) { result in
-            switch result {
-            case.success(let session):
-                self.session = session
-                self.boards = session.boards
-            case .failure(let error):
-                self.error = error
+        firebaseManager.fetchBoards(for: sessionId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let session):
+                    self?.session = session
+                    self?.boards = session.boards
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
     
-    func updateBoards(sessionId: String ,boards: [Board]) {
-        firebaseManager.updateBoardInFirestore(sessionId: sessionId, updatedBoards: boards) { result in
-            switch result {
-            case .success(_):
-                print("Succesfully updated Boards")
-            case .failure(let error):
-                self.error = error
+    func updateBoards(sessionId: String, boards: [Board]) {
+        firebaseManager.updateBoardInFirestore(sessionId: sessionId, updatedBoards: boards) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("Successfully updated Boards")
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
     
     func addCardToBoard(sessionId: String, boardIndex: Int, newCard: Card) {
-        firebaseManager.addCardToSession(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard) { result in
-            switch result {
-            case .success(_):
-                print("Sucsessfully Added to card")
-            case .failure(let error):
-                self.error = error
+        firebaseManager.addCardToSession(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("Successfully Added Card")
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
     
     func createBoard(sessionId: String, board: Board) {
-        firebaseManager.addBoard(to: sessionId, board: board) { result in
-            switch result {
-            case .success(_):
-                print("Successfully Created Board.")
-                
-            case .failure(let error):
-                self.error = error
+        firebaseManager.addBoard(to: sessionId, board: board) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("Successfully Created Board.")
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
-
     
     func deleteBoard(sessionId: String, boardIndex: Int) {
-        firebaseManager.deleteBoard(sessionId: sessionId, boardIndex: boardIndex) { result in
-            switch result {
-            case .success(_):
-                print("Success")
-            case .failure(let error):
-                self.error = error
+        firebaseManager.deleteBoard(sessionId: sessionId, boardIndex: boardIndex) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("Successfully Deleted Board")
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
@@ -88,9 +96,9 @@ class BoardViewModel: ObservableObject {
     func reorderCardInSession(sessionId: String, boardIndex: Int, cards: [Card]) {
         firebaseManager.reorderCardsInSession(sessionId: sessionId, boardIndex: boardIndex, newCardOrder: cards) { result in
             if result {
-                print("Başarılı bir şekilde değiştirildi kartlar")
+                print("Sucsessfully Reordered Cards")
             } else {
-                print("Kart Yerleri başarısız")
+                print("Error Occured.")
             }
         }
     }
@@ -98,9 +106,9 @@ class BoardViewModel: ObservableObject {
     func updateCardName(sessionId: String, boardIndex: Int, cardId: String, newCardDescription: String) {
         firebaseManager.updateCardNameInBoard(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId, newCardDescription: newCardDescription) { result in
             if result {
-                print("Başarılı içerik değiştirme")
+                print("Sucsessfully Upadted Cards")
             } else {
-                print("Başarısız içeril değiştirme")
+                print("Error Occured.")
             }
         }
     }
@@ -139,12 +147,14 @@ class BoardViewModel: ObservableObject {
     }
     
     func deleteUserSession(for sessionId: String) {
-        firebaseManager.deleteForUserSession(for: sessionId) { result in
-            switch result {
-            case .success(_):
-                print("")
-            case .failure(let error):
-                self.error = error
+        firebaseManager.deleteForUserSession(for: sessionId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    print("Successfully Deleted User Session")
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }
