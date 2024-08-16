@@ -11,7 +11,12 @@ import FirebaseFirestoreSwift
 class FirebaseManager {
     private var db = Firestore.firestore()
     
-    func createSession(sessionId: String, createdBy: String, timeRemains: Int?, isTimerActive: Bool, sessionName: String, isAnonym: Bool, sessionPassword: String, sessionBackground: String, completion: @escaping (Bool) -> Void) {
+    func createSession(sessionId: String, createdBy: String,
+                       timeRemains: Int?, isTimerActive: Bool,
+                       sessionName: String, isAnonym: Bool,
+                       sessionPassword: String, sessionBackground: String,
+                       completion: @escaping (Result<Void, Error>) -> Void) {
+        
         let createdAt = Timestamp(date: Date())
         let expiresAt: Timestamp?
 
@@ -27,33 +32,35 @@ class FirebaseManager {
         do {
             try db.collection("sessions").document(sessionId).setData(from: newSession) { error in
                 if let error = error {
-                    print("Error creating session: \(error)")
-                    completion(false)
+                    completion(.failure(error))
                 } else {
-                    completion(true)
+                    completion(.success(()))
                 }
             }
         } catch {
-            print("Error creating session: \(error)")
-            completion(false)
+            completion(.failure(error))
         }
     }
 
-    func joinSession(sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
+    func joinSession(sessionId: String, sessionPassword: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let sessionRef = db.collection("sessions").document(sessionId)
+        
         sessionRef.getDocument { (document, error) in
-            guard let document = document, document.exists,
-                  let session = try? document.data(as: Session.self) else {
-                completion(false)
+            if let error = error {
+                completion(.failure(error))
                 return
             }
-
-            let currentTime = Timestamp(date: Date())
+            
+            guard let document = document, document.exists,
+                  let session = try? document.data(as: Session.self) else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Session not found or decoding error."])))
+                return
+            }
             
             if sessionPassword == session.sessionPassword {
-                completion(true)
+                completion(.success(true))
             } else {
-                completion(false)
+                completion(.success(false))
             }
         }
     }
@@ -76,42 +83,46 @@ class FirebaseManager {
             completion(.success(session))
         }
     }
-
-
-    func updateBoardInFirestore(sessionId: String, updatedBoards: [Board], completion: @escaping (Bool) -> Void) {
-        let sessionRef = db.collection("sessions").document(sessionId)
-        
-        let updatedBoardsData = updatedBoards.map { try! Firestore.Encoder().encode($0) }
-        
-        sessionRef.updateData([
-            "boards": updatedBoardsData
-        ]) { error in
-            if let error = error {
-                print("Error updating boards: \(error)")
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
-
-
-
-
-    func addBoard(to sessionId: String, board: Board, completion: @escaping (Bool) -> Void) {
-        let sessionRef = db.collection("sessions").document(sessionId)
-        sessionRef.updateData([
-            "boards": FieldValue.arrayUnion([try! Firestore.Encoder().encode(board)])
-        ]) { error in
-            if let error = error {
-                print("Error adding board: \(error)")
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
     
+    func updateBoardInFirestore(sessionId: String, updatedBoards: [Board], completion: @escaping (Result<Void, Error>) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        
+        do {
+            let updatedBoardsData = try updatedBoards.map { try Firestore.Encoder().encode($0) }
+            
+            sessionRef.updateData([
+                "boards": updatedBoardsData
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    func addBoard(to sessionId: String, board: Board, completion: @escaping (Result<Void, Error>) -> Void) {
+        let sessionRef = db.collection("sessions").document(sessionId)
+        
+        do {
+            let boardData = try Firestore.Encoder().encode(board)
+            sessionRef.updateData([
+                "boards": FieldValue.arrayUnion([boardData])
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
     func getSession(byId sessionId: String, completion: @escaping (Session?, Error?) -> Void) {
         db.collection("sessions").document(sessionId).getDocument { document, error in
             if let document = document, document.exists {
@@ -172,8 +183,6 @@ class FirebaseManager {
                 let newExpiresDate = initialDate.addingTimeInterval(TimeInterval(timeRemains))
                 session.timerExpiresDate = Timestamp(date: newExpiresDate)
             } else {
-                
-                
                 if timerMinutes > 0 {
                     let currentDate = Date()
                     session.timerInitialTime = Timestamp(date: currentDate)

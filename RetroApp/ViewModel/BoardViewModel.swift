@@ -34,10 +34,11 @@ class BoardViewModel: ObservableObject {
     
     func updateBoards(sessionId: String ,boards: [Board]) {
         firebaseManager.updateBoardInFirestore(sessionId: sessionId, updatedBoards: boards) { result in
-            if result {
-                print("ok")
-            } else {
-                print("no ok")
+            switch result {
+            case .success(_):
+                print("Succesfully updated Boards")
+            case .failure(let error):
+                print(error)
             }
         }
     }
@@ -54,10 +55,12 @@ class BoardViewModel: ObservableObject {
     
     func createBoard(sessionId: String, board: Board) {
         firebaseManager.addBoard(to: sessionId, board: board) { result in
-            if result {
-                print("ok")
-            } else {
-                print("no")
+            switch result {
+            case .success(_):
+                print("Successfully Created Board.")
+                
+            case .failure(let error):
+                print(error)
             }
         }
     }
