@@ -36,4 +36,15 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
+    func deleteSession(for sessionId: String){
+        firebaseManager.deleteSession(byId: sessionId) { result in
+            switch result {
+            case .success(_):
+                print("Sucessfully deleted")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }

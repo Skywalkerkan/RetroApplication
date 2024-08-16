@@ -19,6 +19,7 @@ struct SettingsView: View {
     @State private var lastTime: Date?
     @State private var timeRemaining: Int = 0
     @State private var timer: Timer?
+    @State private var showDeleteConfirmation = false
 
     @Environment(\.presentationMode) var presentationMode
     
@@ -174,6 +175,21 @@ struct SettingsView: View {
                 Image(systemName: "xmark")
                     .foregroundColor(.black)
             })
+            .navigationBarItems(trailing: Button(action: {
+                showDeleteConfirmation.toggle()
+            }) {
+                Image(systemName: "trash")
+                    .foregroundColor(.red)
+            })
+            .alert("Are you sure?", isPresented: $showDeleteConfirmation) {
+                Button("Delete", role: .destructive) {
+                    viewModel.deleteSession(for: sessionId)
+                    presentationMode.wrappedValue.dismiss()
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("This action will permanently delete the session. Are you sure you want to proceed?")
+            }
         }
         .onAppear {
             viewModel.getSessionSettings(sessionId: sessionId) { success in

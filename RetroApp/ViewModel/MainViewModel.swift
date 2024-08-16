@@ -12,6 +12,7 @@ class MainViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false
+    @Published var error: Error?
     @Published var userSessions = [User]()
     
     func joinSession(_ sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
@@ -28,7 +29,8 @@ class MainViewModel: ObservableObject {
                     completion(false)
                 }
             case .failure(let error):
-                print(error)
+                self.error = error
+                completion(false)
             }
         }
     }
@@ -49,7 +51,7 @@ class MainViewModel: ObservableObject {
     }
     
     func deleteUserSession(for sessionId: String) {
-        firebaseManager.deleteForSession(for: sessionId) { result in
+        firebaseManager.deleteForUserSession(for: sessionId) { result in
             switch result {
             case .success(_):
                 print("")

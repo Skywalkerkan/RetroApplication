@@ -134,6 +134,16 @@ class FirebaseManager {
         }
     }
     
+    func deleteSession(byId sessionId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        db.collection("sessions").document(sessionId).delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
     func getSessionSettings(byId sessionId: String, completion: @escaping (Session?, Error?) -> Void) {
         let db = Firestore.firestore()
         let sessionRef = db.collection("sessions").document(sessionId)
@@ -470,7 +480,7 @@ class FirebaseManager {
         }
     }
     
-    func deleteForSession(for sessionId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func deleteForUserSession(for sessionId: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let deviceID = DeviceManager.shared.deviceID
         let docRef = db.collection("Users").document(deviceID)
         
