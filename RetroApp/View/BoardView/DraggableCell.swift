@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DraggableCellView: View {
     let card: Card
-    var isAnonym: Bool
+    let isAnonym: Bool
     
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {

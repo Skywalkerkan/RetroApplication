@@ -15,7 +15,6 @@ struct AnimationButtonView: View {
 
     var body: some View {
         ZStack {
-            
             if showButtons {
                 Button(action: {
                     withAnimation {

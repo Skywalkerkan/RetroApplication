@@ -53,8 +53,6 @@ struct AddCardView: View {
                     
                     Button {
                         onSave(cardDescription)
-
-                        print("Kaydediyorum")
                     } label: {
                         Text(" Save ")
                             .frame(height: 25)

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BoardView: View {
-    @Environment(\.presentationMode) var presentationMode
 
     @Binding private var showCreateView: Bool
     @State private var showSessionExpiredAlert = false
@@ -25,7 +24,8 @@ struct BoardView: View {
     @State private var lastTime: Date?
     @State private var timeRemaining: Int = 0
     @State private var timer: Timer?
-    
+    @Environment(\.presentationMode) var presentationMode
+
     @StateObject var viewModel = BoardViewModel()
     @FocusState private var isTextFieldFocused: Bool
     var sessionId: String
@@ -234,7 +234,7 @@ struct BoardView: View {
         var cardIndex = 0
         var found = false
         var cardActual: Card?
-
+        
         for board in viewModel.boards {
             for card in board.cards {
                 if card.id == dropped.id {
