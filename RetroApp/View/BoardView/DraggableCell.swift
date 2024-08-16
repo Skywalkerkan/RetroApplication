@@ -32,7 +32,7 @@ struct DraggableCellView: View {
                     .onDrag { NSItemProvider(object: card.id as NSString) }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
-                    .font(.headline)
+                    .font(.system(size: 16))
                     .foregroundColor(.black)
 
             }

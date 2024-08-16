@@ -103,7 +103,7 @@ struct AnimationButtonView: View {
                             Image(systemName: showButtons ? "xmark.circle.fill" : "plus.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
-                                .foregroundColor(showButtons ? .red : .cyan)
+                                .foregroundColor(showButtons ? .cyan : .cyan)
                         }
                     }
                     .padding(16)

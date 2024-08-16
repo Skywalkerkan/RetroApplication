@@ -469,5 +469,41 @@ class FirebaseManager {
             completion(.success(users))
         }
     }
+    
+    func deleteForSession(for sessionId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let deviceID = DeviceManager.shared.deviceID
+        let docRef = db.collection("Users").document(deviceID)
+        
+        docRef.getDocument { documentSnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let document = documentSnapshot, document.exists else {
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document does not exist"])
+                completion(.failure(error))
+                return
+            }
+            
+            var sessionData = document.get("sessions") as? [[String: Any]] ?? []
+            
+            if let index = sessionData.firstIndex(where: { $0["sessionId"] as? String == sessionId }) {
+                sessionData.remove(at: index)
+                
+                docRef.updateData(["sessions": sessionData]) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            } else {
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Session not found"])
+                completion(.failure(error))
+            }
+        }
+    }
+
 }
 

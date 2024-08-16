@@ -7,23 +7,28 @@
 
 import XCTest
 import Combine
-import FirebaseFirestore
 @testable import RetroApp
 
 class MockFirebaseManager: FirebaseManager {
-    var shouldReturnValidId = true
-    var mockUserSessions: [User] = []
     
-    override func joinSession(sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
-        completion(shouldReturnValidId)
+    var mockJoinSessionResult: Result<Bool, Error>?
+    var mockFetchSessionIdsResult: Result<[User], Error>?
+    
+    override func joinSession(sessionId: String, sessionPassword: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        if let result = mockJoinSessionResult {
+            completion(result)
+        }
     }
     
     override func fetchSessionIdsForUser(completion: @escaping (Result<[User], Error>) -> Void) {
-        completion(.success(mockUserSessions))
+        if let result = mockFetchSessionIdsResult {
+            completion(result)
+        }
     }
 }
 
 class MainViewModelTests: XCTestCase {
+    
     var viewModel: MainViewModel!
     var mockFirebaseManager: MockFirebaseManager!
     
@@ -41,47 +46,63 @@ class MainViewModelTests: XCTestCase {
     }
     
     func testJoinSessionSuccess() {
-        mockFirebaseManager.shouldReturnValidId = true
+        let sessionId = "validSessionId"
+        let sessionPassword = "validPassword"
+        mockFirebaseManager.mockJoinSessionResult = .success(true)
         
-        let expectation = self.expectation(description: "JoinSession")
-        viewModel.joinSession("validSessionId", sessionPassword: "password") { isSuccess in
-            print(isSuccess)
-            XCTAssertTrue(isSuccess)
+        let expectation = XCTestExpectation(description: "Join session succeeds")
+        viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { success in
+            XCTAssertTrue(success)
             XCTAssertTrue(self.viewModel.isItValidId)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
     }
     
     func testJoinSessionFailure() {
-        mockFirebaseManager.shouldReturnValidId = false
+        let sessionId = "invalidSessionId"
+        let sessionPassword = "invalidPassword"
+        mockFirebaseManager.mockJoinSessionResult = .success(false)
         
-        let expectation = self.expectation(description: "JoinSession")
-        viewModel.joinSession("invalidSessionId", sessionPassword: "password") { isSuccess in
-            XCTAssertFalse(isSuccess)
+        let expectation = XCTestExpectation(description: "Join session fails")
+        viewModel.joinSession(sessionId, sessionPassword: sessionPassword) { success in
+            XCTAssertFalse(success)
             XCTAssertFalse(self.viewModel.isItValidId)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
     }
     
-    func testFetchUserSessions() {
-        let mockUsers = [
-            User(sessionId: "1", sessionName: "Session 1", userName: "Alice", backgroundImage: "image1", createdTime: Timestamp()),
-            User(sessionId: "2", sessionName: "Session 2", userName: "Bob", backgroundImage: "image2", createdTime: Timestamp())
+    func testFetchUserSessions_Success() {
+        let userSessions = [
+            User(sessionId: "1", sessionName: "Session 1", userName: "Erkan", backgroundImage: "1"),
+            User(sessionId: "2", sessionName: "Session 2", userName: "Sky", backgroundImage: "2")
         ]
-        mockFirebaseManager.mockUserSessions = mockUsers
+        mockFirebaseManager.mockFetchSessionIdsResult = .success(userSessions)
         
-        let expectation = self.expectation(description: "FetchUserSessions")
+        let expectation = XCTestExpectation(description: "Fetch user sessions succeeds")
+        
         viewModel.fetchUserSessions()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertEqual(self.viewModel.userSessions, mockUsers)
+        DispatchQueue.main.async {
+            XCTAssertEqual(self.viewModel.userSessions.count, 2)
+            XCTAssertEqual(self.viewModel.userSessions.first?.userName, "Erkan")
+            XCTAssertEqual(self.viewModel.userSessions.first?.sessionId, "Sky")
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
+    }
+
+    func testFetchUserSessions_Failure() {
+        let error = NSError(domain: "TestError", code: 123, userInfo: nil)
+        mockFirebaseManager.mockFetchSessionIdsResult = .failure(error)
+        
+        viewModel.fetchUserSessions()
+        
+        XCTAssertTrue(viewModel.userSessions.isEmpty)
     }
 }
+

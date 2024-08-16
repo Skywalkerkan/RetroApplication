@@ -274,7 +274,7 @@ struct CreateBoardView: View {
                     }
                 }
             }
-            .navigationTitle("Pano Oluştur")
+            .navigationTitle("Create Session")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

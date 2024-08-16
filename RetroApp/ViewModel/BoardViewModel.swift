@@ -13,8 +13,6 @@ class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false
     @Published var boards: [Board] = []
     @Published var session: Session?
-    private var sessionExpirationTimer: Timer?
-    private var timePrintTimer: Timer?
 
     private let firebaseManager = FirebaseManager()
     
@@ -22,12 +20,10 @@ class BoardViewModel: ObservableObject {
         firebaseManager.fetchBoards(for: sessionId) { result in
             switch result {
             case.success(let session):
-               // self.boards = boards
-                    self.session = session
+                self.session = session
                 self.boards = session.boards
-                print("session kartları \(session.sessionName)")
             case .failure(let error):
-                print("error")
+                print(error)
             }
         }
     }
