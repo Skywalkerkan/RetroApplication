@@ -71,6 +71,7 @@ struct BoardView: View {
                                 } label: {
                                     Text("Board Oluştur")
                                         .frame(width: 300, height: 50)
+                                        .foregroundColor(.black)
                                 }
                                 .background(Color.white)
                                 .cornerRadius(8)

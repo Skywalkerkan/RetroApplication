@@ -73,6 +73,7 @@ struct MainView: View {
                                 .background(Color.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
+                            .onDelete(perform: deleteUserSession)
                         }
                     }
                     .listStyle(GroupedListStyle())
@@ -209,9 +210,23 @@ struct MainView: View {
                 showSessionFinder = false
                 viewModel.fetchUserSessions()
             }
-            .navigationBarTitle("My List", displayMode: .inline)
+            .navigationBarTitle("Retrospective", displayMode: .inline)
         }
     }
+    
+    func deleteUserSession(at offsets: IndexSet) {
+        let indices = offsets.map { $0 }
+        
+        print(indices)
+        
+        for index in indices {
+            let userSession = viewModel.userSessions[index]
+            viewModel.deleteUserSession(for: userSession.sessionId)
+        }
+
+    }
+
+
     
 }
 

@@ -16,8 +16,6 @@ struct DroppableList: View {
     let currentUserName: String
     @State private var chosenCard: Card?
     @Binding private var cards: [Card]
-    @State private var draggingCardIndex: Int?
-    @State private var boardInfoClicked: Bool = false
     @State private var isMoveActive: Bool = false
     @State private var cardId: String = ""
     @State private var showingBottomSheet: Bool = false

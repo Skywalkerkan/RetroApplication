@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE45197C2C6389CD006BDBFE /* AddCardView.swift */; };
 		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
+		DE991E2F2C6F22AE00B6CCCF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
 		DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */; };
@@ -88,6 +89,7 @@
 /* Begin PBXFileReference section */
 		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
+		DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
 		DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -175,6 +177,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE991E2D2C6F229F00B6CCCF /* OnboardingView */ = {
+			isa = PBXGroup;
+			children = (
+				DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */,
+			);
+			path = OnboardingView;
+			sourceTree = "<group>";
+		};
 		DEA718102C60C3110093994A /* SwiftData */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +334,7 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DE991E2D2C6F229F00B6CCCF /* OnboardingView */,
 				DEF7ECD02C524AD50036BBD8 /* MainView */,
 				DEF7ECD32C525A240036BBD8 /* CreateBoardView */,
 				DEF7ECC92C5226790036BBD8 /* BoardView */,
@@ -568,6 +579,7 @@
 				DEA718122C60C3290093994A /* Session.swift in Sources */,
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,
 				DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */,
+				DE991E2F2C6F22AE00B6CCCF /* OnboardingView.swift in Sources */,
 				DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */,
 				DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */,
 			);

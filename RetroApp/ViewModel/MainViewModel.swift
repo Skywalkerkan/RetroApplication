@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class MainViewModel: ObservableObject {
-    private var firebaseManager = FirebaseManager()
+    var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false
     @Published var userSessions = [User]()
@@ -43,6 +43,17 @@ class MainViewModel: ObservableObject {
                 }
             case .failure(let error):
                 print("hatalı")
+                print(error)
+            }
+        }
+    }
+    
+    func deleteUserSession(for sessionId: String) {
+        firebaseManager.deleteForSession(for: sessionId) { result in
+            switch result {
+            case .success(_):
+                print("")
+            case .failure(let error):
                 print(error)
             }
         }
