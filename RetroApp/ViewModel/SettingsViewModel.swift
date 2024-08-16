@@ -10,7 +10,7 @@ import Combine
 
 class SettingsViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()
-    
+    @Published var error: Error?
     @Published var isItValidId = false
     @Published var session: Session?
 
@@ -42,7 +42,7 @@ class SettingsViewModel: ObservableObject {
             case .success(_):
                 print("Sucessfully deleted")
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }

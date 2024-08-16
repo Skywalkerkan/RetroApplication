@@ -219,8 +219,7 @@ class FirebaseManager {
         }
     }
         
-
-    func addCardToSession(sessionId: String, boardIndex: Int, newCard: Card, completion: @escaping (Bool) -> Void) {
+    func addCardToSession(sessionId: String, boardIndex: Int, newCard: Card, completion: @escaping (Result<Void, Error>) -> Void) {
         getSession(byId: sessionId) { session, error in
             if let session = session {
                 var updatedBoards = session.boards
@@ -231,28 +230,29 @@ class FirebaseManager {
                     
                     let db = Firestore.firestore()
                     let encoder = Firestore.Encoder()
-                    let boardsData = updatedBoards.map { try! encoder.encode($0) }
+                    let boardsData: [Any] = updatedBoards.compactMap { try? encoder.encode($0) }
                     
                     db.collection("sessions").document(sessionId).updateData([
                         "boards": boardsData
                     ]) { error in
                         if let error = error {
                             print("Error updating session: \(error)")
-                            completion(false)
+                            completion(.failure(error))
                         } else {
-                            completion(true)
+                            completion(.success(()))
                         }
                     }
                 } else {
-                    print("Board index \(boardIndex) is out of range")
-                    completion(false)
+                    let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Board index \(boardIndex) is out of range"])
+                    completion(.failure(error))
                 }
             } else {
-                print("Session does not exist or error occurred: \(error?.localizedDescription ?? "Unknown error")")
-                completion(false)
+                let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Session does not exist or error occurred: \(error?.localizedDescription ?? "Unknown error")"])
+                completion(.failure(error))
             }
         }
     }
+
     
     func deleteBoard(sessionId: String, boardIndex: Int, completion: @escaping (Result<Void, Error>) -> Void) {
          let sessionRef = db.collection("sessions").document(sessionId)
@@ -516,4 +516,3 @@ class FirebaseManager {
     }
 
 }
-

@@ -35,17 +35,18 @@ class BoardViewModel: ObservableObject {
             case .success(_):
                 print("Succesfully updated Boards")
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }
     
     func addCardToBoard(sessionId: String, boardIndex: Int, newCard: Card) {
         firebaseManager.addCardToSession(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard) { result in
-            if result {
-                print("Yazıldı")
-            } else {
-                print("Yazılamadı")
+            switch result {
+            case .success(_):
+                print("Sucsessfully Added to card")
+            case .failure(let error):
+                self.error = error
             }
         }
     }
@@ -57,7 +58,7 @@ class BoardViewModel: ObservableObject {
                 print("Successfully Created Board.")
                 
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }
@@ -69,7 +70,7 @@ class BoardViewModel: ObservableObject {
             case .success(_):
                 print("Success")
             case .failure(let error):
-                print("deleting error \(error.localizedDescription)")
+                self.error = error
             }
         }
     }
@@ -110,7 +111,7 @@ class BoardViewModel: ObservableObject {
             case .success(_):
                 print("başarılı")
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }
@@ -143,7 +144,7 @@ class BoardViewModel: ObservableObject {
             case .success(_):
                 print("")
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }
