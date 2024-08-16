@@ -12,6 +12,7 @@
 		DE7CCC8F2C6F453D0034F76D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC8E2C6F453D0034F76D /* FirebaseAnalytics */; };
 		DE7CCC912C6F453D0034F76D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC902C6F453D0034F76D /* FirebaseCrashlytics */; };
 		DE7CCC932C6F453D0034F76D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC922C6F453D0034F76D /* FirebaseFirestore */; };
+		DE7CCC982C6F7E3D0034F76D /* MainViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */; };
 		DE991E2F2C6F22AE00B6CCCF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */; };
 		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
@@ -20,7 +21,6 @@
 		DEA9EBFB2C6B350600D7964D /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA9EBFA2C6B350600D7964D /* DeviceManager.swift */; };
 		DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */; };
 		DEAB73DE2C6DD2BD00A021B6 /* MainViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */; };
-		DEAB73E42C6E38C300A021B6 /* CreateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAB73E32C6E38C300A021B6 /* CreateViewTests.swift */; };
 		DEB257E72C5266A200CC3B51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */; };
 		DEB257E92C526FCF00CC3B51 /* CreateBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */; };
 		DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */; };
@@ -64,6 +64,7 @@
 /* Begin PBXFileReference section */
 		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
+		DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewMock.swift; sourceTree = "<group>"; };
 		DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		DEA9EBFA2C6B350600D7964D /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		DEAAFD342C6A79FB00E1DF66 /* ColorPaletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletView.swift; sourceTree = "<group>"; };
 		DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewTest.swift; sourceTree = "<group>"; };
-		DEAB73E32C6E38C300A021B6 /* CreateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewTests.swift; sourceTree = "<group>"; };
 		DEB257E62C5266A200CC3B51 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		DEB257E82C526FCF00CC3B51 /* CreateBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBoardViewModel.swift; sourceTree = "<group>"; };
 		DEB257EA2C53C63800CC3B51 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
@@ -127,6 +127,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE7CCC942C6F7DDF0034F76D /* BoardViewTest */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BoardViewTest;
+			sourceTree = "<group>";
+		};
+		DE7CCC952C6F7DF60034F76D /* SettingsViewTest */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SettingsViewTest;
+			sourceTree = "<group>";
+		};
 		DE991E2D2C6F229F00B6CCCF /* OnboardingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,34 +173,13 @@
 			path = DeviceManager;
 			sourceTree = "<group>";
 		};
-		DEAB73DC2C6DD28C00A021B6 /* MainView */ = {
+		DEAB73DC2C6DD28C00A021B6 /* MainViewTest */ = {
 			isa = PBXGroup;
 			children = (
 				DEAB73DD2C6DD2BD00A021B6 /* MainViewTest.swift */,
+				DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */,
 			);
-			path = MainView;
-			sourceTree = "<group>";
-		};
-		DEAB73DF2C6E354000A021B6 /* BoardView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = BoardView;
-			sourceTree = "<group>";
-		};
-		DEAB73E02C6E355A00A021B6 /* CreateBoardView */ = {
-			isa = PBXGroup;
-			children = (
-				DEAB73E32C6E38C300A021B6 /* CreateViewTests.swift */,
-			);
-			path = CreateBoardView;
-			sourceTree = "<group>";
-		};
-		DEAB73E12C6E356700A021B6 /* SettingsView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SettingsView;
+			path = MainViewTest;
 			sourceTree = "<group>";
 		};
 		DEAB73E22C6E357E00A021B6 /* SettingsView */ = {
@@ -255,10 +248,9 @@
 		DEF7EC632C513E400036BBD8 /* RetroAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				DEAB73DC2C6DD28C00A021B6 /* MainView */,
-				DEAB73E02C6E355A00A021B6 /* CreateBoardView */,
-				DEAB73DF2C6E354000A021B6 /* BoardView */,
-				DEAB73E12C6E356700A021B6 /* SettingsView */,
+				DE7CCC952C6F7DF60034F76D /* SettingsViewTest */,
+				DE7CCC942C6F7DDF0034F76D /* BoardViewTest */,
+				DEAB73DC2C6DD28C00A021B6 /* MainViewTest */,
 				DEF7EC642C513E400036BBD8 /* RetroAppTests.swift */,
 			);
 			path = RetroAppTests;
@@ -516,7 +508,7 @@
 			files = (
 				DEF7EC652C513E400036BBD8 /* RetroAppTests.swift in Sources */,
 				DEAB73DE2C6DD2BD00A021B6 /* MainViewTest.swift in Sources */,
-				DEAB73E42C6E38C300A021B6 /* CreateViewTests.swift in Sources */,
+				DE7CCC982C6F7E3D0034F76D /* MainViewMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
