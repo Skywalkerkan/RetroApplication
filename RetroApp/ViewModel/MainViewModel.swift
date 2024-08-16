@@ -9,15 +9,16 @@ import SwiftUI
 import Combine
 
 class MainViewModel: ObservableObject {
-    var firebaseManager = FirebaseManager()
+    private var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false
     @Published var userSessions = [User]()
     
     func joinSession(_ sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
-        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { isValidId in
-            DispatchQueue.main.async {
-                if isValidId {
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { result in
+            switch result {
+            case .success(let isValid):
+                if isValid {
                     self.isItValidId = true
                     print("Successfully joined session")
                     completion(true)
@@ -26,6 +27,8 @@ class MainViewModel: ObservableObject {
                     print("Session can not be found")
                     completion(false)
                 }
+            case .failure(let error):
+                print(error)
             }
         }
     }

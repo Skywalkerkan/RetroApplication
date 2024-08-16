@@ -20,36 +20,41 @@ class CreateBoardViewModel: ObservableObject {
     ]
 
     func createSession(createdBy: String?, sessionId: String, sessionPassword: String, timer: Int, isTimerActive: Bool, sessionName: String, isAnonym: Bool, sessionBackground: String) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, isTimerActive: isTimerActive, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword, sessionBackground: sessionBackground) { success in
-            DispatchQueue.main.async {
-                if success {
-                    self.sessionStatus = "Session created with ID: \(sessionId)"
-                } else {
-                    self.sessionStatus = "Failed to create session"
-                }
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, isTimerActive: isTimerActive, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword, sessionBackground: sessionBackground) { result in
+            switch result {
+            case .success():
+                print("Created Session")
+            case .failure(let error):
+                print(error)
+                
             }
         }
     }
     
     
     func joinSession(sessionId: String, sessionPassword: String) {
-        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { canJoin in
-            DispatchQueue.main.async {
-                if canJoin {
-                    self.sessionStatus = "Successfully joined session"
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { result in
+            switch result {
+            case .success(let isValid):
+                if isValid {
+                    print("Successfully joined session")
                 } else {
-                    self.sessionStatus = "Session expired or does not exist"
+                    print("Session can not be found")
                 }
+            case .failure(let error):
+                print(error)
             }
+
         }
     }
     
     func createBoard(sessionId: String, board: Board) {
         firebaseManager.addBoard(to: sessionId, board: board) { result in
-            if result {
-                print("ok")
-            } else {
-                print("no")
+            switch result {
+            case .success(_):
+                print("Sucsessfully Created Board")
+            case .failure(let error):
+                print(error)
             }
         }
     }

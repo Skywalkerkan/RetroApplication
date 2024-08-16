@@ -33,7 +33,9 @@ struct DroppableList: View {
     @State private var isChangedDescription: Bool = false
     @State var cardContext: String = ""
     
-    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>, sessionId: String, isAnonym: Bool, currentUserName: String, action: ((Card, Int, Int) -> Void)? = nil) {
+    init(_ title: String, boardIndex: Int, cards: Binding<[Card]>,
+         sessionId: String, isAnonym: Bool, currentUserName: String,
+         action: ((Card, Int, Int) -> Void)? = nil) {
         self.title = title
         self.boardIndex = boardIndex
         self._cards = cards
