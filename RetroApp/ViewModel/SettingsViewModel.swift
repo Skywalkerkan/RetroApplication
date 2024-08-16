@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 final class SettingsViewModel: ObservableObject {
     private var firebaseManager = FirebaseManager()

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 final class CreateBoardViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()

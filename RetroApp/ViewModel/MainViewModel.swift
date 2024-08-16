@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 final class MainViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()

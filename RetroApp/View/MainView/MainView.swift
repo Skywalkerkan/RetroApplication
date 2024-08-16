@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()

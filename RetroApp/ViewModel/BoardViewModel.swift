@@ -5,9 +5,7 @@
 //  Created by Erkan on 26.07.2024.
 //
 
-import Foundation
-import FirebaseFirestore
-import Combine
+import SwiftUI
 
 final class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false

@@ -100,9 +100,3 @@ struct AddCardView: View {
     }
 
 }
-
-/*
-#Preview {
-    AddCardView()
-}
-*/
