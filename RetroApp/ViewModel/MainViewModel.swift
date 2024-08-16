@@ -16,7 +16,8 @@ class MainViewModel: ObservableObject {
     @Published var userSessions = [User]()
     
     func joinSession(_ sessionId: String, sessionPassword: String, completion: @escaping (Bool) -> Void) {
-        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { result in
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let isValid):
                 if isValid {
@@ -36,27 +37,27 @@ class MainViewModel: ObservableObject {
     }
     
     func fetchUserSessions() {
-        firebaseManager.fetchSessionIdsForUser { result in
+        firebaseManager.fetchSessionIdsForUser { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let user):
-                print("Başarılı")
                 DispatchQueue.main.async {
                     self.userSessions = user
                 }
             case .failure(let error):
-                print("hatalı")
-                print(error)
+                self.error = error
             }
         }
     }
     
     func deleteUserSession(for sessionId: String) {
-        firebaseManager.deleteForUserSession(for: sessionId) { result in
+        firebaseManager.deleteForUserSession(for: sessionId) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(_):
                 print("")
             case .failure(let error):
-                print(error)
+                self.error = error
             }
         }
     }

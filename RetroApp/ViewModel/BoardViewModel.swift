@@ -20,22 +20,30 @@ class BoardViewModel: ObservableObject {
     func fetchBoards(sessionId: String) {
         firebaseManager.fetchBoards(for: sessionId) { result in
             switch result {
-            case.success(let session):
+            case .success(let session):
                 self.session = session
                 self.boards = session.boards
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to fetch boards: \(error.localizedDescription)"]
+                )
             }
         }
     }
     
-    func updateBoards(sessionId: String ,boards: [Board]) {
+    func updateBoards(sessionId: String, boards: [Board]) {
         firebaseManager.updateBoardInFirestore(sessionId: sessionId, updatedBoards: boards) { result in
             switch result {
             case .success(_):
-                print("Succesfully updated Boards")
+                print("Successfully updated Boards")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to update boards: \(error.localizedDescription)"]
+                )
             }
         }
     }
@@ -44,9 +52,13 @@ class BoardViewModel: ObservableObject {
         firebaseManager.addCardToSession(sessionId: sessionId, boardIndex: boardIndex, newCard: newCard) { result in
             switch result {
             case .success(_):
-                print("Sucsessfully Added to card")
+                print("Successfully added card")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to add card: \(error.localizedDescription)"]
+                )
             }
         }
     }
@@ -55,22 +67,28 @@ class BoardViewModel: ObservableObject {
         firebaseManager.addBoard(to: sessionId, board: board) { result in
             switch result {
             case .success(_):
-                print("Successfully Created Board.")
-                
+                print("Successfully created board")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to create board: \(error.localizedDescription)"]
+                )
             }
         }
     }
 
-    
     func deleteBoard(sessionId: String, boardIndex: Int) {
         firebaseManager.deleteBoard(sessionId: sessionId, boardIndex: boardIndex) { result in
             switch result {
             case .success(_):
-                print("Success")
+                print("Successfully deleted board")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to delete board: \(error.localizedDescription)"]
+                )
             }
         }
     }
@@ -78,9 +96,13 @@ class BoardViewModel: ObservableObject {
     func deleteCardFromBoard(sessionId: String, boardIndex: Int, cardId: String) {
         firebaseManager.deleteCardFromSession(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId) { result in
             if result {
-                print("Başarılı şekilde silindi")
+                print("Successfully deleted card")
             } else {
-                print("Silinemedi")
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to delete card"]
+                )
             }
         }
     }
@@ -88,9 +110,13 @@ class BoardViewModel: ObservableObject {
     func reorderCardInSession(sessionId: String, boardIndex: Int, cards: [Card]) {
         firebaseManager.reorderCardsInSession(sessionId: sessionId, boardIndex: boardIndex, newCardOrder: cards) { result in
             if result {
-                print("Başarılı bir şekilde değiştirildi kartlar")
+                print("Successfully reordered cards")
             } else {
-                print("Kart Yerleri başarısız")
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to reorder cards"]
+                )
             }
         }
     }
@@ -98,9 +124,13 @@ class BoardViewModel: ObservableObject {
     func updateCardName(sessionId: String, boardIndex: Int, cardId: String, newCardDescription: String) {
         firebaseManager.updateCardNameInBoard(sessionId: sessionId, boardIndex: boardIndex, cardId: cardId, newCardDescription: newCardDescription) { result in
             if result {
-                print("Başarılı içerik değiştirme")
+                print("Successfully updated card name")
             } else {
-                print("Başarısız içeril değiştirme")
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to update card name"]
+                )
             }
         }
     }
@@ -109,9 +139,13 @@ class BoardViewModel: ObservableObject {
         firebaseManager.saveUserSession(user: user) { result in
             switch result {
             case .success(_):
-                print("başarılı")
+                print("Successfully saved user session")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to save user session: \(error.localizedDescription)"]
+                )
             }
         }
     }
@@ -122,7 +156,11 @@ class BoardViewModel: ObservableObject {
                 self.session = session
                 completion(true)
             } else {
-                print("error get session")
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to get session settings: \(error?.localizedDescription ?? "Unknown error")"]
+                )
                 completion(false)
             }
         }
@@ -131,9 +169,13 @@ class BoardViewModel: ObservableObject {
     func addSettingsToSession(sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timer: Int, timeRemains: Int?, allowUserChange: Bool) {
         firebaseManager.addSettingToSession(byId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimerActive, timerMinutes: timer, timeRemains: timeRemains, allowUserChange: allowUserChange) { result in
             if result {
-                print("Başarılı bir şekilde güncellendi settings")
+                print("Successfully updated session settings")
             } else {
-                print("Hata geldi")
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to update session settings"]
+                )
             }
         }
     }
@@ -142,9 +184,13 @@ class BoardViewModel: ObservableObject {
         firebaseManager.deleteForUserSession(for: sessionId) { result in
             switch result {
             case .success(_):
-                print("")
+                print("Successfully deleted user session")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "BoardViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to delete user session: \(error.localizedDescription)"]
+                )
             }
         }
     }

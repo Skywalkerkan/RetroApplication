@@ -29,7 +29,6 @@ struct CreateBoardView: View {
     @State private var sessionPassword: String = ""
     @State private var timerMinutes: Int = 5
     @State private var timerMinutesInput: String = "5"
-    @State private var item = SessionPanel()
     @ObservedObject var viewModel = CreateBoardViewModel()
 
     var body: some View {

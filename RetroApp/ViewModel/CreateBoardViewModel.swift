@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 class CreateBoardViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()
-    
+    @Published var error: Error?
+
     @Published var sessionStatus: String = ""
     @Published var retroStyles: [String] = ["Went Well - To Improve - Action Items", "Start - Stop - Continue", "Mad - Sad - Glad", "Happy - Meh - Sad"]
     @Published var boardRetroNames: [String: [String]] = [
@@ -20,20 +22,18 @@ class CreateBoardViewModel: ObservableObject {
     ]
 
     func createSession(createdBy: String?, sessionId: String, sessionPassword: String, timer: Int, isTimerActive: Bool, sessionName: String, isAnonym: Bool, sessionBackground: String) {
-        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, isTimerActive: isTimerActive, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword, sessionBackground: sessionBackground) { result in
+        firebaseManager.createSession(sessionId: sessionId, createdBy: createdBy ?? "Anonymous", timeRemains: timer, isTimerActive: isTimerActive, sessionName: sessionName, isAnonym: isAnonym, sessionPassword: sessionPassword, sessionBackground: sessionBackground) { [weak self] result in
             switch result {
             case .success():
                 print("Created Session")
             case .failure(let error):
-                print(error)
-                
+                self?.error = error
             }
         }
     }
     
-    
     func joinSession(sessionId: String, sessionPassword: String) {
-        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { result in
+        firebaseManager.joinSession(sessionId: sessionId, sessionPassword: sessionPassword) { [weak self] result in
             switch result {
             case .success(let isValid):
                 if isValid {
@@ -42,32 +42,30 @@ class CreateBoardViewModel: ObservableObject {
                     print("Session can not be found")
                 }
             case .failure(let error):
-                print(error)
+                self?.error = error
             }
-
         }
     }
     
     func createBoard(sessionId: String, board: Board) {
-        firebaseManager.addBoard(to: sessionId, board: board) { result in
+        firebaseManager.addBoard(to: sessionId, board: board) { [weak self] result in
             switch result {
             case .success(_):
-                print("Sucsessfully Created Board")
+                print("Successfully Created Board")
             case .failure(let error):
-                print(error)
+                self?.error = error
             }
         }
     }
     
     func saveUserSession(user: User) {
-        firebaseManager.saveUserSession(user: user) { result in
+        firebaseManager.saveUserSession(user: user) { [weak self] result in
             switch result {
             case .success(_):
-                print("başarılı")
+                print("Successful")
             case .failure(let error):
-                print(error)
+                self?.error = error
             }
         }
     }
-
 }

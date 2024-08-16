@@ -13,8 +13,6 @@
 		DE7CCC912C6F453D0034F76D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC902C6F453D0034F76D /* FirebaseCrashlytics */; };
 		DE7CCC932C6F453D0034F76D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC922C6F453D0034F76D /* FirebaseFirestore */; };
 		DE7CCC982C6F7E3D0034F76D /* MainViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */; };
-		DE991E2F2C6F22AE00B6CCCF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */; };
-		DEA718122C60C3290093994A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA718112C60C3290093994A /* Session.swift */; };
 		DEA7B7472C63E9E10053A2B1 /* FirebaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */; };
 		DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */; };
 		DEA96E0E2C64B9BB0087EE6E /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */; };
@@ -65,8 +63,6 @@
 		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
 		DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewMock.swift; sourceTree = "<group>"; };
-		DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		DEA718112C60C3290093994A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DEA7B7462C63E9E10053A2B1 /* FirebaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtension.swift; sourceTree = "<group>"; };
 		DEA96E0B2C64B6BC0087EE6E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DEA96E0D2C64B9BB0087EE6E /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -127,36 +123,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DE7CCC942C6F7DDF0034F76D /* BoardViewTest */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = BoardViewTest;
-			sourceTree = "<group>";
-		};
-		DE7CCC952C6F7DF60034F76D /* SettingsViewTest */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SettingsViewTest;
-			sourceTree = "<group>";
-		};
-		DE991E2D2C6F229F00B6CCCF /* OnboardingView */ = {
-			isa = PBXGroup;
-			children = (
-				DE991E2E2C6F22AE00B6CCCF /* OnboardingView.swift */,
-			);
-			path = OnboardingView;
-			sourceTree = "<group>";
-		};
-		DEA718102C60C3110093994A /* SwiftData */ = {
-			isa = PBXGroup;
-			children = (
-				DEA718112C60C3290093994A /* Session.swift */,
-			);
-			path = SwiftData;
-			sourceTree = "<group>";
-		};
 		DEA7B7452C63E9CA0053A2B1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,7 +189,6 @@
 			children = (
 				DEA9EBF92C6B34F400D7964D /* DeviceManager */,
 				DEA7B7452C63E9CA0053A2B1 /* Extensions */,
-				DEA718102C60C3110093994A /* SwiftData */,
 				DEB257E52C52668200CC3B51 /* Firebase */,
 				DEF7EC802C5140850036BBD8 /* Application */,
 				DEF7EC7F2C51407F0036BBD8 /* ViewModel */,
@@ -248,8 +213,6 @@
 		DEF7EC632C513E400036BBD8 /* RetroAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				DE7CCC952C6F7DF60034F76D /* SettingsViewTest */,
-				DE7CCC942C6F7DDF0034F76D /* BoardViewTest */,
 				DEAB73DC2C6DD28C00A021B6 /* MainViewTest */,
 				DEF7EC642C513E400036BBD8 /* RetroAppTests.swift */,
 			);
@@ -276,7 +239,6 @@
 		DEF7EC7E2C51407B0036BBD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DE991E2D2C6F229F00B6CCCF /* OnboardingView */,
 				DEF7ECD02C524AD50036BBD8 /* MainView */,
 				DEF7ECD32C525A240036BBD8 /* CreateBoardView */,
 				DEF7ECC92C5226790036BBD8 /* BoardView */,
@@ -493,10 +455,8 @@
 				DEC009E32C623E4B0023513D /* BottomSheetView.swift in Sources */,
 				DEF7EC5B2C513E400036BBD8 /* RetroApp.xcdatamodeld in Sources */,
 				DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */,
-				DEA718122C60C3290093994A /* Session.swift in Sources */,
 				DEF7EC4F2C513E3E0036BBD8 /* RetroAppApp.swift in Sources */,
 				DEB257EB2C53C63800CC3B51 /* BoardViewModel.swift in Sources */,
-				DE991E2F2C6F22AE00B6CCCF /* OnboardingView.swift in Sources */,
 				DEA96E0C2C64B6BC0087EE6E /* SettingsView.swift in Sources */,
 				DEAAFD352C6A79FB00E1DF66 /* ColorPaletView.swift in Sources */,
 			);

@@ -20,7 +20,11 @@ class SettingsViewModel: ObservableObject {
                 self.session = session
                 completion(true)
             } else {
-                print("error get session")
+                self.error = NSError(
+                    domain: "SettingsViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to get session settings: \(error?.localizedDescription ?? "Unknown error")"]
+                )
                 completion(false)
             }
         }
@@ -29,22 +33,29 @@ class SettingsViewModel: ObservableObject {
     func addSettingsToSession(sessionId: String, isAnonymous: Bool, isTimerActive: Bool, timer: Int, timeRemains: Int?, allowUserChange: Bool) {
         firebaseManager.addSettingToSession(byId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimerActive, timerMinutes: timer, timeRemains: timeRemains, allowUserChange: allowUserChange) { result in
             if result {
-                print("Başarılı bir şekilde güncellendi settings")
+                print("Successfully updated settings")
             } else {
-                print("Hata geldi")
+                self.error = NSError(
+                    domain: "SettingsViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to update settings"]
+                )
             }
         }
     }
     
-    func deleteSession(for sessionId: String){
+    func deleteSession(for sessionId: String) {
         firebaseManager.deleteSession(byId: sessionId) { result in
             switch result {
             case .success(_):
-                print("Sucessfully deleted")
+                print("Successfully deleted session")
             case .failure(let error):
-                self.error = error
+                self.error = NSError(
+                    domain: "SettingsViewModelErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Failed to delete session: \(error.localizedDescription)"]
+                )
             }
         }
     }
-    
 }

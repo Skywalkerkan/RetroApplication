@@ -19,7 +19,6 @@ struct RetroAppApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .modelContainer(for: [SessionPanel.self])
         }
     }
 }

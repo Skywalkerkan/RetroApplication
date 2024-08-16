@@ -136,19 +136,11 @@ struct SettingsView: View {
                                 Text("Minutes:")
                                     .frame(width: 80, alignment: .leading)
                                 
-                                Stepper(value: $timerMinutes, in: 1...120, step: 1) {
+                                Stepper(value: $timerMinutes, in: 0...120, step: 1) {
                                     Text("\(Int(timerMinutes)) minutes")
                                 }
                                 .frame(maxWidth: .infinity)
                             }
-
-                            HStack {
-                                Toggle("Allow user to make changes when timer runs out.", isOn: $allowUserChange)
-                            }
-                            
-                            Text("Adjust the duration using the stepper or enter a value directly.")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
                         }
                     }
  
