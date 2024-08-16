@@ -8,7 +8,7 @@
 import SwiftUI
 
 class CreateBoardViewModel: ObservableObject {
-    private var firebaseManager = FirebaseManager()
+    var firebaseManager = FirebaseManager()
     
     @Published var sessionStatus: String = ""
     @Published var retroStyles: [String] = ["Went Well - To Improve - Action Items", "Start - Stop - Continue", "Mad - Sad - Glad", "Happy - Meh - Sad"]
