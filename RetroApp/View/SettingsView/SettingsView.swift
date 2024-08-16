@@ -74,19 +74,54 @@ struct SettingsView: View {
                             .font(.footnote)
                             .foregroundColor(.gray)
                     }
-                    
-                    HStack {
-                        Toggle("Timer", isOn: $isTimer)
+                    if timeRemaining == 0 && !isTimerActive {
+                        HStack {
+                            Toggle("Timer", isOn: $isTimer)
+                            
+                        }
                     }
                     
                     if (isTimerActive) && isTimer || ((timeRemaining) != 0){
-                        
                         HStack(alignment: .center, spacing: 16) {
                             Text("Time Remaining:")
                                 .font(.headline)
                             Spacer()
-                            Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
-                            .font(.body)
+                                .font(.body)
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    if isTimerActive {
+                                        print("üstteki")
+                                        stopTimer()
+                                        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: timeRemaining, allowUserChange: true)
+                                    } else {
+                                        print("alttaki")
+                                        if timeRemaining != 0{
+                                            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: true, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                            startTimer()
+                                        } else {
+                                            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+                                        }
+                                    }
+                                    if timeRemaining != 0{
+                                        print("time remains \(timeRemaining)")
+                                        isTimerActive.toggle()
+                                    }
+                                }) {
+                                    Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
+                                        .foregroundColor(.black)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                Text(" \(timeRemaining / 60) : \(timeRemaining % 60)")
+                                Button(action: {
+                                    viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timerMinutes, timeRemains: nil, allowUserChange: true)
+                                }) {
+                                    Image(systemName: "stop.fill")
+                                        .foregroundColor(.black)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+
                         }
                         
                     }
@@ -172,6 +207,7 @@ struct SettingsView: View {
             if timeRemaining > 0 {
                 timeRemaining -= 1
             } else {
+                viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: false, timer: timeRemaining, timeRemains: nil, allowUserChange: allowUserChange)
                 stopTimer()
             }
         }
@@ -184,7 +220,11 @@ struct SettingsView: View {
 
     
     func saveSettings() {
-        viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimer, timer: timerMinutes*60, timeRemains: nil, allowUserChange: true)
+        if (isTimerActive) && (timeRemaining > 0) {
+            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimer, timer: timeRemaining, timeRemains: nil, allowUserChange: true)
+        } else {
+            viewModel.addSettingsToSession(sessionId: sessionId, isAnonymous: isAnonymous, isTimerActive: isTimer, timer: timerMinutes*60, timeRemains: nil, allowUserChange: true)
+        }
         isTimerActive = isTimer
         startTimer()
     }
