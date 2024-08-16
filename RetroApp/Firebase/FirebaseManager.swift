@@ -6,7 +6,7 @@
 //
 
 import Firebase
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 class FirebaseManager {
     private var db = Firestore.firestore()
