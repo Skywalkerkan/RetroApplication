@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class CreateBoardViewModel: ObservableObject {
+final class CreateBoardViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()
     @Published var error: Error?
 

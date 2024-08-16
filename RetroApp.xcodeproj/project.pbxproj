@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE4330112C6F8E790050DBDB /* CreateViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4330102C6F8E790050DBDB /* CreateViewMock.swift */; };
+		DE4330132C6F8E9C0050DBDB /* CreateViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4330122C6F8E9C0050DBDB /* CreateViewTest.swift */; };
 		DE45197D2C6389CD006BDBFE /* AddCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE45197C2C6389CD006BDBFE /* AddCardView.swift */; };
 		DE4DCC1B2C61771600C3BD4E /* AnimationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */; };
 		DE7CCC8F2C6F453D0034F76D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DE7CCC8E2C6F453D0034F76D /* FirebaseAnalytics */; };
@@ -60,6 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE4330102C6F8E790050DBDB /* CreateViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewMock.swift; sourceTree = "<group>"; };
+		DE4330122C6F8E9C0050DBDB /* CreateViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewTest.swift; sourceTree = "<group>"; };
 		DE45197C2C6389CD006BDBFE /* AddCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCardView.swift; sourceTree = "<group>"; };
 		DE4DCC1A2C61771600C3BD4E /* AnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationButtonView.swift; sourceTree = "<group>"; };
 		DE7CCC972C6F7E3D0034F76D /* MainViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewMock.swift; sourceTree = "<group>"; };
@@ -123,6 +127,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE43300F2C6F8E620050DBDB /* CreateViewTest */ = {
+			isa = PBXGroup;
+			children = (
+				DE4330102C6F8E790050DBDB /* CreateViewMock.swift */,
+				DE4330122C6F8E9C0050DBDB /* CreateViewTest.swift */,
+			);
+			path = CreateViewTest;
+			sourceTree = "<group>";
+		};
 		DEA7B7452C63E9CA0053A2B1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +226,7 @@
 		DEF7EC632C513E400036BBD8 /* RetroAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				DE43300F2C6F8E620050DBDB /* CreateViewTest */,
 				DEAB73DC2C6DD28C00A021B6 /* MainViewTest */,
 				DEF7EC642C513E400036BBD8 /* RetroAppTests.swift */,
 			);
@@ -466,6 +480,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE4330112C6F8E790050DBDB /* CreateViewMock.swift in Sources */,
+				DE4330132C6F8E9C0050DBDB /* CreateViewTest.swift in Sources */,
 				DEF7EC652C513E400036BBD8 /* RetroAppTests.swift in Sources */,
 				DEAB73DE2C6DD2BD00A021B6 /* MainViewTest.swift in Sources */,
 				DE7CCC982C6F7E3D0034F76D /* MainViewMock.swift in Sources */,

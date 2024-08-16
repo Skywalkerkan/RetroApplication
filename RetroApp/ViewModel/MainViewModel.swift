@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class MainViewModel: ObservableObject {
+final class MainViewModel: ObservableObject {
     var firebaseManager = FirebaseManager()
     
     @Published var isItValidId = false

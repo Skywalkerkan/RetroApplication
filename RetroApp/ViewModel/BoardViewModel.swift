@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-class BoardViewModel: ObservableObject {
+final class BoardViewModel: ObservableObject {
     @Published var showSessionExpiredAlert = false
     @Published var error: Error?
     @Published var boards: [Board] = []
